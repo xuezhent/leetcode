@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string licenseKeyFormatting(string S, int K) {
+        string res = "", tmp = "";
+        for(int i = S.size()-1; i >= 0; i--) {
+            if(S[i] != '-') 
+                tmp = static_cast<char>(toupper(S[i]))+tmp;
+            if(tmp.size() == K) {
+                if(res.empty())
+                    res = tmp;
+                else
+                    res = tmp + "-" + res;
+                tmp = "";
+            }
+        }
+        if(!tmp.empty()) {
+            if(res.empty())
+                res = tmp;
+            else
+                res = tmp + "-" + res;
+        }
+        return res;
+    }
+};
+
+知识点：
+1.  toupper()返回的是int值，在这里按这种形式使用需要用到类型的强制转换，static_cast<char>.
+
+mistake:
+1.  思路是利用if(tmp.size() == K && i != 0)来判断，如果是新字符串的第一个字母数字子串的话，那么最后i应该等于0。
+case：“--a-a-a-a--" K=2
+这种情况下，第一个字母数字子串是”AA“，但是在计算完这个子串的时候，i并不等于0。
