@@ -1,0 +1,8 @@
+1.stack
+    stack<Type> stk;
+    stk.size();
+    stk.top();
+    stk.pop();  删除元素并不会返回值
+    stk.push();
+    
+2.    
