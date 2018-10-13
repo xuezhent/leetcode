@@ -23,3 +23,29 @@ public:
 };
 
 方法二：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        return helper(root, LONG_MIN, LONG_MAX);
+    }
+    bool helper(TreeNode* root, long low, long upper) {
+        if(root == NULL)    return true;
+        return (root->val > low) && (root->val < upper) && helper(root->left, low, root->val) && helper(root->right, root->val, upper);
+    }
+};
+
+mistake:
+1.  如果helper中2，3两个参数设成int类型，会无法通过。因为如果整个tree只有一个元素，且该元素等于INT_MAX的时候，就会返回false，显然是不对的。
+idea:
+1.  自己一开始思考的时候，想第三层的节点不仅要满足与第二层节点之间的大小关系，还得考虑去满足第一层节点之间的大小关系。那么如果按照这种从底向上的
+思路是很复杂的，你不仅要对每个节点都要记录它的所有祖先，而且还得判断这个节点与祖先们之间的关系。第二个方法提供了一种从上往下的思路。
+
