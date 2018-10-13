@@ -1,0 +1,25 @@
+方法一：利用predorder
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* pre = NULL;
+    bool isValidBST(TreeNode* root) {
+        if(root == NULL)
+            return true;
+        bool left = isValidBST(root->left);
+        if(pre != NULL && root->val <= pre->val)    return false;
+        pre = root;
+        bool right = isValidBST(root->right);
+        return left && right;
+    }
+};
+
+方法二：
