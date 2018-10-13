@@ -51,3 +51,7 @@ public:
         helper(r->right);
     }
 };
+
+
+https://leetcode.com/problems/validate-binary-search-tree/discuss/32112/Learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-(Java-Solution)
+对于一些tree问题的总结
