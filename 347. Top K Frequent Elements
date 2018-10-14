@@ -1,0 +1,78 @@
+方法一：hashmap & priority_queue
+class Solution {
+public:
+    typedef pair<int, int> pi; 
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int> res;
+        unordered_map<int,int> mp;
+        for(int i = 0; i < nums.size(); i++)
+            mp[nums[i]]++;
+        priority_queue<pi, vector<pi>, greater<pi> > pq;
+        for(auto pair : mp) {
+            if(pq.size() < k)
+                pq.push(make_pair(pair.second, pair.first));
+            else if(pair.second > pq.top().first) {
+                pq.pop();
+                pq.push(make_pair(pair.second, pair.first));
+            }
+        }
+        while(!pq.empty()){
+            res.push_back(pq.top().second);
+            pq.pop();
+        }        
+        return res;
+    }
+};
+
+另一种写法：
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int> ret;
+        unordered_map<int, int> m;
+        
+        for(auto n:nums){
+            m[n] += 1;
+        }
+        
+        using mp = pair<int, int>;
+        auto f = [](mp &p1, mp &p2){ return p1.first > p2.first;};
+        priority_queue<mp, vector<mp>, decltype(f)> pq(f);
+        
+        for(auto p:m){
+            pq.push({p.second, p.first});
+           if(pq.size() > k){
+                pq.pop();
+            }
+        }
+        
+        while(!pq.empty()){
+            auto top = pq.top();
+            pq.pop();
+            ret.push_back(top.second);
+        }
+        
+        return ret;
+    }
+};
+
+方法二：bucket sort(O(n))
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int> res;
+        vector<vector<int>> bucket(nums.size()+1);
+        unordered_map<int, int> mp;
+        for(int n : nums)
+            mp[n]++;
+        for(auto p : mp) {
+            bucket[p.second].push_back(p.first);
+        }
+        for(int i = bucket.size()-1; i >= 0; i--) 
+            for(int j = 0; j < bucket[i].size(); j++){
+                res.push_back(bucket[i][j]);
+                if(res.size() == k) return res;
+            }     
+        return res;
+    }
+};
