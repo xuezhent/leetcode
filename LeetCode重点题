@@ -1,5 +1,8 @@
 
 
 98. Validate Binary Search Tree
+      preorder travesal/tree自上而下的限制条件
 
+347. Top K Frequent Elements
+      min_heap(pair)/bucket sort
 
