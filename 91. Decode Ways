@@ -1,0 +1,69 @@
+方法一：dfs(这个问题，这个方法超时）
+class Solution {
+public:
+    int res = 0;
+    int numDecodings(string s) {
+        dfs(s, 0);
+        return res;
+    }
+    void dfs(string s, int index) {
+        if(index >= s.size()){
+            res++;
+            return;
+        }
+        for(int i = 1; i <= 2 && index+i-1 < s.size(); i++) {
+            string tmp = s.substr(index, i);
+            if(stoi(tmp) < 1 || stoi(tmp) > 26) return;
+            dfs(s, index+i);
+        }
+    }
+};
+
+方法二：dp
+class Solution {
+public:
+    int numDecodings(string s) {
+        vector<int> dp(s.size(),0);
+        for(int i = 0; i < s.size(); i++) {
+            if(i == 0) {
+                if(s[i]-'0' > 0) {
+                    dp[i] = 1;
+                    continue;
+                } else return 0;   
+            }
+            int tmp = stoi(s.substr(i-1, 2));
+            if(tmp <= 26 && tmp > 9)
+                dp[i] = i-2 >= 0 ? dp[i-2] : 1;
+            if(s[i] - '0' > 0)
+                dp[i] += dp[i-1];
+            if(dp[i] == 0)
+                return 0;
+        }
+        return dp[s.size()-1];
+    }
+};
+
+mistake:
+  1.一开始是直接将dp[0]初始化为1，然后i从1开始步进。
+    corner case:"0"
+  2.基于第一个mistake进行改进，将dp[0]的赋值放在了for循环中。
+    if(i == 0) {
+                if(s[i]-'0' > 0) {
+                    dp[i] = 1;
+                }   
+                continue;
+            }
+    认为s[0]大于0就赋为1，等于0就不用管了，让它是默认值就好了。但是dp[0]的值会对后续的计算有影响，如果s[0]等于0，要立即返回。
+    corner case:"01"
+  3.认为tmp只用小于等于26就行了
+    corner case:"200"
+  4.认为tmp只用大于0就行了
+    coner case:"201"
+    所以下次进行这种判断一定要考虑清上界和下界。这次的下界是9，而不是0。
+  5.没有对无法decode的情况进行及时处理
+    corner case:"01","2008"
+    所以如果中途出现某个dp值为0，立马返回。
+  
+  
+  
+  
