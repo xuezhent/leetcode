@@ -24,3 +24,10 @@
     或
     pq.push({p.second, p.first});
     
+4.stoi & to_string
+    stoi(str):string转int；
+    to_string(i):int转string；
+
+5.(expression) ? ++i : --j;
+    3sum中需要根据当前的和sum与target之间的大小关系来选择是++start还是--end，那么可以利用这么一个小语句。
+    (sum < target) ? ++start : --end;
