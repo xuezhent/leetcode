@@ -64,6 +64,20 @@ mistake:
     corner case:"01","2008"
     所以如果中途出现某个dp值为0，立马返回。
   
-  
+  更好的版本：
+  class Solution {
+public:
+    int numDecodings(string s) {
+    int n = s.length();
+    vector<int> dp(n+1,0);
+    dp[n] = 1;
+    dp[n-1] = (s[n-1] != '0')? 1:0;
+    for (int i = n - 2; i >= 0; i--)
+        if (s[i] == '0') continue;
+        else 
+            dp[i] = (stoi(s.substr(i,2)) <= 26)? dp[i+1]+dp[i+2] : dp[i+1];
+    return dp[0];
+    }
+};
   
   
