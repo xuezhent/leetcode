@@ -5,4 +5,22 @@
     stk.pop();  删除元素并不会返回值
     stk.push();
     
-2.    
+2.priority_queue
+    priority_queue默认构建的是max_heap
+    搭建存储pair的min_heap
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greator<pair<int,int>> pq;
+    pq.push();
+    pq.top();
+    pq.pop();
+    
+    也可以自定义比较函数
+    using mp = pair<int, int>;
+    auto f = [](mp &p1, mp &p2){ return p1.first > p2.first;};
+    priority_queue<mp, vector<mp>, decltype(f)> pq(f);
+
+3.make_pair
+    pair<int, int> p(1,1);
+    pq.push(make_pair(p.second, p.first);
+    或
+    pq.push({p.second, p.first});
+    
