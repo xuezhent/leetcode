@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int start = 0;
+        while(nums[start] != 0)
+            start++;
+        for(int i = start; i < nums.size(); i++) {
+            if(nums[i] != 0)
+                nums[start++] = nums[i];
+        }
+        for(; start < nums.size(); start++) {
+            nums[start] = 0;
+        }
+    }
+};
+
+idea:
+  从第一个为0的元素开始，它之后的所有元素的位置都会发生改变。以它为起点，其后不为0的元素就一一放置在start，start+1...等位置上，然后将它们放置好之后，
+剩下的位置就全部置0。
