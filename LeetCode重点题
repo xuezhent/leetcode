@@ -1,5 +1,12 @@
-
-
+16. 3Sum Closest
+      和3sum结合
+      
+      
+91. Decode Ways
+      corner case不太好处理
+      可以考虑和IP解码那道题结合
+      
+      
 98. Validate Binary Search Tree
       preorder travesal/tree自上而下的限制条件
       
