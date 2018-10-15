@@ -31,3 +31,9 @@
 5.(expression) ? ++i : --j;
     3sum中需要根据当前的和sum与target之间的大小关系来选择是++start还是--end，那么可以利用这么一个小语句。
     (sum < target) ? ++start : --end;
+
+6.vector erase & find
+    vector<int> vec;
+    vec.erase(vec.begin()+i) : 删除index为i的元素
+    vec.erase(vec.begin()+i, vec.begin()+j) : 删除index为i和j之间的元素，不包括元素j
+    find(vec.begin(), vec.end(), x) != vec.end(): 看vec中是否包含x，如果不包含就返回vec.end()
