@@ -1,0 +1,31 @@
+方法一：运用递归(空间复杂度比较高）
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(n == 0) 
+            return 1;
+        if(n < 0) {
+            return 1/x * myPow(1/x, -(n+1));              //这一步防止n = INT_MIN变成正数后造成overflow.           
+        }
+        return (n % 2 == 0) ? myPow(x*x, n/2) : x*myPow(x*x, n/2);
+    }
+};
+
+方法二：运用迭代
+class Solution {
+public:
+    double myPow(double x, int n) {
+        double res = 1;
+        if(n < 0) {
+            x = 1/x;
+        }
+        while(n != 0) {
+            if(abs(n % 2) == 1) {
+                res *= x;
+            }
+            x *= x;
+            n /= 2;
+        }
+        return res;
+    }
+};
