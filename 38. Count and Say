@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string countAndSay(int n) {
+        int record = 1;
+        string pre = "1";
+        while(record < n) {
+            string tmp = "";
+            int start = 0, count = 0;
+            for(int i = 0; i < pre.size(); i++) {
+                if(pre[i] == pre[start])    count++;
+                else {
+                    tmp += to_string(count) + pre[start];
+                    start = i;
+                    count = 1;
+                }
+            }
+            if(count != 0) 
+                tmp += to_string(count) + pre[start];
+            pre = tmp;
+            record++;
+        }
+        return pre;
+    }
+};
+
+mistake:
+  1.当当前的字母与之前字母不同时，一开始是将count重置为0，而这明显是错误的，因为当前字母与之前字母不同，那当前字母已经出现过一次了，count应该被置为1。
