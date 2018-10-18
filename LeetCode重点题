@@ -17,7 +17,11 @@
       
       
 283. Move Zeroes
-      一开始思路不太清晰        
+      一开始思路不太清晰  
+      
+287. Find the Duplicate Number
+      binary search/linked loop
+      方法都比较巧妙
 
 347. Top K Frequent Elements
       min_heap(pair)/bucket sort
