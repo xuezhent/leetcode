@@ -1,0 +1,62 @@
+方法一：递归
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int> vec;
+        helper(nums, vec, 0);
+        return res;
+    }
+    void helper(vector<int>& nums, vector<int> tmp, int index) {
+        res.push_back(tmp);
+        for(; index < nums.size(); index++) {
+            tmp.push_back(nums[index]);
+            helper(nums, tmp, index+1);
+            tmp.pop_back();
+        }
+    }
+};
+
+方法二：迭代
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> vec;
+        res.push_back(vec);
+        for(int i = 0; i < nums.size(); i++) {
+            int sz = res.size();
+            for(int j = 0; j < sz; j++) {
+                vec = res[j];
+                vec.push_back(nums[i]);
+                res.push_back(vec);
+            }
+        }
+        return res;
+    }
+};
+
+
+wrong version :
+  class Solution {
+  public:
+      vector<vector<int>> subsets(vector<int>& nums) {
+          vector<vector<int>> res;
+          vector<int> vec;
+          res.push_back(vec);
+          for(int i = 0; i < nums.size(); i++) {
+              for(auto v : res) {
+                  vec = v;
+                  vec.push_back(nums[i]);
+                  res.push_back(vec);
+              }
+          }
+          return res;
+      }
+  };
+input:[1,2,3]
+output:[[],[1],[2],[2],[3],[3],[3],[3]]
+
+mistake:
+  1.因为每次都是动态地添加新的vector<int>到res中，res的size是在动态变化的，所以每次访问一个新的nums中的元素时，在遍历res之前，必须先要将它的size
+先记录下来。 
