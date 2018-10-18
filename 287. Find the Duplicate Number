@@ -1,0 +1,86 @@
+方法一：运用linked cycle类似的方法
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int slow = nums[0], fast = nums[nums[0]];
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+        fast = 0;
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+};
+
+idea:
+  运用fast,slow,它们就类似于链表问题中的快慢指针。而且这里运用nums中的元素大小介于1与n-1之间，可以就将nums[i]当做指针来使用。那么如果有一个数字出现
+两次，那么一定会有两个不同的nums元素指向同一个数字，比如nums[i] = 5, nums[j] = 5;那么类似于链表问题，这也一定会形成一个环，而重复出现过的数字就是环
+的入口。但是fast与slow相遇的地方可能是环中任一位置，所以并不能当它们相遇时就返回fast或slow的值。
+  真正需要返回的是入口的值。设slow，fast的共同起始点为s，环的入口为e，相遇位置为b，s从开始走到b的总共路程为x，则有如下的等式：
+  x = s->e + e->b
+  2x = s->e + e->b + b->e + e->b (fast所走路程的等式)
+  将式子1乘以2得到
+  2x = 2(s->e) + 2(e->b)
+  式子2与式子3相剪得到
+  s->e = b->e
+  所以也就是slow从b走到e的路程与从起点s走到e的路程相同。所以将fast放回起点，然后让slow与fast同时前进，相遇的地方就是入口。
+  
+  这个方法有个制约的地方，就是如果nums[i]可以等于0的话，那这个方法就不起效果了，因为当nums[0] = 0时，slow和fast会一直指向nums[0],这相当于nums[0]
+这个节点形成了单独的环。而这一题不会存在这种情况的原因就是nums[0]肯定不会指向nums[0]，一定会指向另一个元素，即使这个被指向的元素后续指向其本身，构成
+一个只包含它自身的环，它也会满足重复出现的条件。比如nums[0] = 1, nums[1] = 1，那么很显然1重复出现了。
+
+方法二：运用二分搜索
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int lo = 1, hi = nums.size()-1;
+        while(lo < hi) {
+            int mid = lo + (hi-lo)/2;
+            int count = 0;
+            for(int i = 0; i < nums.size(); i++) {
+                if(nums[i] <= mid)
+                    count++;
+            }
+            if(count > mid)  
+                hi = mid;
+            else
+                lo = mid+1;
+        }
+        return lo;
+    }
+};
+
+wrong version:
+  class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int lo = 1, hi = nums.size()-1;
+        while(lo < hi) {
+            int mid = lo + (hi-lo)/2;
+            int count = 0;
+            for(int i = 0; i < nums.size(); i++) {
+                if(nums[i] < mid)
+                    count++;
+            }
+            if(count >= mid)  
+                hi = mid-1;
+            else
+                lo = mid;
+        }
+        return lo;
+    }
+};
+ 
+ mistake:
+  1.wrong version和right version主要区别在于一个是将lo = mid,另一个将lo = mid+1。从思路上看的话，两个答案似乎都对，但是将lo = mid会存在一个
+bug。就是如果lo = hi-1，那么计算出来的mid会等于lo，那么lo会一直被重复地赋值为自身，然后mid又会一直被重复地计算出为lo，这样会无限循环下去。但是将
+hi = mid不会存在这个问题，这是因为int mid = lo + (hi-lo)/2;这条语句其实是起了作用，如果lo和hi只相差1，那么计算出来会变成lo，也就是计算出的结果
+只有可能是等于lo的，而不可能会等于hi（除非lo与hi相等），所以是有一种趋小性在里面。
+  
+  
+  
+  
