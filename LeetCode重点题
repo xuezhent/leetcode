@@ -12,6 +12,9 @@
 98. Validate Binary Search Tree
       preorder travesal/tree自上而下的限制条件
       
+103. Binary Tree Zigzag Level Order Traversal
+      只使用queue的方法比较巧妙
+      
 155. Min Stack
       最优的方法不会
       
