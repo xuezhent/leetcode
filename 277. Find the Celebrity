@@ -1,0 +1,52 @@
+// Forward declaration of the knows API.
+bool knows(int a, int b);
+
+class Solution {
+public:
+    int findCelebrity(int n) {
+        int candidate = 0;
+        for(int i = 1; i < n; i++) {
+            if(!knows(i, candidate)) {
+                candidate = i;
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            if(i == candidate) continue;
+            if(knows(candidate, i) || !knows(i, candidate))
+                return -1;
+        }
+        return candidate;
+    }
+};
+
+idea:
+After the first loop, the value of candidate will be anywhere between 0 and n-1 (inclusive)
+
+Let me state some facts based on the problem and this loop
+
+If a candidate is really a celebrity, then the value of candidate never changes, because not knows(i, candidate) will always 
+be False as everybody knows the celebrity.If somebody(say person i) does not know a candidate the original candidate loses 
+her candidature(i.e is definitely not a celebrity) , and this person i becomes a candidate(i.e i can be a celebrity).Now 
+based on thee facts, everybody to the left of candidate (i.e from 0 to candidate-1) is not a celebrity because,
+
+They will always get a chance to disprove an existing candidate and become a candidate, (As i is looping from 0 to n-1 ) by 
+checking if they know the existing candidate and if they are indeed a celebrity(celebrity won't know anybody), they will 
+become a candidate (Fact 2 of above).Once they become a candidate, they will never lose their candidature unless 100% 
+certain that they are not a celebrity (due to Fact 1 of above).Also, everybody to the right of candidate (i.e candidate+1 to
+n-1) is not a celebrity because, they would have become a candidate if they did not know the existing candidate 
+(when i reaches them) (Fact 2 of above).
+
+Therefore at the end of the loop above only candidate can be a celebrity (which we need to confirm)
+
+To confirm, we go through every person from 0 to n-1 (except the candidate herself) and verify that they know the candidate and
+that the candidate does not know them
+If (1) and (2) are satisfied for everybody(again, except the candidate) then the candidate is indeed a celebrity, else 
+there is no celebrity.
+
+mistake:
+  1.第二个loop中写成了i < candidate，应该写成i < n的，是要明确第二个loop的作用，它是要confirm第一个loop中找到的candidate是否是真的celebrity。
+所以要对每个人都要进行上述idea中说到的两项检测。
+  2.第二个loop中一定要加上i是否等于candidate的判断。
+  
+  
+  
