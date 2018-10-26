@@ -1,0 +1,71 @@
+class Solution {
+    bool isCycleUtil(const int course, std::vector<std::vector<int>> &adj, std::vector<bool> &rstack,
+                     std::vector<bool> &visited)
+    {
+        if (!visited[course])
+        {
+            visited[course] = true;
+            rstack[course] = true;
+            for (const auto &it : adj[course])
+            {
+                if (!visited[it] && isCycleUtil(it, adj, rstack, visited))
+                    return true;
+                else if (rstack[it])
+                    return true;
+            }
+        }
+        rstack[course] = false;
+        return false;
+    }
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        assert(numCourses > 0);
+        std::vector<std::vector<int>> adj(numCourses);
+        for (const auto& it : prerequisites)
+            adj[it.first].push_back(it.second);
+        std::vector<bool> visited(numCourses, false);
+        std::vector<bool> rstack(numCourses, false);
+        for (int i = 0; i < numCourses; i++)
+            if (isCycleUtil(i, adj, rstack, visited))
+                return false;
+        return true;
+    }
+};
+
+static int desync = [](){
+    std:;ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    return 0;
+}();
+
+
+
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<int> level(numCourses,0);
+        vector<vector<int>> graph(numCourses, vector<int>());
+        for(auto p : prerequisites)
+        {
+          graph[p.second].push_back(p.first);
+          ++level[p.first];
+        }
+        queue<int> leaf;
+        for(int i=0; i<level.size(); ++i)
+        {
+          if(level[i] == 0) {leaf.push(i);}
+        }
+        while(!leaf.empty())
+        {
+          int temp = leaf.front();
+          leaf.pop();
+          --numCourses;
+          for(auto i : graph[temp])
+          {
+            --level[i];
+            if(level[i] == 0) {leaf.push(i);}
+          }
+        }
+        return numCourses == 0;
+    }
+};
