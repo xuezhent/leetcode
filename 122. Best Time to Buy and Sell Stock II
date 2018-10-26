@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int profit = 0;
+        for(int i = 0; i+1 < prices.size(); i++) {
+            if(prices[i+1] > prices[i]) profit += prices[i+1] - prices[i];
+        }
+        return profit;
+    }
+};
+
+idea:
+  这道题本来想起来可能觉得还挺复杂的，需要用到dp去做，但那是对题目意思理解的有问题。我理解成不可以同一天卖出然后又买进，也就是不可以同一天完成多笔的交易
+但是这个题目并不是这个意思，它说的不可以同时进行多笔交易的意思是不可以在卖出之前同时在多天买入，也就是必须在买入新股票的同时保证手上没有没卖出的股票了。
