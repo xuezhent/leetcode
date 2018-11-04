@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<int, int> hp;
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        for(int i = 0; i < inorder.size(); i++) {
+            hp[inorder[i]] = i;
+        }
+        return helper(preorder, inorder, 0, 0, inorder.size()-1);
+    }
+    TreeNode* helper(vector<int>& pre, vector<int>& in, int preindex, int instart, int inend) {
+        if(preindex > pre.size()-1 || instart > inend) return NULL;
+        TreeNode* root = new TreeNode(pre[preindex]);
+        int i = hp[pre[preindex]];
+        root->left = helper(pre, in, preindex+1, instart, i-1);
+        root->right = helper(pre, in, preindex+1+i-instart, i+1, inend);
+        return root;
+    }
+};
+
+idea:
+  此题的主要思路就是根据preorder的第一个元素就是root来解。通过inorder来判断哪些元素在root左子树中，哪些元素在root右子树中。其实主要的还是依靠
+  preorder来构建树，但是你并不知道哪个位置上的元素是root的左子树root，哪个位置的元素是root右子树root。那么如何计算位置呢？preorder中root紧接
+  着的元素就是左子树的root,但是右子树root则得知道root左子树中有多少元素，所以就需要用到inorder，在inorder中找到当前root位置，然后它与instart
+  之间的元素就是左子树元素，计算它们数目，然后在preorder中基于root位置进行计算就可以得到right root位置。
