@@ -8,6 +8,7 @@
       corner case不太好处理
       可以考虑和IP解码那道题结合
       
+
       
 98. Validate Binary Search Tree
       preorder travesal/tree自上而下的限制条件
@@ -20,7 +21,10 @@
 
 155. Min Stack
       最优的方法不会
-
+      
+162. Find Peak Element
+      binary search的变形
+      
 277. Find the Celebrity
       思路一开始不会
       
