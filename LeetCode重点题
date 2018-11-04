@@ -31,6 +31,9 @@
 283. Move Zeroes
       一开始思路不太清晰  
       
+285. Inorder Successor in BST
+      binary search tree特性
+      
 287. Find the Duplicate Number
       binary search/linked loop
       方法都比较巧妙
