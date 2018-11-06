@@ -31,3 +31,7 @@ idea:
   preorder来构建树，但是你并不知道哪个位置上的元素是root的左子树root，哪个位置的元素是root右子树root。那么如何计算位置呢？preorder中root紧接
   着的元素就是左子树的root,但是右子树root则得知道root左子树中有多少元素，所以就需要用到inorder，在inorder中找到当前root位置，然后它与instart
   之间的元素就是左子树元素，计算它们数目，然后在preorder中基于root位置进行计算就可以得到right root位置。
+
+mistake:
+    一开始没有设置inend参数，那么这样没有判断的话，会导致其实子树没有更多的元素了但是还是会不断迭代下去，这样会导致出错。所以一定要有个inend参数配合
+instart参数来检查子树是否已经为空了。
