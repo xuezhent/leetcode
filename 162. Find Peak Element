@@ -17,3 +17,6 @@ public:
 
 idea:
   https://www.youtube.com/watch?v=a7D77DdhlFc
+  其实也很简单，因为只要找出一个peak就可以了，那么只要随意找到一个local peak就可以了。而local peak如何找呢？那么随意拿两个相邻的数来举例子，假设为a
+  和b，那么a和b的大小关系只有两种，因为根据题意，a不等于b。所以要么是a>b,要么是a<b.如果是a>b，那么b不可能是local peak点，只能是a有可能，因为b已经
+  比a小了.所以往左找.如果是a>b，那么同理，只能是b有可能是local peak，所以就往右找.
