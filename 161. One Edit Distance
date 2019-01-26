@@ -45,6 +45,40 @@ public:
     }
 };
 
+改进版本：
+class Solution {
+public:
+    bool isOneEditDistance(string s, string t) {
+        bool flag = false;
+        int sz = s.size();
+        int tz = t.size();
+        if(abs(sz-tz) >= 2) 
+            return false;
+        if(s.size() == t.size()) {
+            int count = 0;
+            for(int i = 0; i < s.size(); i++) {
+                if(s[i] != t[i])
+                    count++;
+            }
+            return count == 1;
+        }
+        else {
+            if(s.size() < t.size()) {
+                string temp = t;
+                t = s;
+                s = temp;
+            }
+            for(int i = 0, j = 0; i < s.size() && j < t.size(); i++,j++) {
+                if(s[i] != t[j]) {
+                    if(i == j)  j--;
+                    else    return false;
+                }
+            }
+            return true;
+        }
+    }
+};
+
 错误原因：
   错误地方就是一开始用unordered_map来做了，以为就是查看两个字符串的字符有多少个不一样，但这题需要考虑字符与字符的顺序对应，所以不可以用unordered_map.
 第二个错误的地方就是一开始将isDelete()和isInsert()中的j--写成了i++.认为两个字符串从头开始比较，如果第一次出现了不一样了，较长的字符串的遍历器i往
