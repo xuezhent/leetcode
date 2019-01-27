@@ -39,10 +39,14 @@
       binary search/linked loop
       方法都比较巧妙
       
-334.Increasing Triplet Subsequence
+334. Increasing Triplet Subsequence
       无序数组中找升序Triplet
       自己的思路不清晰
 
 347. Top K Frequent Elements
       min_heap(pair)/bucket sort
+      
+380. Insert Delete GetRandom O(1)
+      vector insert & remove in O(1)
+      
 
