@@ -1,0 +1,56 @@
+class RandomizedSet {
+public:
+    /** Initialize your data structure here. */
+    RandomizedSet() {
+        
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    bool insert(int val) {
+        if(mp.find(val) != mp.end()) 
+            return false;
+        mp[val] = vec.size();
+        vec.push_back(val);
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    bool remove(int val) {
+        if(mp.find(val) == mp.end())
+            return false;
+        if(mp[val] != vec.size()-1) {
+            mp[vec.back()] = mp[val];
+            swap(vec[vec.size()-1], vec[mp[val]]);    
+        }
+        vec.pop_back();
+        mp.erase(val);
+        return true;
+    }
+    
+    /** Get a random element from the set. */
+    int getRandom() {
+        return vec[rand() % vec.size()];
+    }
+
+private:
+    vector<int> vec;
+    unordered_map<int, int> mp;
+};
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet obj = new RandomizedSet();
+ * bool param_1 = obj.insert(val);
+ * bool param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */
+ 
+错误原因：
+    错误都发生在了remove阶段，remove的两项后续操作没有记得去实现，就是将val在map中的记录要删去，并且如果val不是vec的最后一个元素，那么发生交换之
+后，需要将vec最后一个元素（就是交换过程中除去要被删除的那个元素的另外一个元素）在map中的记录进行修改。
+    
+    
+    
+    
+    
+    
