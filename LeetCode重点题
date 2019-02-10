@@ -42,6 +42,9 @@
 334. Increasing Triplet Subsequence
       无序数组中找升序Triplet
       自己的思路不清晰
+      
+341. Flatten Nested List Iterator
+      目前使用的是dfs做法，但可以有更优的使用stack的解法。
 
 347. Top K Frequent Elements
       min_heap(pair)/bucket sort
