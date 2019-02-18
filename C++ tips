@@ -7,6 +7,7 @@
     
 2.priority_queue
     priority_queue默认构建的是max_heap
+    第一个参数是数据类型，第二个参数是保存数据的容器，第三个参数为比较的方式。
     搭建存储pair的min_heap
     priority_queue<pair<int,int>, vector<pair<int,int>>, greator<pair<int,int>> pq;
     pq.push();
@@ -17,6 +18,27 @@
     using mp = pair<int, int>;
     auto f = [](mp &p1, mp &p2){ return p1.first > p2.first;};
     priority_queue<mp, vector<mp>, decltype(f)> pq(f);
+    
+    也可以自定义一个比较类
+    class Solution {
+    public:
+        vector<vector<int>> kClosest(vector<vector<int>>& points, int K) {
+            priority_queue<vector<int>, vector<vector<int>>, Compare> pq(points.begin(), points.end());
+            vector<vector<int>> ans;
+            for (int i = 0; i < K; i++) {
+                ans.push_back(pq.top());
+                pq.pop();
+            }
+            return ans;
+        }
+    private:
+        struct Compare {
+            bool operator()(const vector<int>& p, const vector<int>& q) {
+                return p[0] * p[0] + p[1] * p[1] > q[0] * q[0] + q[1] * q[1];
+            }
+        };
+    };
+    
 
 3.make_pair
     pair<int, int> p(1,1);
