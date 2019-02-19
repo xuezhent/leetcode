@@ -1,0 +1,49 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> findRightInterval(vector<Interval>& intervals) {
+        vector<int> ans;
+        vector<int> vec;
+        if(intervals.size() == 1) {
+            ans.push_back(-1);
+            return ans;
+        }
+        unordered_map<int, int> mp;
+        for(int i = 0; i < intervals.size(); i++) {
+            int start = intervals[i].start;
+            mp[start] = i;
+            vec.push_back(start);
+        }
+        sort(vec.begin(), vec.end());
+        for(auto interval : intervals) {
+            int low = 0, hi = intervals.size()-1;
+            while(low < hi) {
+                int mid = low + (hi-low)/2;
+                if(vec[mid] < interval.end) {
+                    low = mid+1;
+                } else {
+                    hi = mid;
+                }
+            }
+            if(vec[low] < interval.end)
+                ans.push_back(-1);
+            else
+                ans.push_back(mp[vec[low]]);
+        }
+        return ans;
+    }
+};
+
+注意点：
+  一开始写的时候在while循环结束后，对于是向ans中添加-1还是对应index的判断时，是直接判断if(low < hi),这样根本达不到效果。因为有些时候即使是不存在
+满足条件的interval，最后low也是和hi相等的，基本上是和存在差不多的情况。其实这种情况下查找，要不就是不存在这么一个interval，那么最后二叉查找会找到
+其本身。第二种情况就是数组中存在满足条件的interval，那么二叉查找会找到满足条件的那个interval。所以最后跳出循环判断一下low对应的start是否小于目前
+操作的interval.end。
