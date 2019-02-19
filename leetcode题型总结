@@ -2,4 +2,5 @@
   973   单纯利用priority_queue求解离(0, 0)最近的k个点集合
   
   
-2.
+2.binary search及其变形
+  658   binary search变形，利用已排序数组特性求区间的左起点
