@@ -43,7 +43,7 @@ public:
 };
 
 注意点：
-  一开始写的时候在while循环结束后，对于是向ans中添加-1还是对应index的判断时，是直接判断if(low < hi),这样根本达不到效果。因为有些时候即使是不存在
-满足条件的interval，最后low也是和hi相等的，基本上是和存在差不多的情况。其实这种情况下查找，要不就是不存在这么一个interval，那么最后二叉查找会找到
-其本身。第二种情况就是数组中存在满足条件的interval，那么二叉查找会找到满足条件的那个interval。所以最后跳出循环判断一下low对应的start是否小于目前
-操作的interval.end。
+  一开始写的时候在while循环结束后，对于是向ans中添加-1还是对应index的判断时，是直接判断if(low < hi),这样根本达不到效果。因为找到最后肯定是low与
+high相等，然后跳出循环，low和high同时指向的那个interval就是二分法帮你找到的interval。但是这个interval并不一定满足要求，比如说某个interval的end
+足够大，数组中没有满足要求的interval，虽然二分法也会竭尽全力去帮你找，但这个时候所找到的interval无非是数组中start最大的那个，但还是没有这个end大。
+所以最后跳出循环判断一下low对应的start是否小于目前操作的interval.end。
