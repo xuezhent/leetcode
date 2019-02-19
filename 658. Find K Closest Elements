@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+        int left = 0, right = arr.size()-k;
+        while(left < right) {
+            int mid = left+(right-left)/2;
+            if(abs(arr[mid]-x) > abs(arr[mid+k]-x))
+                left = mid + 1;
+            else
+                right = mid;
+        }
+        vector<int> ans;
+        for(int i = left; i < left+k; i++) {
+            ans.push_back(arr[i]);
+        }
+        return ans;
+    }
+};
+
+思路：
+  因为是已排好序的数组，所以利用其特性自然想到利用binary-search去做。
+  而与一般的binary-search不太相同的地方是，这次不是直接寻找x在数组中的位置，而是寻找符合条件的k个元素的左起点。
+  那么进行的判断策略如下：获得mid，然后就要判断了，到底左起点落在mid左边范围内，还是落在了mid右边范围内呢。那么我们看下如果落在左边范围内，向左一小步，
+就是mid-1,如果它是起点，则mid+k肯定不在返回的这k个数中，而mid肯定在，也就是abs(arr[mid]-x) < abs(arr[mid+k]-x).如果落在右边范围内，向右一步,
+就是mid+1,如果它是起点，则情况完全相反，mid+k在k个数中，mid不在，也就是abs(arr[mid]-x) > abs(arr[mid+k]-x).如果你可能说如果这个起点在很左，
+或者很右,mid和mid+k都不在这k个数中，你还能用这个式子来判断吗？那我们来看，如果很左，mid也不包括在内，因为数组是有序的，mid+k肯定比mid大，x肯定就在mid
+左边了，因为不可能在它们中间或者在mid+k右边，不在右边肯定是很直观的了，不在中间也很容易证明，因为mid和mid+k中间也就充其量k个数，所以如果在中间，这两个
+数中一个肯定包含在返回的k个数中。在mid左边的话，mid离x的距离肯定比mid+k要小。那么在右边情况是相似的。
+  那如果相等怎么算呢？那仍然拿mid+1和mid-1来看。也就是mid-1包含了mid，mid+1包含了mid+k。而在这k个数中呢，mid离x的距离最大，以至于呢，mid+k离x同样
+的距离，但没被选上，根据题目的要求呢，是要往左边选的，因为有tie时，需要选更小的数。
+  
