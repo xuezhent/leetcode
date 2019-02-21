@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int n = matrix.size();
+        int lo = matrix[0][0], hi = matrix[n-1][n-1];
+        while(lo < hi) {
+            int mid = lo + (hi-lo)/2;
+            int num = 0;
+            for(int i = 0; i < n; i++) {
+                int pos = upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
+                num += pos;
+            }
+            if(num < k) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
+    }
+};
+
+思路：
+  这题主要的难点就是想到利用二分法，并且有一个比较大的疑惑就是算出来的mid一定会存在于matrix中吗？
+  这题中计算pos这步其实就是一直计算matrix中不大于mid的元素的数量。为什么要计算不大于，而不是小于。因为通过题干可以得出，是要考虑重复情况的。
+  当num < k时，认为所要找的那个数在右半边，lo要进行重新赋值。而当num >= k时，认为所要找的数在左半边，hi重新赋值，哪怕是num已经等于k了，还是要继续进行
+计算，那么其实在这就可以看出来这是一个寻找满足条件的最小值的过程。而我们看是满足什么条件，就是要不大于mid的元素的数量正好等于k（也就能理解为什么pos那步
+用upper_bound了）。那么你疑惑假如算出的mid不在matrix中呢？通过这个方法找出的mid不可能不在。因为假如这个matrix中最小的3个数为1，2，3，你想找第3小的
+元素，也就是3，你说假如算出来是4呢，而且4又正好不在matrix中。那我们说，满足我们说的条件的数现在是不是最少有两个了，一个3，一个4，对于3来说，假如最后的
+mid算出来等于3，小于等于它的有3个，对于4来说，小于等于4的也有3个。但是我们这个方法是会找到满足条件的最小数的。这个数肯定会存在的。你这样想，求一个
+matrix中第k小的数，这个数肯定是存在的，那么小于等于其自身正好有k个元素，这个条件又正好满足。
+  
