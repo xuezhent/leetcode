@@ -64,3 +64,9 @@
     使用switch(state)时，state必须是可以唯一转换成integer的数据类型，比如int, char.所以并不可以直接用string作为state.最好写的时候还是用
     if-else.
     
+8.lower_bound & upper_bound
+    在378中使用到。
+    ForwardIter lower_bound(ForwardIter first, ForwardIter last,const _Tp& val)算法返回一个非递减序列[first, last)中的第一个大于
+    等于值val的位置。
+    ForwardIter upper_bound(ForwardIter first, ForwardIter last, const _Tp& val)算法返回一个非递减序列[first, last)中第一个大于
+    val的位置。
