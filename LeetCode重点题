@@ -52,6 +52,9 @@
 347. Top K Frequent Elements
       min_heap(pair)/bucket sort
       
+378. Kth Smallest Element in a Sorted Matrix
+      binary-search不太好理解
+      
 380. Insert Delete GetRandom O(1)
       vector insert & remove in O(1)
       
