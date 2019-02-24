@@ -61,6 +61,9 @@
 380. Insert Delete GetRandom O(1)
       vector insert & remove in O(1)
       
+543. Diameter of Binary Tree
+      寻找binary-tree中结点间最长的路径。注意最长路径不一定是经过root
+      
 647. Palindromic Substrings
       我的做法是dp寻找回文，可以有更优解      
 
