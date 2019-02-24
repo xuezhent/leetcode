@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        ro = image.size();
+        col = image[0].size();
+        color = newColor;
+        sColor = image[sr][sc];
+        visited = vector<vector<int>>(ro, vector<int>(col, 0));
+        search(image, sr, sc);
+        return image;
+    }
+    void search(vector<vector<int>>& img, int r, int c) {
+        if(r < 0 || r >= ro || c < 0 || c >= col || visited[r][c] == 1)
+            return;
+        visited[r][c] = 1;
+        if(img[r][c] == sColor)
+            img[r][c] = color;
+        else 
+            return;
+        search(img, r-1, c);
+        search(img, r, c+1);
+        search(img, r+1, c);
+        search(img, r, c-1);
+    }
+    
+    
+private:
+    vector<vector<int>> visited;
+    int color;
+    int sColor;
+    int ro;
+    int col;
+};
+
+思路：上面的方法是使用了visited，但是这题可以不使用visited。因为如果newColor和(sr,sc)的颜色不一样的话，那么一个点的颜色等于newColor有两种情况，
+一种是已经被访问过然后被修改成了新颜色，要不就是它本身就是新颜色的值，如果它本身是新颜色，那它就和起点的颜色不一样，那么自然不用再对它进行展开访问。
+还有可能起点颜色和newColor颜色一样，那么这样其实不用对这个数组进行任何改变，因为和起点颜色一样的点都已经和新颜色一样了。但是你可能会问，虽然不用进行
+改变，但是这样不会造成死循环吗？其实不用担心，因为访问起点的时候就会跳出循环了，因为起点的颜色和新颜色一样，那么就不用展开访问了。
+
+class Solution {
+public:
+    int color = -1;
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        if(color == -1) color = image[sr][sc];
+        if(image.empty() || sr == -1 || sr == image.size() || sc == -1
+           || sc == image[0].size() || image[sr][sc] != color || color == newColor) 
+            return image;
+        image[sr][sc] = newColor;
+        floodFill(image, sr - 1, sc, newColor);
+        floodFill(image, sr + 1, sc, newColor);
+        floodFill(image, sr, sc - 1, newColor);
+        floodFill(image, sr, sc + 1, newColor);
+        return image;
+    }
+};
