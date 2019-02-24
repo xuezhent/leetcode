@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> mp;
+        vector<int> ans;
+        for(int i = 0; i < nums.size(); i++) {
+            int dif = target - nums[i];
+            if(mp.find(dif) != mp.end()) {
+                ans.push_back(mp[dif]);
+                ans.push_back(i);
+                return ans;
+            }
+            mp[nums[i]] = i;
+        }
+        return ans;
+    }
+};
+
+切记，这题不可以用two pointers来做，因为要返回indices，而two pointers要排序，会打乱顺序。
