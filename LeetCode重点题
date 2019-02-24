@@ -52,6 +52,9 @@
 347. Top K Frequent Elements
       min_heap(pair)/bucket sort
       
+348. Design Tic-Tac-Toe
+      思路很巧妙，利用player的不同设置不同的toAdd
+      
 378. Kth Smallest Element in a Sorted Matrix
       binary-search不太好理解
       
