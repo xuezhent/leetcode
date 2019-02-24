@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int numberOfBoomerangs(vector<pair<int, int>>& points) {
+        int res = 0;
+        unordered_map<int, int> mp;
+        for(int i = 0; i < points.size(); i++) {
+            for(int j = 0; j < points.size(); j++) {
+                if(i == j) continue;
+                int dis = getDistance(points[i], points[j]);
+                mp[dis]++;
+            }
+            for(auto val : mp) {
+                res += val.second * (val.second-1);
+            }
+            mp.clear();
+        }
+            
+        return res;
+    }
+    
+    int getDistance(pair<int, int>& p1, pair<int, int>& p2) {
+        int dx = p1.first - p2.first;
+        int dy = p1.second - p2.second;
+        return dx*dx + dy*dy;
+    }
+};
+
+思路：这道题必须是对于每个点设置一个map来记录这个点与其他所有点的距离。不可以直接只用一个map来记录所有的点对之间的距离。
+错误写法如下
+class Solution {
+public:
+    int numberOfBoomerangs(vector<pair<int, int>>& points) {
+        int res = 0;
+        unordered_map<int, int> mp;
+        for(int i = 0; i < points.size(); i++) {
+            for(int j = i+1; j < points.size(); j++) {
+                int dis = getDistance(points[i], points[j]);
+                mp[dis]++;
+            }
+        }
+        for(auto val : mp) {
+                res += val.second * (val.second-1);
+        }
+        return res;
+    }
+    
+    int getDistance(pair<int, int>& p1, pair<int, int>& p2) {
+        int dx = p1.first - p2.first;
+        int dy = p1.second - p2.second;
+        return dx*dx + dy*dy;
+    }
+};
+这样写是错误的是因为如果a和b距离与c和d距离相等，那么错误写法也会将这种情况算上，而实际上是不可以的，必须是ab距离与ac距离相等这种情况才行。
+        
+        
