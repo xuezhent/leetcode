@@ -9,7 +9,9 @@
   704   最一般形式binary search，可以经常复习一下，毕竟不一定完全写的对
   
 3.DFS
+  211   Trie Tree和DFS的一个结合
   733   类似于island的变形，但这题可以不用visited
+  
 
 4.BFS
 
