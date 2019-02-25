@@ -28,6 +28,10 @@
 162. Find Peak Element
       binary search的变形
       
+210. Course Schedule II
+      构建有向图，不熟悉
+      然后结合BFS和DFS求解
+      
 211. Add and Search Word - Data structure design
       Trie tree，数据结构不熟悉
       
