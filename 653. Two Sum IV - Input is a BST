@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool findTarget(TreeNode* root, int k) {
+        r = root;
+        return traversal(root, k);
+    }
+    
+    bool traversal(TreeNode* root, int k) {
+        if(root == NULL)    return false;
+        return search(r, root, k-root->val) || traversal(root->left, k) || traversal(root->right, k);
+    }
+    
+    bool search(TreeNode* root, TreeNode* cur, int target) {
+        if(root == NULL)    return false;
+        if(target == root->val && root != cur)     return true;
+        if(target > root->val) {
+            return search(root->right, cur, target);
+        } else {
+            return search(root->left, cur, target);
+        }
+    }
+    
+private:
+    TreeNode* r;
+};
+
+思路：这道题解法比较多，如果这道题采用上面这种解法的话，就是对于每个节点，都对整个BST进行一个类似于二叉搜索的过程。那么一定要注意search函数一定要记录
+current节点的，因为不记录的话，有可能找到的结果是将同一个节点相加两次获得target值。就是确保找到的节点是与current节点不同的节点。
