@@ -1,0 +1,46 @@
+递归：
+class Solution {
+public:
+    int minDiffInBST(TreeNode* root) {
+        int res = numeric_limits<int>::max();
+        TreeNode *prev = nullptr;
+        helper(root,prev,res);
+        return res;
+    }
+    
+    void helper(TreeNode* root, TreeNode* &prev, int &res){
+        if(root){
+            helper(root->left,prev,res);
+            if(prev!=nullptr)
+                res = min(res, root->val-prev->val);
+            prev = root;
+            helper(root->right,prev,res);
+        }
+        
+    }
+};
+
+
+迭代：
+int minDiffInBST(TreeNode* root) {
+        stack<TreeNode*> stk;
+        int res = INT_MAX;
+        TreeNode* pre = NULL;
+        while(!stk.empty() || root) {
+            if(root) {
+                stk.push(root);
+                root = root->left;
+            } else {
+                root = stk.top();
+                stk.pop();
+                if(pre)
+                    res = min(res, root->val - pre->val);
+                pre = root;
+                root = root->right;
+            }
+            
+        }
+        return res;
+    }
+    
+    题目是783
