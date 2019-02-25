@@ -1,5 +1,8 @@
 16. 3Sum Closest
       和3sum结合
+      
+21. Merge Two Sorted Lists
+      经典的处理链表指针的问题
 
 50. Pow(x, n)
       思路不太会
