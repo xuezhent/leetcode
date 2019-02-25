@@ -1,0 +1,70 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string res = "";
+        for(int i = 0; i < s.length(); i++) {
+            int left = helper(s, i, i);
+            int right = helper(s, i, i+1);
+            int m = max(left, right);
+            if(m > res.length())
+                res = left == m ? s.substr(i-m/2, m) : s.substr(i-m/2+1, m);
+        }
+        return res;
+    }
+    int helper(string s, int left, int right) {
+        int i = left, j = right;
+        while(i >=0 && j < s.length() && s[i] == s[j]) {
+            i--;
+            j++;
+        }
+        return j - i - 1;
+    }
+};
+
+
+2.dp方法
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string res = "";
+        int maxlength = 0;
+        int start = 0, end = 0;
+        vector<vector<int>> dp(s.size(), vector<int>(s.size(), 0));
+        for(int i = s.size()-1; i >= 0; i--)
+            for(int j = i; j < s.size(); j++) {
+                if(i == j)
+                    dp[i][j] = 1;
+                else if(s[i] == s[j]) {
+                    if(i + 1 == j)
+                        dp[i][j] = 2;
+                    else
+                        dp[i][j] = dp[i+1][j-1] ? dp[i+1][j-1]+2 : 0;
+                }
+                else 
+                    dp[i][j] = 0;
+                if(dp[i][j] > maxlength) {
+                    maxlength = dp[i][j];
+                    start = i;
+                    end = j;
+                }
+            }
+        return s.substr(start, end-start+1);
+    }
+};
+
+思路：dp方法中一个值得注意的地方就是类似于“aa“这种情况，你需要加一个判断，if(i + 1 == j),因为如果你不判断的话，那么会访问dp[i+1][j-1],i>j,那么这个
+值是不存在的
+
+
+
+
+
+
+
+
+
+
+
+
+
+
