@@ -28,6 +28,9 @@
 162. Find Peak Element
       binary search的变形
       
+221. Maximal Square
+      典型dp求解二维数组问题
+      
 277. Find the Celebrity
       思路一开始不会
       
