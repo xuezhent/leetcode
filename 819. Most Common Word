@@ -1,0 +1,29 @@
+class Solution {
+public:
+    string mostCommonWord(string paragraph, vector<string>& banned) {
+        string res = "", word = "";
+        unordered_map<string, int> words;
+        paragraph += ".";
+        set<string> banlist;
+        for(string s : banned) {
+            banlist.insert(s);
+        }
+        for(auto c : paragraph) {
+            if(isalpha(c)) {
+                word += tolower(c);
+            } else {
+                if(word != "") {
+                    words[word]++;
+                    if(banlist.find(word) == banlist.end()) {
+                        res = words[word] > words[res] ? word : res;
+                    }
+                    word = "";
+                }
+            }
+        }
+        return res;
+    }
+};
+
+思路：上面这个方法比较妙的地方在于在一开始给paragraph的末位加上了一个'.'，这是为了防止paragraph以字母结尾，那么最后那个word需要进行额外的处理。
+然后res = words[word] > words[res] ? word : res;这行代码也比较简洁，不需要对最大的次数进行记录。
