@@ -7,9 +7,7 @@
 91. Decode Ways
       corner case不太好处理
       可以考虑和IP解码那道题结合
-      
-
-      
+         
 98. Validate Binary Search Tree
       preorder travesal/tree自上而下的限制条件
       
@@ -29,7 +27,7 @@
       binary search的变形
       
 210. Course Schedule II
-      构建有向图，不熟悉
+      构建有向图，不熟悉，并且涉及到拓扑排序和DAG的概念
       然后结合BFS和DFS求解
       
 211. Add and Search Word - Data structure design
