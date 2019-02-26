@@ -56,6 +56,9 @@
       binary search/linked loop
       方法都比较巧妙
       
+322. Coin Change
+      0-1背包问题，有多种方法，需要全部熟练掌握
+      
 334. Increasing Triplet Subsequence
       无序数组中找升序Triplet
       自己的思路不清晰
