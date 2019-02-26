@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> stk;
+        for(auto c : s) {
+            if(!stk.empty() && ((stk.top() == '{' && c == '}') ||
+             (stk.top() == '[' && c == ']') ||
+             (stk.top() == '(' && c == ')'))) {
+                stk.pop();
+            } else {
+                stk.push(c);
+            }
+        }
+        return stk.empty();
+    }
+};
+
+注意：在判断的时候需要注意一下，就是后面几个||构成的判断语句最外面一定要包个括号，然后再和!stk.empty()进行与运算。
