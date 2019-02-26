@@ -1,0 +1,64 @@
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    int min;
+    vector<int> vec;
+    vector<int> mins;
+    MinStack() {
+        
+    }
+    
+    void push(int x) {
+        if(vec.empty()) {
+            min = x;
+        } else if(x < min) {
+            min = x;
+        }
+        vec.push_back(x);
+        mins.push_back(min);
+    }
+    
+    void pop() {
+        if(vec.back() == min) {
+            mins.pop_back();
+            if(mins.empty()) {
+                min = INT_MAX;
+            } else {
+                min = mins.back();
+            }
+        } else {
+            mins.pop_back();
+        }
+        
+        vec.pop_back();
+    }
+    
+    int top() {
+        return vec.back();
+    }
+    
+    int getMin() {
+        return mins.back();
+    }
+};
+
+
+注意点：需要注意的地方就是pop的时候，而且如果vec.back() == min，一定要判断mins.empty()，不然会发生越界错误。
+当然也可以像下面这样写，这样就不用考虑为空的情况。
+void push(int x) {
+        myVector.push_back(x);
+        if(myMins.size()==0)
+            myMins.push_back(x);
+        else
+        {
+            int temp = myMins.back();
+            if(x<temp)
+                temp = x;
+            myMins.push_back(temp);
+        }
+    }
+
+    void pop() {
+        myVector.pop_back();
+        myMins.pop_back();
+    }
