@@ -1,0 +1,95 @@
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node() {}
+
+    Node(int _val, Node* _next, Node* _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
+class Solution {
+public:
+    
+    Node* copyRandomList(Node* head) {
+        Node prehead = Node(0, NULL, NULL);
+        Node* iter = head, *p = &prehead;
+        unordered_map<Node*, Node*> mp;
+        while(iter != NULL) {
+            Node* node = new Node(iter->val, NULL, NULL);
+            p->next = node;
+            mp[iter] = p->next;
+            p = p->next;
+            iter = iter->next;
+        }
+        p = prehead.next;
+        iter = head;
+        while(iter != NULL) {
+            if(iter->random) {
+                p->random = mp[iter->random];
+            } else {
+                p->random = NULL;
+            }
+            p = p->next;
+            iter = iter->next;
+        }
+        return prehead.next;
+    }
+};
+
+注意：这个解法需要注意的一个点就是建立node的时候，这个题中的node class的构造函数似乎是没有默认将next赋值成null的，具体其他题默认构造函数是可以直接将
+指针成员赋值成null,这点目前还不太清楚，过段时间再好好看看吧。所以一定要记住将list中的最后那个节点的next赋值成null，否则会一直报越界的错误。
+
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        Node prehead = Node(0, NULL, NULL), *iter = head;
+        while(iter) {
+            Node* copy_node = new Node(iter->val, NULL, NULL);
+            copy_node->next = iter->next;
+            iter->next = copy_node;
+            iter = copy_node->next;
+        }
+        
+        iter = head;
+        while(iter) {
+            if(iter->random)
+                iter->next->random = iter->random->next;
+            iter = iter->next->next;
+        }
+        
+        Node* p = &prehead;
+        iter = head;
+        while(iter) {
+            p->next = iter->next;
+            iter->next = iter->next->next;
+            p = p->next;
+            iter = iter->next;
+        }
+        return prehead.next;
+    }
+};
+
+注意：这是constant space解法。需要注意的一个地方就是
+while(iter) {
+            Node* copy_node = new Node(iter->val, NULL, NULL);
+            copy_node->next = iter->next;
+            iter->next = copy_node;
+            iter = copy_node->next;
+        }
+        这里并不能写成如下形式，必须要使用指针，不然会出现访问出错，具体什么原因没搞清楚。所以就是像这种list能用指针就用指针吧。
+        while(iter) {
+            Node copy_node = Node(iter->val, NULL, NULL);
+            copy_node.next = iter->next;
+            iter->next = &copy_node;
+            iter = copy_node.next;
+        }
