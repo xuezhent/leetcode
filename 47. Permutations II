@@ -1,0 +1,74 @@
+错误写法：
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> visited(nums.size(), 0);
+        helper(res, nums, 0, {}, visited);
+        return res;
+    }
+    
+    void helper(vector<vector<int>>& res, vector<int>& nums, int pos, vector<int> vec, vector<int>& visited) {
+        if(pos == nums.size()) {
+            res.push_back(vec);
+            return;
+        }      
+        for(int i = 0; i < nums.size(); ) {
+            if(visited[i]) {
+                i++;
+                continue;
+            } 
+            vec.push_back(nums[i]);
+            visited[i] = 1;
+            helper(res, nums, pos+1, vec, visited);
+            vec.pop_back();
+            visited[i] = 0;
+            i++;
+            while(i < nums.size() && nums[i] == nums[i-1]) i++;
+        }
+    }
+};
+
+case：[3,3,0,3]
+
+正确写法：
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> visited(nums.size(), 0);
+        sort(nums.begin(), nums.end());
+        helper(res, nums, 0, {}, visited);
+        return res;
+    }
+    
+    void helper(vector<vector<int>>& res, vector<int>& nums, int pos, vector<int> vec, vector<int>& visited) {
+        if(pos == nums.size()) {
+            res.push_back(vec);
+            return;
+        }      
+        for(int i = 0; i < nums.size(); ) {
+            if(visited[i]) {
+                i++;
+                continue;
+            } 
+            vec.push_back(nums[i]);
+            visited[i] = 1;
+            helper(res, nums, pos+1, vec, visited);
+            vec.pop_back();
+            visited[i] = 0;
+            i++;
+            while(i < nums.size() && nums[i] == nums[i-1]) i++;
+        }
+    }
+};
+
+注意：其实之前还错了一步，就是   
+            if(visited[i]) {
+                i++;
+                continue;
+            } 
+这一步当中没有写i++,这样会导致死循环。
+那么上面的错误写法错在什么地方呢，就是事先没有对nums进行sort操作，那么就可能碰到上面那个case,有可能相同的数不连在一起。
+整个思路的话就是相当于有nums.size()个位置，那么每个位置都可以放一个数，那么用回溯做就可以了，只不过呢，就是同一个位置不能放和上次一样的数，不然的话就会
+有重复。而且还要有一个visited，因为对于每个位置，都是从nums的开头遍历，那么对于这次回溯，前面已经用了的数就不能用了。
