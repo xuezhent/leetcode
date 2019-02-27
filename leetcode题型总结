@@ -9,6 +9,7 @@
   704   最一般形式binary search，可以经常复习一下，毕竟不一定完全写的对
   
 3.DFS
+  47    permutation题
   200   island小岛题，这题不用另外地弄一个visited，直接讲访问过的点改成'0'就行了
   211   Trie Tree和DFS的一个结合
   733   类似于island的变形，但这题可以不用visited
