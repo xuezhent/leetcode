@@ -25,6 +25,9 @@
       
 128. Longest Consecutive Sequence
       就是array的前后状态进行记录，可以有更优解。
+      
+139. Word Break
+      经典题，方法比较多
     
 155. Min Stack
       最优的方法不会
