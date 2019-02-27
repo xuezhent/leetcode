@@ -3,6 +3,9 @@
       
 21. Merge Two Sorted Lists
       经典的处理链表指针的问题
+      
+47. Permutations II
+      经典的permutation，第一次做花了点时间，没有一遍做对
 
 50. Pow(x, n)
       思路不太会
