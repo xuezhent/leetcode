@@ -4,6 +4,7 @@
   
   
 2.binary search及其变形
+  33    有rotation的binary search
   367   binary search变形，比较的条件进行了变形，是用平方进行比较，需要注意溢出
   658   binary search变形，利用已排序数组特性求区间的左起点
   704   最一般形式binary search，可以经常复习一下，毕竟不一定完全写的对
