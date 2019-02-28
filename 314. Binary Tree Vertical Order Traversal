@@ -1,0 +1,74 @@
+错误写法：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        if(!root)   return {};
+        Ltraversal(root, 0);
+        vector<vector<int>> res(right_dis-left_dis+1);
+        traversal(root, res, -left_dis);
+        return res;
+    }
+    void Ltraversal(TreeNode* root, int dis) {
+        if(!root)   return;
+        left_dis = min(left_dis, dis);
+        right_dis = max(right_dis, dis);
+        Ltraversal(root->left, dis-1);
+        Ltraversal(root->right, dis+1);
+    }
+    void traversal(TreeNode* root, vector<vector<int>>& vec, int dis) {
+        if(!root)   return;
+        vec[dis].push_back(root->val);
+        traversal(root->left, vec, dis-1);
+        traversal(root->right, vec, dis+1);
+    }
+    
+private:
+    int left_dis = 0, right_dis = 0;
+};
+
+
+正确写法：
+class Solution {
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        if(!root)   return {};
+        Ltraversal(root, 0);
+        vector<vector<int>> res(right_dis-left_dis+1);
+        queue<TreeNode*> q;
+        queue<int> dis;
+        q.push(root); dis.push(-left_dis);
+        while(!q.empty()) {
+            TreeNode* node = q.front();
+            int cur_dis = dis.front();
+            q.pop();    dis.pop();
+            res[cur_dis].push_back(node->val);
+            if(node->left) { q.push(node->left);    dis.push(cur_dis-1);}
+            if(node->right) { q.push(node->right);  dis.push(cur_dis+1);}
+        }
+        return res;
+    }
+    void Ltraversal(TreeNode* root, int dis) {
+        if(!root)   return;
+        left_dis = min(left_dis, dis);
+        right_dis = max(right_dis, dis);
+        Ltraversal(root->left, dis-1);
+        Ltraversal(root->right, dis+1);
+    }
+    
+private:
+    int left_dis = 0, right_dis = 0;
+};
+
+错误原因：
+  这题是每列从上到下扫描的，所以不可以用dfs，而是应该用bfs.
+  其次在计算最左节点与最右节点的时候，不要想当然的认为，一直访问root的左节点或右节点直到访问到NULL就算是到达最左或最右了。不是这样的，因为有可能root左
+  边只有一层，而右边子树中的某个后代有很多层左节点，这样整棵树最左节点有可能是存在root的右子树中的。
