@@ -1,0 +1,51 @@
+迭代写法：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        int res;
+        stack<TreeNode*> stk;
+        while(root != NULL || !stk.empty()) {
+            while(root != NULL) {
+                stk.push(root);
+                root = root->left;
+            }
+            root = stk.top();
+            stk.pop();
+            if(--k == 0)  break;
+            root = root->right;
+        }
+        return root->val;
+    }
+};
+
+
+
+递归写法：
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        traversal(root, k);
+        return val;
+    }
+    
+    void traversal(TreeNode* root, int k) {
+        if(!root)   return;
+        traversal(root->left, k);
+        if(cnt == k)    return;
+        val = root->val;
+        cnt++;
+        traversal(root->right, k);
+    }
+    
+private:
+    int val, cnt = 0;
+};
