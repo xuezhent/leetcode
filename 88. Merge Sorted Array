@@ -1,0 +1,13 @@
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int end = m+n-1;
+        while(m > 0 || n > 0) {
+            int num1 = m == 0 ? INT_MIN : nums1[m-1];
+            int num2 = n == 0 ? INT_MIN : nums2[n-1];
+            nums1[end] = max(num1, num2);
+            nums1[end] == num1 ? m-- : n--;
+            end--;
+        }
+    }
+};
