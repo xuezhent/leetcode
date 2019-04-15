@@ -56,6 +56,9 @@ public:
     这里只想对while(root != NULL || !stk.empty())这个判断条件进行一个解释。从代码可以看出，每次进入这个循环，只有两种操作，一种是root不为NULL
 那么就一直循环访问到它的最左叶子，这是一个添加的过程；另一种是root为NULL，这时候就是从stack中出栈，必须从stack中删除一个元素。那么代表这个循环还没
 完也就是这两种操作还可以进行，要么root不为null还可以添加操作，要么就是stk不为空，还可以进行删减操作。
+    对中间node的出栈过程进行一个简单的梳理。进入循环时，root指向一个subtree，根据inorder的顺序呢，必须快速到达subtree的最底层的最左端，然后这途中
+入栈的顺序其实就是访问的顺序了。然后对于任意节点来说，它左子树中最右边的那个叶子的右指针（也就是NULL了）会告诉程序这个节点的左子树都访问完毕了，那么这
+时候这个节点出栈，然后去访问右子树，然后右子树的最右边叶子的右指针（NULL）会表示这个节点的左右子树都访问完毕了，那么开始出栈这个节点的父节点（如果有）。
 
 https://leetcode.com/problems/validate-binary-search-tree/discuss/32112/Learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-(Java-Solution)
 对于一些tree问题的总结
