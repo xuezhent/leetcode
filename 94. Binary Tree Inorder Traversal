@@ -52,6 +52,10 @@ public:
     }
 };
 
+思路：
+    这里只想对while(root != NULL || !stk.empty())这个判断条件进行一个解释。从代码可以看出，每次进入这个循环，只有两种操作，一种是root不为NULL
+那么就一直循环访问到它的最左叶子，这是一个添加的过程；另一种是root为NULL，这时候就是从stack中出栈，必须从stack中删除一个元素。那么代表这个循环还没
+完也就是这两种操作还可以进行，要么root不为null还可以添加操作，要么就是stk不为空，还可以进行删减操作。
 
 https://leetcode.com/problems/validate-binary-search-tree/discuss/32112/Learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-(Java-Solution)
 对于一些tree问题的总结
