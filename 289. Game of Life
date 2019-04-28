@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        int m = board.size(), n = m ? board[0].size() : 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                int neighbor = 0;
+                for(int ii = max(0, i-1); ii < min(i+2, m); ii++) 
+                    for(int jj = max(0, j-1); jj < min(j+2, n); jj++) {
+                        neighbor += board[ii][jj] & 1;
+                    } 
+                if(neighbor == 3 || neighbor - board[i][j] == 3) 
+                    board[i][j] |= 2;
+            }
+        }
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                board[i][j] >>= 1;
+            }
+        }
+    }
+};
+注意这种写法规避了很多的条件判断。
