@@ -70,3 +70,8 @@
     等于值val的位置。
     ForwardIter upper_bound(ForwardIter first, ForwardIter last, const _Tp& val)算法返回一个非递减序列[first, last)中第一个大于
     val的位置。
+    
+9.istringstream
+    290中用到
+    可用来分割string中的word。
+
