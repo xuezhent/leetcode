@@ -18,6 +18,7 @@
 
 4.BFS
   127   需要根据string间的关系构建节点之间关系，然后进行BFS操作。
+  286   二维数组形式的BFS
 
 5.DP
   139   Word Break
