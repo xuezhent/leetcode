@@ -63,10 +63,16 @@
 285. Inorder Successor in BST
       binary search tree特性
       方法很巧妙
+      二刷没做出来
       
 287. Find the Duplicate Number
       binary search/linked loop
       方法都比较巧妙
+      二刷用二分法做的时候判断条件写的很拿不准
+      O(n)做法仍要想
+      
+300. Longest Increasing Subsequence
+      O(nlogn)解法需要继续想
       
 322. Coin Change
       0-1背包问题，有多种方法，需要全部熟练掌握
