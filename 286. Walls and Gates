@@ -1,0 +1,35 @@
+class Solution {
+public:
+    void wallsAndGates(vector<vector<int>>& rooms) {
+        int n = rooms.size(), m = n ? rooms[0].size() : 0;
+        queue<pair<int, int>> q;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(rooms[i][j] == 0) {
+                    q.push({i,j});
+                }
+            }
+        }
+        while(!q.empty()) {
+            auto node = q.front();
+            q.pop();
+            for(int i = - 1; i <= 1; i++) {
+                for(int j = -1; j <= 1; j++) {
+                    if(i != j && i != -j) {
+                        if(node.first+i >= 0 && node.first+i < n && node.second+j >= 0 && node.second+j < m) {
+                            if(rooms[node.first+i][node.second+j] != -1 && rooms[node.first+i][node.second+j] != 0) {
+                                if(rooms[node.first+i][node.second+j] > rooms[node.first][node.second]+1) {
+                                    rooms[node.first+i][node.second+j] = rooms[node.first][node.second]+1;
+                                    q.push({node.first+i, node.second+j});
+                                }
+                            } 
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
+错误：
+  一开始i != j && i != -j这儿就写了前半部分，以为就够了
