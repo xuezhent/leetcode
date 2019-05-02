@@ -1,0 +1,19 @@
+class Solution {
+    unordered_map<string, bool> mp;
+public:
+    bool canWin(string s) {
+        for(int i = 0; i+1 < s.size(); i++) {
+            if(s[i] == '+' && s[i+1] == '+') {
+                string tmp_str = s;
+                tmp_str[i] = '-'; tmp_str[i+1] = '-';
+                if(mp.find(tmp_str) != mp.end() && !mp[tmp_str] || !canWin(tmp_str))
+                    return true;
+            }
+        }
+        mp[s] = false;
+        return false;
+    }
+    
+};
+
+利用memoization可以有效地提高效率
