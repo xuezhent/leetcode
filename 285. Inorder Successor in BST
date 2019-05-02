@@ -10,7 +10,7 @@
 class Solution {
 public:
     TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
-        while(root == NULL || p == NULL)    return NULL;
+        if(root == NULL || p == NULL)    return NULL;
         
         TreeNode* suc = NULL;
         while(root) {
@@ -26,4 +26,5 @@ public:
 };
 
 idea:
+    通过观察，可以得到这么一些基本信息，比p->val大的节点都有可能是要找的节点，所以需要不断记录，然后不断逼近；但是比它小的，只需要逼近，一个都不要记录
   这种解法就用到了binary search tree的大小关系的特性。
