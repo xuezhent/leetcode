@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int res = 0;
+        int n = citations.size();
+        vector<int> vec(n+1, 0);
+        for(auto c : citations) {
+            if(c >= n) {
+                vec[n]++;
+            } else {
+                vec[c]++;
+            }
+        }
+        for(int i = vec.size()-1; i >= 0; i--) {
+            if(i != vec.size()-1)
+                vec[i] = vec[i] + vec[i+1];
+            if(vec[i] >= i) 
+                return i;
+        }
+        return res;
+    }
+};
+
+错误写法：
+  写成if(vec[i] == i)。这是对题目意思理解有问题。对于hindex来说，并不是正好有hindex篇论文的引用大于等于hindex，而是有hindex个，而实际上引用大于
+等于hindex的论文数量可以比hindex多。
