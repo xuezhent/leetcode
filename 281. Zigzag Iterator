@@ -1,0 +1,61 @@
+class ZigzagIterator {
+public:
+    ZigzagIterator(vector<int>& v1, vector<int>& v2) {
+        vec.push_back(v1);
+        vec.push_back(v2);
+        i = 0; j = 0;
+    }
+
+    int next() {
+        return i <= j ? vec[0][i++] : vec[1][j++];
+    }
+
+    bool hasNext() {
+        if (i == vec[0].size()) i = INT_MAX;
+        if (j == vec[1].size()) j = INT_MAX;
+        return i <vec[0].size() || j < vec[1].size();
+        
+    }
+private:
+    vector<vector<int>> vec;
+    int i, j;
+};
+
+这个写法有点巧妙，虽然并不是最优解法
+
+class ZigzagIterator {
+private:
+    int vec1_index = 0, vec2_index = 0;
+    vector<int>::iterator bs[2], es[2];
+public:
+    ZigzagIterator(vector<int>& v1, vector<int>& v2) {
+        bs[0] = v1.begin(); es[0] = v1.end();
+        bs[1] = v2.begin(); es[1] = v2.end();
+    }
+
+    int next() {
+        if(vec1_index == vec2_index) {
+            return vec1_index+bs[0] != es[0] ? *((vec1_index++)+bs[0]) : *((vec2_index++)+bs[1]);
+        } else {
+            return vec2_index+bs[1] != es[1] ? *((vec2_index++)+bs[1]) : *((vec1_index++)+bs[0]);
+        }
+    }
+
+    bool hasNext() {
+        return vec1_index + bs[0] != es[0] || vec2_index + bs[1] != es[1];
+    }
+};
+错误写法：int next() {
+        if(vec1_index == vec2_index) {
+            return vec1_index+1+bs[0] != es[0] ? *((++vec1_index)+bs[0]) : *((++vec2_index)+bs[1]);
+        } else {
+            return vec2_index+1+bs[1] != es[1] ? *((++vec2_index)+bs[1]) : *((++vec1_index)+bs[0]);
+        }
+    }
+    切记是后++，不是先++
+    
+    
+    
+
+
+
