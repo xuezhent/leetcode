@@ -54,6 +54,9 @@
 253. Meeting Rooms II
       贪心问题，贪心部分比较简单，主要是采用了min_heap来解，思路比较巧妙
       
+274. H-Index
+      二刷时一开始不会，且题目意思理解有问题
+      
 277. Find the Celebrity
       思路一开始不会
       
