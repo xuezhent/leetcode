@@ -1,0 +1,36 @@
+class Solution {
+public:
+    unordered_map<char,char> mp = {{'0','0'},{'1','1'},{'8','8'},{'6','9'},{'9','6'}};
+    vector<string> findStrobogrammatic(int n) {
+        vector<string> res;
+        helper(res, "", 0, n-1);
+        return res;
+    }
+    void helper(vector<string>& vec, string s, int i, int j) {
+        if(i > j) {
+            vec.push_back(s);
+            return;
+        }
+        string temp = "";
+        if(i == j) {
+            for(auto m : mp) {
+                
+                if(m.first == m.second) {
+                    temp = s.substr(0, i)+m.first+s.substr(i,i);
+                    helper(vec, temp, i+1, j-1);
+                }
+            }
+        } else {
+            for(auto m : mp) {
+                if(i == 0 && m.first == '0')    continue;
+                temp = s.substr(0, i)+m.first+m.second+s.substr(i,i);
+                helper(vec, temp, i+1, j-1);
+            }
+        }
+    }
+};
+
+错误写法：
+  1. if(i == 0 && m.first == '0')    continue;这句没加，要注意的是这个题要求产生的是一个合理的数字，不能有以0为开头的数字
+  2. temp = s.substr(0, i)+m.first+s.substr(i,i);写成temp = temp.substr(0, i)+m.first+temp.substr(i,i);这是一个低级错误，每次循环，
+  一定要确保用来做substr操作的字符串是一致的，如果用temp，那么下次循环用的就是上次计算出的temp，所以必须用s。
