@@ -41,6 +41,9 @@
 162. Find Peak Element
       binary search的变形
       
+169. Majority Element
+      方法很多，需要多思考不同方法
+      
 210. Course Schedule II
       构建有向图，不熟悉，并且涉及到拓扑排序和DAG的概念
       然后结合BFS和DFS求解
