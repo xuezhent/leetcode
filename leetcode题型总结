@@ -16,6 +16,7 @@
   211   Trie Tree和DFS的一个结合
   247   permutation变形题
   294   游戏题
+  366   Find Leaves of Binary Tree, 是用vector去存储树的节点，有点类似于按列输出树节点那道题
   733   类似于island的变形，但这题可以不用visited
   
 
