@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int largestBSTSubtree(TreeNode* root) {
+        int res = 0, m_n = INT_MIN, m_x = INT_MAX;
+        helper(root, res, m_n, m_x);
+        return mx;
+    }
+    bool helper(TreeNode* root, int& res, int& m_n, int& m_x) {
+        if(!root) {
+            res = 0;
+            m_n = INT_MAX;
+            m_x = INT_MIN;  
+            return true;
+        }
+        int left_sz, left_min, left_max, right_sz, right_min, right_max;
+        bool left = helper(root->left, left_sz, left_min, left_max);
+        bool right = helper(root->right, right_sz, right_min, right_max);
+        if(root->val <= left_max || root->val > right_min)
+            return false;
+        if((!root->left || left) && (!root->right ||right)) {
+            mx = max(mx, left_sz+right_sz+1);
+            m_n = min(root->val, left_min);
+            m_x = max(root->val, right_max);
+            res = left_sz+right_sz+1;
+            return true;
+        }
+        return false;
+    }
+private:
+    int mx = 0;
+};
+
+错误分析：
+  对BST的判断太简单了，一开始就判断一个root，它的值是否大于root->left->val并小于等于root->right->val。但这个其实不对，BST的判断一定要考虑
+  leftBound和rightBound，而这些bound都是逐层传递下来的。这题其实就是BST的从下往上传递判断，需要熟悉。
