@@ -83,6 +83,9 @@
 300. Longest Increasing Subsequence
       O(nlogn)解法需要继续想
       
+318. Maximum Product of Word Lengths
+      bit操作，方法很巧妙，判断两全是小写字母的字符串是否包含相同元素
+      
 322. Coin Change
       0-1背包问题，有多种方法，需要全部熟练掌握
       
