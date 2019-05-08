@@ -15,6 +15,7 @@
   200   island小岛题，这题不用另外地弄一个visited，直接讲访问过的点改成'0'就行了
   211   Trie Tree和DFS的一个结合
   247   permutation变形题
+  261   Graph Valid Tree树找环问题
   294   游戏题
   366   Find Leaves of Binary Tree, 是用vector去存储树的节点，有点类似于按列输出树节点那道题
   733   类似于island的变形，但这题可以不用visited
