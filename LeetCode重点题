@@ -108,6 +108,10 @@
 348. Design Tic-Tac-Toe
       思路很巧妙，利用player的不同设置不同的toAdd
       
+369. Plus One Linked List
+      方法很多
+      对于链表的操作
+      
 378. Kth Smallest Element in a Sorted Matrix
       binary-search不太好理解
       
