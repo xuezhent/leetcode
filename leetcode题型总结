@@ -25,6 +25,7 @@
 4.BFS
   127   需要根据string间的关系构建节点之间关系，然后进行BFS操作。
   286   二维数组形式的BFS
+  433   Minimum Genetic Mutation需要根据string间的关系构建节点之间关系，然后进行BFS操作。与127类似
 
 5.DP
   139   Word Break
