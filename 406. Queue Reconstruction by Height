@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        vector<vector<int>> res;
+        using mp = vector<int>;
+        auto f = [](mp &p1, mp &p2){ 
+            if(p1[0] != p2[0]) return p1[0] > p2[0];
+            else return p1[1] > p2[1];
+        };
+        priority_queue<mp, vector<mp>, decltype(f)> q(f);
+        sort(people.begin(), people.end(), cmp);
+        vector<vector<int>> tpeople;
+        for(auto p : people) {
+            vector<int> t;
+            for(auto c : p){
+                t.push_back(c);
+            }
+            t.push_back(0);
+            tpeople.push_back(t);
+            if(p[1] == 0) {
+                q.push(t);
+            }
+        }
+        while(!q.empty()) {
+            auto tmp = q.top();
+            q.pop();
+            res.push_back({tmp[0], tmp[1]});
+            for(auto& p : tpeople) {
+                if(tmp[0] < p[0])   break;
+                if(p[1] == p[2])    continue;
+                p[2]++;
+                if(p[1] == p[2])
+                    q.push(p);
+            }
+        }
+        return res;
+    }
+    static bool cmp(vector<int>& x, vector<int>& y) {
+        if(x[0] != y[0])
+            return x[0] < y[0];
+        else 
+            return x[1] < y[1];
+    }
+};
+
+错误：
+  1.不可以直接对people中的每个元素push_back(0)，vector的size发生改变，会重新分配空间，可能会导致内存访问发生问题。
+  2.用for(auto p : people)进行遍历修改时，一定记住p要写成引用，不然修改的只是一个临时变量。
+  
+  
+  
+  
+  
+  
