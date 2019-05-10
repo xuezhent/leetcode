@@ -124,6 +124,9 @@
 406. Queue Reconstruction by Height
       一开始做，方法有点混乱，不简洁
       
+433. Minimum Genetic Mutation
+      自己构建搜索图，并且用BFS查找路径，经典题
+      
 543. Diameter of Binary Tree
       寻找binary-tree中结点间最长的路径。注意最长路径不一定是经过root
       
