@@ -1,0 +1,58 @@
+bool isToeplitzMatrix(vector<vector<int>>& matrix) {
+        int row = matrix.size(), col = row ? matrix[0].size() : 0;
+        int b_row = row-1, b_col = 0;
+        int cur_value = matrix[b_row][b_col];
+        bool ifUp = true;
+        int cnt = 0;
+        int mx = row * col;
+        while(cnt < mx) {
+            cnt++;
+            if(matrix[b_row][b_col] != cur_value)   return false;
+            if(ifUp) {
+                if(b_row == 0) {
+                    b_col++;
+                    ifUp = !ifUp;
+                    cur_value = b_col < col ? matrix[b_row][b_col] : 0;
+                } else if(b_col == 0) {
+                    b_row--;
+                    ifUp = !ifUp;
+                    cur_value = b_row >= 0 ? matrix[b_row][b_col] : 0;
+                } else {
+                    b_row--;
+                    b_col--;
+                }
+            } else {
+                if(b_col == col-1) {
+                    b_row--;
+                    ifUp = !ifUp;
+                    cur_value = b_row >= 0 ? matrix[b_row][b_col] : 0;
+                } else if(b_row == row-1) {
+                    b_col++;
+                    ifUp = !ifUp;
+                    cur_value = b_col < col ? matrix[b_row][b_col] : 0;
+                } else {
+                    b_row++;
+                    b_col++;
+                }
+            }
+        }
+        return true;
+    }
+};
+
+错误写法：
+  cur_value = b_col < col ? matrix[b_row][b_col] : 0;类似的句子全都没有进行边界判断，做数组的访问时，一定时时刻刻留意是否可能越界。
+  当然这是s型遍历，还有更简洁的方法。
+  
+  class Solution {
+public:
+    bool isToeplitzMatrix(vector<vector<int>>& matrix) {
+        int row = matrix.size(), col = row ? matrix[0].size() : 0;
+        for(int i = 1; i < row; i++) {
+            for(int j = 1; j < col; j++) {
+                if(matrix[i][j] != matrix[i-1][j-1])    return false;
+            }
+        }
+        return true;
+    }
+};
