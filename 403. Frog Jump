@@ -1,0 +1,69 @@
+class Solution {
+public:
+    bool canCross(vector<int>& stones) {
+        for(auto s : stones) {
+            st.insert(s);
+        }
+        return helper(stones[0], stones.back(), 0);
+    }
+    bool helper(int cur, int target, int lastJump) {
+        string tmp = to_string(cur)+","+to_string(lastJump);
+        if(hs.find(tmp) != hs.end())    return false;
+        if(cur == target)   return true;
+        if(cur > target || st.find(cur) == st.end()) {
+            return false;
+        }
+        hs.insert(tmp);
+        for(int i = -1; i <= 1; i++) {
+            int step = lastJump + i;
+            if(step <= 0) continue;
+            if(helper(cur+step, target, step)) {
+                return true;
+            }        
+        }
+        return false;
+    }
+private:
+    set<int> st;
+    set<string> hs;
+};
+
+错误写法：
+1.  bool helper(int cur, int target, int lastJump) {
+        if(hs.find(cur) != hs.end())    return false;
+        if(cur == target)   return true;
+        if(cur > target || st.find(cur) == st.end()) {
+            return false;
+        }
+        hs.insert(cur);
+        for(int i = -1; i <= 1; i++) {
+            int step = lastJump + i;
+            if(step <= 0) continue;
+            if(helper(cur+step, target, step)) {
+                return true;
+            }        
+        }
+        return false;
+    }
+   错误的地方在于单一地将一个cur作为状态来记录，但是同一个节点，如果lastJump不一样的话，它展开的搜索树就完全不一样，比如，cur = 3, lastJump分别等于
+   2和3,当lastJump为2，cur能搜索到4，5，6;如果等于3，那么cur能搜到5，6，7。搜索树不一样，那么结果自然也就可能不一样了。所以一定将cur和lastJump组
+   合起来记录。
+   
+2.bool helper(int cur, int target, int lastJump) {
+        string tmp = cur+","+lastJump;
+        if(hs.find(tmp) != hs.end())    return false;
+        if(cur == target)   return true;
+        if(cur > target || st.find(cur) == st.end()) {
+            return false;
+        }
+        hs.insert(tmp);
+        for(int i = -1; i <= 1; i++) {
+            int step = lastJump + i;
+            if(step <= 0) continue;
+            if(helper(cur+step, target, step)) {
+                return true;
+            }        
+        }
+        return false;
+    }
+    一定要注意，tmp不能通过将int与字符串直接相加，必须要先将int转换成string。
