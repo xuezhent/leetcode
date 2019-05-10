@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int minMutation(string start, string end, vector<string>& bank) {
+        for(auto c : bank) {
+            s.insert(c);
+        }
+        if(s.find(start) == s.end()) {
+            bank.push_back(start);
+            s.insert(start);
+        }
+        for(int i = 0; i+1 < bank.size(); i++) {
+            for(int j = i+1; j < bank.size(); j++) {
+                if(cal(bank[i], bank[j])) {
+                    graph[bank[i]].push_back(bank[j]);
+                    graph[bank[j]].push_back(bank[i]);
+                }
+            }
+        }
+        set<string> path;
+        helper(start, end, 0, path);
+        return mn;
+    }
+    void helper(string start, string end, int cnt, set<string>& path) {
+        if(start == end) {
+            mn = min(mn, cnt);
+            return;
+        }
+        if(s.find(start) == s.end())    return;
+        path.insert(start);
+        for(auto neigh : graph[start]) {
+            if(path.find(neigh) == path.end()) {
+                helper(neigh, end, cnt+1, path);
+            }
+        }
+        path.erase(start);
+    }
+    bool cal(string& x, string& y) {
+        int cnt = 0;
+        for(int i = 0; i < x.size(); i++) {
+            if(x[i] != y[i]) cnt++;
+        }
+        return cnt == 1;
+    }
+    unordered_map<string, vector<string>> graph;
+    set<string> s;
+    int mn = INT_MAX;
+};
+
+错误点：
+  1.start可能不在bank中，如果不在，需要将它加进去。
+  2.cal函数，最后返回时，是判断其是否为1，而不是是否为0。
+  3.判断neighbor是否已经visited，应该判断neigh，而不是start，一开始这么写的，if(path.find(start) == path.end())。
+思路：
+  这题其实类似于图中找两点最短路径，应该用BFS的。
+  当图中找路径时，一定要用visited，因为可能存在环，如果是树中找，已经确定无环了，那么可以只记录上一个节点。
+
+
