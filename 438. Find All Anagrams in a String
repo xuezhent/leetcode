@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        if(s.size() < p.size()) return {};
+        vector<int> res;
+        int arr[26] = {0};
+        for(int i = 0; i < p.size(); i++) {
+            arr[p[i]-'a']++;
+        }
+        
+        int i = 0;
+        for(; i < p.size(); i++) {
+            arr[s[i]-'a']--;
+        }
+        
+        int index = 0;
+        for(; i < s.size(); i++) {
+            if(helper(arr)) res.push_back(index);
+            arr[s[i]-'a']--;
+            arr[s[index++]-'a']++;
+        }
+        if(helper(arr)) res.push_back(index);
+        return res;
+    }
+    bool helper(int a[26]) {
+        for(int i = 0; i < 26; i++) {
+            if(a[i] != 0)   return false;
+        }
+        return true;
+    }
+};
+
+错误点：
+  arr[s[i]-'a']--;
+  arr[s[index++]-'a']++;将这块一开始写成了arr[s[i]-'a']++;以为是窗口滑动到当前元素，当前元素计数减一，滑走就加一。真正加一的滑动窗口的头部元素。
