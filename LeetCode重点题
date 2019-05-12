@@ -136,6 +136,9 @@
 647. Palindromic Substrings
       我的做法是dp寻找回文，可以有更优解      
       
+739. Daily Temperatures
+      经典题，寻找后续第一个比自身大的元素。运用stack解。
+      
 
 
       
