@@ -1,0 +1,45 @@
+class LogSystem {
+public:
+    
+    struct TimeCmp {
+      bool operator()(const string& a, const string& b) const{
+          if(a.size() == b.size()) return a < b;
+          int length = min(a.size(), b.size());
+          return a.substr(0, length) < b.substr(0, length);
+      }  
+    };
+    
+    multimap<string, int, TimeCmp> log;
+    
+    LogSystem() {
+        
+    }
+    
+    void put(int id, string timestamp) {
+        log.insert({timestamp, id});
+    }
+    
+    unordered_map<string, int> _map = {
+        {"Year", 4}, {"Month", 7}, {"Day", 10}, {"Hour", 13}, {"Minute", 16}, {"Second", 19}  
+    };
+    
+    vector<int> retrieve(string s, string e, string gra) {
+        if(_map.find(gra) == _map.end())    return {};
+        vector<int> result;
+        string start = s.substr(0, _map[gra]), end = e.substr(0, _map[gra]);
+        auto lb = log.lower_bound(start), ub = log.upper_bound(end);
+        for(auto it = lb; it != ub; it++) {
+            result.push_back(it->second);
+        }
+        return result;
+    }
+};
+
+/**
+ * Your LogSystem object will be instantiated and called as such:
+ * LogSystem* obj = new LogSystem();
+ * obj->put(id,timestamp);
+ * vector<int> param_2 = obj->retrieve(s,e,gra);
+ */
+ 
+ 运用到了很多的STL知识，一开始写的时候不是很了解。
