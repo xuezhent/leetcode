@@ -1,0 +1,43 @@
+自己一开始想出的办法：
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& T) {
+        if(T.empty())   return {};
+        vector<int> result(T.size(), -1);
+        int index = T.size()-1;
+        while(index >= 0) {
+            if(index+1 == T.size()) result[index] = 0;
+            else {
+                if(T[index] < T[index+1]) {
+                    result[index] = 1;
+                } else {
+                    int tmp_index = index+1;
+                    while(T[tmp_index] <= T[index]) {
+                        if(!result[tmp_index])  {result[index] = 0; break;}
+                        tmp_index += result[tmp_index];
+                    }
+                    result[index] = result[index] != -1 ? result[index] : tmp_index-index;
+                }
+            }
+            index--;
+        }
+        return result;
+    }
+};
+
+stack解法：
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& T) {
+        stack<int> stk;
+        vector<int> result(T.size(), 0);
+        for(int i = 0; i < T.size(); i++) {
+            while(!stk.empty() && T[i] > T[stk.top()]) {
+                result[stk.top()] = i - stk.top();
+                stk.pop();
+            }
+            stk.push(i);
+        }
+        return result;
+    }
+};
