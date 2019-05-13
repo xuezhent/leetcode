@@ -9,6 +9,8 @@
   367   binary search变形，比较的条件进行了变形，是用平方进行比较，需要注意溢出
   658   binary search变形，利用已排序数组特性求区间的左起点
   704   最一般形式binary search，可以经常复习一下，毕竟不一定完全写的对
+  911   Online Election这题会涉及到binary search查找思路的转换，并且查找到末尾时的corner case也要注意。
+
   
 3.DFS
   47    permutation题
