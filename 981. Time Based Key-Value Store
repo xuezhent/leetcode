@@ -1,0 +1,20 @@
+class TimeMap {
+public:
+    /** Initialize your data structure here. */
+    TimeMap() {
+        
+    }
+    
+    void set(string key, string value, int timestamp) {
+        mp[key].insert({timestamp, value});
+    }
+    
+    string get(string key, int timestamp) {
+        auto it = mp[key].upper_bound(timestamp);
+        return it == mp[key].begin() ? "" : prev(it)->second;
+    }
+private:
+    unordered_map<string, map<int, string>> mp;
+};
+
+注意upper_bound和prev的使用
