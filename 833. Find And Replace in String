@@ -1,0 +1,73 @@
+class Solution {
+public:
+    string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets) {        
+        string result = "";
+        int last_end_index = 0;
+        for(int i = 0; i < indexes.size(); i++) {
+            while(last_end_index < indexes[i]) {
+                result += S[last_end_index++];
+            }
+            if(isOccur(S, indexes[i], sources[i])) {
+                result += targets[i];
+                last_end_index += sources[i].size();
+            }
+        }
+        return result;
+    }
+    bool isOccur(const string& str, int index, const string source) {
+        int len = source.size();
+        return str.substr(index, len) == source;
+    }
+};
+
+错误原因：
+  1.indexes中的元素可能是无序的。
+  2.即使是有序的，你这个并没有考虑到last_end_index到S末尾之间的元素。
+  
+AC版本：
+class Solution {
+public:
+    string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets) {        
+        string result = "";
+        int last_end_index = 0;
+        vector<pair<int,int>> sorted;
+        for(int i = 0; i < indexes.size(); i++) sorted.push_back({indexes[i], i});
+        sort(sorted.begin(), sorted.end());
+        for(int i = 0; i < sorted.size(); i++) {
+            while(last_end_index < sorted[i].first) {
+                result += S[last_end_index++];
+            }
+            if(isOccur(S, sorted[i].first, sources[sorted[i].second])) {
+                result += targets[sorted[i].second];
+                last_end_index += sources[sorted[i].second].size();
+            }
+        }
+        while(last_end_index < S.size()) {
+                result += S[last_end_index++];
+            }
+        return result;
+    }
+    bool isOccur(const string& str, int index, const string source) {
+        int len = source.size();
+        return str.substr(index, len) == source;
+    }
+};
+
+更好的版本：
+class Solution {
+public:
+    string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets) {             
+        vector<pair<int,int>> sorted;
+        for(int i = 0; i < indexes.size(); i++) sorted.push_back({indexes[i], i});
+        sort(sorted.rbegin(), sorted.rend());
+        for(auto ind : sorted) {
+            if(S.substr(ind.first, sources[ind.second].size()) == sources[ind.second]) {
+                S = S.substr(0, ind.first) + targets[ind.second] + S.substr(ind.first+sources[ind.second].size());
+            }
+        }
+        return S;
+    }
+};
+思路：
+  这个题直观地去看的话，会发现一个主要的问题就是从前往后插入的话，会从前面改变S的长度，这会导致后续indexes中的元素对应到不正确的位置。
+  对于这种问题的话，就可以考虑从后插入。这样只会改变index后面的子串，不会影响到前面的子串，自然也会保持正确的位置。       
