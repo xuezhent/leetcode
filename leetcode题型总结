@@ -46,6 +46,7 @@
   230   就是preorder遍历，有递归和迭代两种写法
   285   BST的二叉搜索
   333   Largest BST Subtree BST的从下向上式判断
+  426   Convert Binary Search Tree to Sorted Doubly Linked List 迭代递归按顺序遍历
   510   Inorder Successor in BST II  变种的寻找后继
   530
   783   530和783两题基本一样，就是求BST中两数最小的差。记住BST中两数最小差就是进行树的中序遍历。所以这两题也可以看成是树的中序遍历题。
