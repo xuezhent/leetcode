@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int D) {
+        int lo = 0, hi = 0;
+        
+        for(auto w : weights) {
+            hi += w;
+            lo = max(lo, w);
+        }
+        
+        while(lo < hi) {
+            int mid = lo + (hi-lo) / 2;
+            if(isPossible(mid, D, weights)) hi = mid;
+            else lo = mid+1;
+        }
+        
+        return lo;
+    }
+    bool isPossible(int capacity, int D, vector<int>& weights) {
+        int cnt = 0, sum = 0;
+        
+        for(auto w : weights) {
+            if(w > capacity)    return false;
+            if(w + sum <= capacity) sum += w;
+            else {
+                cnt++;
+                sum = w;
+            }
+        }
+        cnt++;
+        
+        return cnt <= D;
+    }
+};
+
+错误点：
+  当w + sum > capacity时，cnt++，这时候sum要设成w，不要设成0.
