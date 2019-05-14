@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int findRadius(vector<int>& houses, vector<int>& heaters) {
+        int r = 0;
+        sort(houses.begin(), houses.end());
+        sort(heaters.begin(), heaters.end());
+        int h_index = 0;
+        for(int i = 0; i < houses.size(); i++) {
+            while(h_index + 1 < heaters.size() && 
+                 abs(heaters[h_index+1]-houses[i]) <= abs(heaters[h_index]-houses[i]))   h_index++;
+            r = max(r, abs(heaters[h_index]-houses[i]));
+        }
+        return r;
+    }
+};
+
+错误点：
+  heaters[h_index+1]-houses[i]) <= abs(heaters[h_index]-houses[i]这个等号一定要加上。
+  不加上的话，有一个case通不过，但是这个case数据量太大，不太能弄清具体是什么原因。
+  但是考虑到一个可能的情况，就是heaters中有重复元素，那么这种情况下不加等号就不行。
