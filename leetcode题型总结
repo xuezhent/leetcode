@@ -49,10 +49,11 @@
   426   Convert Binary Search Tree to Sorted Doubly Linked List 迭代递归按顺序遍历
   510   Inorder Successor in BST II  变种的寻找后继
   530
+  701   Insert into a Binary Search Tree  BST插入node
+  776   Split BST
   783   530和783两题基本一样，就是求BST中两数最小的差。记住BST中两数最小差就是进行树的中序遍历。所以这两题也可以看成是树的中序遍历题。
         中序遍历又涉及到递归方法和迭代方法。而迭代方法又基本得用到stack
-  776   Split BST
-  1038  Binary Search Tree to Greater Sum Tree  BST按序从后往前访问。
+  1038  Binary Search Tree to Greater Sum Tree  BST按序从后往前访问
 
         
 7.字符串分割
