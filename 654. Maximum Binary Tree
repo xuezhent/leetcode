@@ -1,0 +1,43 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        stack<TreeNode*> stk;
+        for(auto n : nums) {
+            if(stk.empty() || n < stk.top()->val) stk.push(new TreeNode(n));
+            else {
+                TreeNode* top = NULL;
+                while(!stk.empty() && n > stk.top()->val) {
+                    top = stk.top();
+                    stk.pop();
+                    if(!stk.empty())
+                        stk.top()->right = top;
+                }
+                TreeNode* node = new TreeNode(n);
+                node->left = top;
+                stk.push(node);
+            }
+        }
+        TreeNode* top = NULL;
+        while(!stk.empty()) {
+            top = stk.top();
+            stk.pop();
+            if(!stk.empty())
+                stk.top()->right = top;
+        }
+        return top;
+    }
+};
+
+错误点：
+  1. TreeNode* top = stk.pop().应该是stk.top()
+  2. 直接将top声明在while内，这样外部node->left = top是访问不到top的
+  3. while(!stk.empty() && n > stk.top()->val)一开始没有检验stk.empty()
