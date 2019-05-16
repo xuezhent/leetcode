@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        TreeNode* pre = NULL, *result = root;
+        stack<TreeNode*> stk;
+        stk.push(root);
+        while(!stk.empty() || root) {
+            while(root) {
+                stk.push(root);
+                root = root->left;
+            }
+            root = stk.top();
+            stk.pop();
+            if((!pre || pre->val < val) && root && val < root->val)   break;
+            pre = root;
+            root = root->right;
+        }
+        // cout << pre->val << endl;
+        if(root && !root->left)  root->left = new TreeNode(val);
+        if(pre && !pre->right)  pre->right = new TreeNode(val);
+        return result;
+    }
+};
+
+上面是自己写的版本，在这个版本中，有几个易错的点。
+  1.pre要记得更新
+  2.访问root->val和pre->val的时候一定要记得判断pre和root是否存在，插入一定要考虑头和尾的情况
+  
+上面方法的空间复杂度为O(n)，有更好的解法。
+你不要把这题看成找到这个val的前驱和后继，而是把它看成给定val，通过BST找到这个val，找到的这个位置就是插入的位置。
+class Solution {
+public:
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if(!root)   return new TreeNode(val);
+        TreeNode* res = root;
+        while(true) {
+            if(root->val <= val) {
+                if(root->right) root = root->right;
+                else {
+                    root->right = new TreeNode(val);
+                    break;
+                }
+            } else {
+                if(root->left)  root = root->left;
+                else {
+                    root->left = new TreeNode(val);
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+};
