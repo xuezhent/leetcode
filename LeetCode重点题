@@ -54,6 +54,9 @@
 221. Maximal Square
       典型dp求解二维数组问题
       
+251. Flatten 2D Vector
+      思路清晰，方法巧妙
+      
 253. Meeting Rooms II
       贪心问题，贪心部分比较简单，主要是采用了min_heap来解，思路比较巧妙
       
