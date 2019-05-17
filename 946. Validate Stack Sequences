@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        if(popped.size() != pushed.size())  return false;
+        stack<int> stk;
+        int cnt = 0;
+        for(int i = 0; i < popped.size(); i++) {
+            while((stk.empty() || popped[i] > stk.top()) && cnt < pushed.size()) stk.push(pushed[cnt++]);
+            if(popped[i] == stk.top()) {
+                stk.pop();
+            }
+            else if(popped[i] < stk.top())   return false;    
+        }
+        return true;
+    }
+};
+
+错误点：
+  1.pushed不一定是递增的。
+  
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        stack<int> stk;
+        int cnt = 0, i = 0;
+        for(; i < popped.size(); i++) {
+            while((stk.empty() || popped[i] != stk.top()) && cnt < pushed.size())   stk.push(pushed[cnt++]);
+            if(popped[i] == stk.top())  stk.pop();          
+            else if(cnt >= pushed.size())   return false;
+        }
+        return cnt >= pushed.size() && stk.empty();
+    }
+};
+
+思路：
+  这个题做起来的时候思路有点混乱。而且不能假定pushed是一个递增的数列。那么就一直判断popped[i]是否等于stk.top(),如果不等于，那么一直push，如果等于
+  就pop。什么时候false呢？就是一直push,然后全push完了,发现还没有遇到相等的数,那么这时候的状态就是cnt已经走到pushed的末尾,而且popped[i]!=stk.top
+  这两个条件要同时满足。跳出后，一定要判断pushed数组是否访问到末尾以及stk是否确实被清空了。
