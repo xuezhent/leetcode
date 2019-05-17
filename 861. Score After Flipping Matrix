@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int matrixScore(vector<vector<int>>& A) {
+        if(A.empty())   return 0;
+        for(int i = 0; i < A.size(); i++) {
+            if(A[i][0] == 0) {
+                for(int j = 0; j < A[0].size(); j++) A[i][j] = !A[i][j];
+            }
+        }
+        for(int j = 1; j < A[0].size(); j++) {
+            int cnt_zero = 0, cnt_one = 0;
+            for(int i = 0; i < A.size(); i++) {
+                if(A[i][j] == 1)    cnt_one++;
+                if(A[i][j] == 0)    cnt_zero++;
+            }
+            if(cnt_one < cnt_zero) {
+                for(int i = 0; i < A.size(); i++) A[i][j] = !A[i][j];
+            }
+        }
+        int cnt = 0;
+        for(int i = 0; i < A.size(); i++) {
+            int num = 1;
+            for(int j = 1; j < A[0].size(); j++) {
+                num <<= 1;
+                num += A[i][j];            
+            }
+            cout << endl;
+            cnt += num;
+        }
+        return cnt;
+    }
+};
+
+错误点：
+  num <<= 1,这儿不能写成num << 1。
