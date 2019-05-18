@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*> generateTrees(int n) {
+        if(n == 0)  return {};
+        return buildTrees(0, n+1);
+    }
+    vector<TreeNode*> buildTrees(int low, int high) {
+        if(low >= high || low+1 == high) {
+            vector<TreeNode*> res = {NULL};
+            return res;
+        }
+        vector<TreeNode*> res;
+        for(int i = low+1; i < high; i++) {
+            vector<TreeNode*> left = buildTrees(low, i);
+            vector<TreeNode*> right = buildTrees(i, high);
+            for(auto l : left) {
+                for(auto r : right) {
+                    TreeNode* root = new TreeNode(i);
+                    root->left = l;
+                    root->right = r;
+                    res.push_back(root);
+                }
+            }
+        }
+        return res;
+    }
+};
+
+错误点：
+  if(low >= high || low+1 == high)这个判断条件一开始写的是没有加上low+1 == high的判断，根据你自己设的low和high来看，其实不太可能发生low >= 
+  high的情况。因为你每次取值，是在low+1到high-1这个闭区间中取的，所以边界条件是low与high相邻。
+  还有个边界条件是n为0，在buildTrees这个函数中，当n为0时，low+1==high，所以返回的是一个包含NULL的vector，并不是一个空vector，这是有区别的。
+  但是又不能返回空的vector,因为返回空之后，后续的loop循环进入不了。因为空的vector的size为0，而包含NULL的vector的size为1.
