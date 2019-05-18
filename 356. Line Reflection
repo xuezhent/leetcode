@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool isReflected(vector<vector<int>>& points) {
+        set<string> s;
+        int mnX = INT_MAX, mxX = INT_MIN;
+        for(auto point : points) {
+            mnX = min(mnX, point[0]);
+            mxX = max(mxX, point[0]);
+            s.insert(to_string(point[0])+"->"+to_string(point[1]));
+        }
+        int sum = mnX + mxX;
+        for(auto point : points) {
+            string str = to_string(sum-point[0])+"->"+to_string(point[1]);
+            if(s.find(str) == s.end())  return false;
+        }
+        return true;
+    }
+};
+
+这题的思路有点巧妙
+1.首先是找到x最小和最大的点，如果有这条axis，那么必然是它俩的中间值。
+2.将x和y用string形式存储，从而方便检索。
+3.对axis的计算直接是mnX+mxX的形式，不去准确地算出axis为多少，那样还需要考虑除以2是否为小数的问题。
