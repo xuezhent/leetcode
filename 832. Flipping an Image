@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<vector<int>> flipAndInvertImage(vector<vector<int>>& A) {
+        if(A.empty())   return A;
+        for(int i = 0; i < A.size(); i++) {
+            int m = 0, n = A[i].size()-1;
+            while(m <= n) {
+                A[i][m] = !A[i][m];
+                if(m != n)  A[i][n] = !A[i][n];
+                swap(A[i][m++],A[i][n--]);
+            }
+        }
+        return A;
+    }
+};
+
+错误点：
+  记住一定要加if(m != n)这个判断，不然当m和n同时指向同一个元素时，会进行两次取反操作。
