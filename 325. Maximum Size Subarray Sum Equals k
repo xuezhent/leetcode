@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxSubArrayLen(vector<int>& nums, int k) {
+        if(nums.empty())    return 0;
+        unordered_map<int, int> mp;
+        int mx = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            if(i != 0) nums[i] += nums[i-1];
+            if(nums[i] == k)    mx = max(mx, i+1);
+            if(mp.find(nums[i]-k) != mp.end()) mx = max(mx, i-mp[nums[i]-k]);
+            if(mp.find(nums[i]) == mp.end())    mp[nums[i]] = i;
+        }
+        return mx;
+    }
+};
+
+错误点：
+  1.一定要判断nums[i]是否等于k，这样直接更新mx，不然到下面去mp里面找的话，得到的答案是错误的，因为你是直接0-i这个子串的和直接与k相等了，mp中怎么能
+  找到0之前的子串呢。
+ 
+思路：
+  这题一开始我想到0(n^2)的方法，就是利用nums来存prefix，然后两个loop寻找n^2个子串，通过prefix来快速计算每个子串的值，然后看是否等于k。
+  但是，你要想对于每个i，你去0-i范围内找个j，然后看j-i这个子串的和是否等于k,那么真的要进行遍历才行吗？就相当于two sum一样，你只不过是想知道有没有，
+  那么直接采用哈希表不就行了吗。
+  
