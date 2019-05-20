@@ -1,0 +1,54 @@
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * class NestedInteger {
+ *   public:
+ *     // Constructor initializes an empty nested list.
+ *     NestedInteger();
+ *
+ *     // Constructor initializes a single integer.
+ *     NestedInteger(int value);
+ *
+ *     // Return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     bool isInteger() const;
+ *
+ *     // Return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // The result is undefined if this NestedInteger holds a nested list
+ *     int getInteger() const;
+ *
+ *     // Set this NestedInteger to hold a single integer.
+ *     void setInteger(int value);
+ *
+ *     // Set this NestedInteger to hold a nested list and adds a nested integer to it.
+ *     void add(const NestedInteger &ni);
+ *
+ *     // Return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // The result is undefined if this NestedInteger holds a single integer
+ *     const vector<NestedInteger> &getList() const;
+ * };
+ */
+class Solution {
+public:
+    int depthSumInverse(vector<NestedInteger>& nestedList) {
+        int res = 0, sub_sum = 0;
+        while(!nestedList.empty()) {
+            vector<NestedInteger> nextLevel;
+            for(auto elem : nestedList) {
+                if(elem.isInteger())    sub_sum += elem.getInteger();
+                else {
+                    for(auto e : elem.getList())    nextLevel.push_back(e);
+                }
+            }
+            res += sub_sum;
+            nestedList = nextLevel;
+        }
+        return res;
+    }
+};
+
+这题主要麻烦的是你不遍历一次的话，你事先不能知道你每个数的权重具体是多少，所以一开始我是一共遍历两次。
+但是这个方法很巧妙，你将每层的和都带入到下一层，遍历完这层之后，再将这层的和加入到总的和，那么每层都会自动将上层的和再加一次，就相当于将上一层的权重加了一
+这个方法值得学习。
+
+ *     // Return the nested list that this NestedInteger holds, if it holds a nested list试下
+ *     // Return the nested list that this NestedInteger holds, if it holds a nested list
