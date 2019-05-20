@@ -89,7 +89,6 @@
 15.reservoir sampling
   398. Random Pick Index
   
-  
 16.union-find
   323. Number of Connected Components in an Undirected Graph
   737. Sentence Similarity II
@@ -99,6 +98,12 @@
   
 18.bit操作
   477. Total Hamming Distance
+  
+19.two sum变形题
+  325. Maximum Size Subarray Sum Equals k
+  523. Continuous Subarray Sum  (523,325是极其相似的，都是求是否存在subarray的sum等于某个值，只不过523给出的是等于某个k的倍数）
+  
+  
 
 
 
