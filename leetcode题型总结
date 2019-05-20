@@ -74,6 +74,7 @@
   
 11.stack寻找后续第一个大于自身的数
   739. Daily Temperatures
+  1019. Next Greater Node In Linked List  这题是用vector去模拟stack，方法很经典
   
 12.TreeMap题
   729. My Calendar I
