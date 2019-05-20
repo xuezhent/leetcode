@@ -1,0 +1,26 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> nextLargerNodes(ListNode* head) {
+        vector<int> stk, res;
+        for(ListNode* node = head; node; node = node->next) {
+            while(stk.size() && node->val > res[stk.back()]) {
+                res[stk.back()] = node->val;
+                stk.pop_back();
+            }
+            stk.push_back(res.size());
+            res.push_back(node->val);
+        }
+        for(auto index : stk)   res[index] = 0;
+        return res;
+    }
+};
+
+用vector模拟stack，并且动态改变res的size，方法很巧妙，很经典。
