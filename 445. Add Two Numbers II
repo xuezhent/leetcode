@@ -1,0 +1,46 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        stack<int> stk1, stk2;
+        ListNode* head1 = l1, *head2 = l2;
+        while(head1) {
+            stk1.push(head1->val);
+            head1 = head1->next;
+        }
+        while(head2) {
+            stk2.push(head2->val);
+            head2 = head2->next;
+        }
+        ListNode* head = NULL;
+        int extra = 0;
+        while(!stk1.empty() || !stk2.empty() || extra) {
+            int val1 = 0, val2 = 0;
+            if(!stk1.empty()) {
+                val1 = stk1.top();
+                stk1.pop();
+            }
+            if(!stk2.empty()) {
+                val2 = stk2.top();
+                stk2.pop();
+            }
+            int val = (val1 + val2 + extra) % 10;
+            extra = (val1 + val2 + extra) / 10;
+            ListNode* node = new ListNode(val);
+            node->next = head;
+            head = node;
+        }
+        return head;
+    }
+};
+
+错误点：
+  一开始将计算extra的第35行代码写在了34行之前，这样会导致计算val的时候，用的是已经更新过的extra。所以以后使用某个变量的时候，一定要注意用的是它会不会
+  更新，以及用的是更新前的值还是更新后的值。
