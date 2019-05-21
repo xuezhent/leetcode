@@ -117,3 +117,5 @@ private:
 "abc"+'d'这是不行的。那么怎么解决字符串与char的相加运算呢？可以声明一个string变量，用变量去计算，上面这种写法很累赘，可以用如下的写法：
 tmp = tmp+bottom[index]+bottom[index+1]+c;但是不可以写成这样tmp += bottom[index]+bottom[index+1]+c;这写法是有问题的，因为会先计算等号
 右边，而右边又是char与char直接相加。
+
+字符串字面量与char不可直接相加的原因是，C++中会将字符串字面量转化成一个char数组指针，与char相加，其实是指针与char相加。
