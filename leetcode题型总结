@@ -73,8 +73,10 @@
   438. Find All Anagrams in a String
   567. Permutation in String  与438类似
   
-11.stack寻找后续第一个大于自身的数
+11.stack寻找后续第一个大于自身的数(monotone stack单调栈）
+  496. Next Greater Element I
   739. Daily Temperatures
+  901. Online Stock Span
   1019. Next Greater Node In Linked List  这题是用vector去模拟stack，方法很经典
   
 12.TreeMap题
