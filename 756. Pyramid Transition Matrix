@@ -1,0 +1,119 @@
+下面是Java写法，它构建哈希表的思路比我的更清晰更高效。
+class Solution {
+    public boolean pyramidTransition(String bottom, List<String> allowed) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s : allowed) {
+            String key = s.substring(0,2);
+            if (!map.containsKey(key)) map.put(key, new ArrayList<String>());
+            map.get(key).add(s.substring(2));
+        }
+        
+        return helper(bottom, map);
+    }
+    
+    private boolean helper(String bottom, Map<String, List<String>> map) {
+        if(bottom.length() == 1) return true;
+        for (int i = 0; i<bottom.length()-1; i++) {
+            if (!map.containsKey(bottom.substring(i,i+2))) return false;
+        }
+        List<String> ls = new ArrayList<>();
+        getList(bottom, 0, new StringBuilder(), ls, map);
+        for (String s : ls) {
+            if (helper(s, map)) return true;
+        }
+        return false;
+    }
+    
+    private void getList(String bottom, int idx, StringBuilder sb, List<String> ls, Map<String, List<String>> map) {
+        if (idx == bottom.length() - 1) {
+            ls.add(sb.toString());
+            return;
+        }
+        for (String s : map.get(bottom.substring(idx, idx+2))) {
+            sb.append(s);
+            getList(bottom, idx + 1, sb, ls, map);
+            sb.deleteCharAt(sb.length()-1);
+        }
+    }
+}
+
+
+
+这个写法用Bit操作来实现查找和allowed的存储，这种方法适合存储量较小的情况，只要是32以内的情况都可以。
+public boolean pyramidTransition(String bottom, List<String> allowed) {
+        int[][] tr = new int[7][7];
+        for (String s : allowed)
+            tr[s.charAt(0) - 'A'][s.charAt(1) - 'A'] |= 1 << (s.charAt(2) - 'A');
+        return pyramid(bottom.toCharArray(), tr, 0, new char[bottom.length() - 1]);
+    }
+
+    boolean pyramid(char[] row, int[][] tr, int i, char[] nextRow) {
+        if (row.length == 1) return true;
+        if (i == row.length - 1)
+            return pyramid(nextRow, tr, 0, new char[nextRow.length - 1]);
+        int bit = tr[row[i] - 'A'][row[i + 1] - 'A'];
+        for (int j = 0; j < 7; j++)
+            if ((bit & (1 << j)) != 0) {
+                nextRow[i] = (char) ('A' + j);
+                if (pyramid(row, tr, i + 1, nextRow))
+                    return true;
+            }
+        return false;
+    }
+    
+    
+    
+class Solution {
+public:
+    bool pyramidTransition(string bottom, vector<string>& allowed) {
+        for(auto pair : allowed) {
+            mp[pair]++;
+        }
+        vector<char> vec;
+        for(auto c : bottom)    vec.push_back(c);
+        return helper(vec);
+    }
+    bool helper(vector<char> bottom) {
+        if(bottom.size() == 1)  {cout << bottom[0] << endl;return true;}
+        vector<vector<char>> next_level;
+        vector<char> vec;
+        getBottom(vec, bottom, next_level, 0);
+        cout << next_level.size() << endl;
+        for(auto elem : next_level) {
+            for(auto c : elem)
+                cout<< c ;
+            cout << endl;
+        }
+        for(auto elem : next_level) {
+            if(helper(elem))    return true;
+        }
+        
+        return false;
+    }
+    
+    void getBottom(vector<char> vec, vector<char>& bottom, vector<vector<char>>& res, int index) {
+        if(index+1 == bottom.size()) {
+            res.push_back(vec);
+            return;
+        }
+        for(auto c : letters) {
+            vector<char> tmp_vec = vec;
+            string tmp = "";
+            tmp+=bottom[index];
+            tmp+=bottom[index+1];
+            tmp+=c;
+            if(mp.find(tmp) != mp.end()) {
+                tmp_vec.push_back(c);  
+                // cout << tmp_vec.size() << endl;
+                getBottom(tmp_vec, bottom, res, index+1);
+            } 
+        }
+    }
+private:
+    unordered_map<string, int> mp;
+    vector<char> letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
+};
+这是我的方法，主要的地方就是生成tmp string的时候，有点问题，需要注意。就是char与char不可以直接相加，其次字符串字面量与char不可以直接相加，比如
+"abc"+'d'这是不行的。那么怎么解决字符串与char的相加运算呢？可以声明一个string变量，用变量去计算，上面这种写法很累赘，可以用如下的写法：
+tmp = tmp+bottom[index]+bottom[index+1]+c;但是不可以写成这样tmp += bottom[index]+bottom[index+1]+c;这写法是有问题的，因为会先计算等号
+右边，而右边又是char与char直接相加。
