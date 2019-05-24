@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        unordered_map<string, int> dp;
+        int mx = 0;
+        sort(words.begin(), words.end(), cmp);
+        for(auto word : words) {
+            dp[word] = 1;
+            for(int i = 0; i < word.size(); i++) {
+                string tmp = word.substr(0, i) + word.substr(i+1);
+                if(dp.find(tmp) != dp.end()) dp[word] = max(dp[word], dp[tmp]+1);
+            }
+            mx = max(mx, dp[word]);
+        }
+        return mx;
+    }
+    static bool cmp(string& x, string& y) {
+        return x.size() < y.size();
+    }
+};
+
+错误点：
+  这题必须要先进行下排序，因为你如果不排序的话，如果长的字符串在开头，那么你无论怎么删，dp都不可能帮你找到结果，因为短的字符串在后面，还没有存到哈希表中
+  所以在用哈希表做DP问题的时候一定要注意，一定考虑下访问顺序会不会造成影响。
