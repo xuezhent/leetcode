@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* str2tree(string s) {
+        if(s.size() == 0)   return nullptr;
+        stack<TreeNode*> stk;
+        bool flag = true;
+        string str = "";
+        for(auto c : s) {
+            if(c >= '0' && c <= '9' || c == '-') str += c;   
+            else if(str.size() != 0) {
+                stk.push(new TreeNode(stoi(str)));
+                str = "";
+            }
+            if(c == ')') {
+                TreeNode* tmp = stk.top();
+                stk.pop();
+                if(!stk.top()->left)    stk.top()->left = tmp;
+                else    stk.top()->right = tmp;
+            } 
+        }
+        if(str.size() != 0) {
+            stk.push(new TreeNode(stoi(str)));
+        }
+        return stk.top();
+    }
+};
+
+错误点：
+  1.19行需要判断str是否为空，因为stoi不可以转换一个空字符串
+  2.需要考虑到这题TreeNode的val可能是负值，也可能不是一个个数值
+  3.到结尾的时候，你要判断str是否为空，避免只有一个root的情况
