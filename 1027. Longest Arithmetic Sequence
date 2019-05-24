@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& A) {
+        unordered_map<int, unordered_map<int,int>> mp;
+        int mx = 0;
+        for(int i = 0; i < A.size(); i++) {
+            for(int j = 0; j < i; j++) {
+                int dif = A[i] - A[j];
+                if(mp[j].find(dif) != mp[j].end()) mp[i][dif] = mp[j][dif]+1;
+                else mp[i][dif] = 2;
+                mx = max(mx, mp[i][dif]);
+            }
+        }
+        return mx;
+    }
+};
+
+一开始用A[i]作为mp的key，这是有问题的，因为A[i]是有可能重复的。
