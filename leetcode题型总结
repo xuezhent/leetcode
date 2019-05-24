@@ -107,6 +107,7 @@
 19.two sum变形题
   325. Maximum Size Subarray Sum Equals k
   523. Continuous Subarray Sum  (523,325是极其相似的，都是求是否存在subarray的sum等于某个值，只不过523给出的是等于某个k的倍数）
+  974. Subarray Sums Divisible by K 与523极其相似。区别在于974可以包含负数。
   
 20.字符串模式匹配
   1023. Camelcase Matching
