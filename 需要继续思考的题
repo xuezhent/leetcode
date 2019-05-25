@@ -9,8 +9,9 @@
 320. Generalized Abbreviation   permutation解法
 324. Wiggle Sort II 最优解法
 377. Combination Sum IV 它的follow up
-406. Queue Reconstruction by Height
 400. Nth Digit 将代码写得更简洁，思路理清
+406. Queue Reconstruction by Height
+474. Ones and Zeroes  需要总结下0-1背包问题，包括基本写法，优化，从上至下以及从下至上
 536. Construct Binary Tree from String  迭代方法
 776. Split BST  需要理解方法
 886. Possible Bipartition 具体要思考的问题看该题的github文档
