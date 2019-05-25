@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool possibleBipartition(int N, vector<vector<int>>& dislikes) {
+        unordered_map<int, vector<int>> mp;
+        for(auto& pair : dislikes)  {
+            mp[pair[0]].push_back(pair[1]);
+            mp[pair[1]].push_back(pair[0]);
+        }
+        vector<int> flag(N+1, 0);
+        for(int i =1; i <= N; i++) {
+            if(!flag[i] && !dfs(i, mp, 1, flag)) return false;
+        }
+        return true;
+    }
+    bool dfs(int cur, unordered_map<int, vector<int>>& mp, int group, vector<int>& flag) {
+        if(group == flag[cur])  return true;
+        if(group == -flag[cur]) return false;
+        flag[cur] = group;
+        int tmp = -group;
+        for(auto& neigh : mp[cur]) {
+            if(!dfs(neigh, mp, tmp, flag))  return false;
+        }
+        return true;
+    }
+    
+};
+
+错误点：
+  一开始第7行没有加，只是写成了一个有向图，test case就没法通过，加上就可以了。
+  不加的时候，考虑这么一个case, 有有向边[1,3][3,4][2,4]那么先访问1，标为1，3被标为-1，4被标为1，因为是有向图，所以4到2没有边，返回。然后访问2，2
+  被标为1，然后访问4就会发生矛盾。但是这个图不可以被二分吗？不是，完全可以。所以检查图中顶点是否可以被二分，本身这个问题自然地就应该是依据一个无向图来
+  找，有向图根本没有找二分的必要性。所以根据这一认识，第7行就应该加上去。
+  
+  要考虑的问题：
+    1.问题抽象成图时，什么时候转化成有向图，什么时候转换成无向图
+    2.如果是无向图，什么时候需要记录path，防止回头访问已经访问过的点，什么时候又不需要用path
