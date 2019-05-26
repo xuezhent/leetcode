@@ -42,6 +42,7 @@
   221   用dp，input为二维数组
   279   类似0-1背包问题
   322   0-1背包问题
+  416. Partition Equal Subset Sum   类0-1背包问题
   474. Ones and Zeroes  0-1背包问题
   
 6.BST
