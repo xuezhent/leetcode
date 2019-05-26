@@ -1,0 +1,48 @@
+class Solution {
+public:
+    Node* flatten(Node* head) {
+//         Node* node = head;
+//         stack<Node*> stk;
+        
+//         if(!head)   return head;
+//         //逐个访问
+//         //如果有child，其next入栈,当前节点的next设为child，child的pre设为当前节点
+//         //访问结束的标志是next为空且栈为空
+//         //如果next为空，将当前节点的next设为栈top，栈top的pre设为当前节点
+//         while(node->next || !stk.empty()) {
+//             if(node->child) {
+//                 stk.push(node->next);
+//                 node->next = node->child;
+//                 node->child->prev = node;
+//                 node->child = nullptr;
+//             } else if(!node->next) {
+//                 node->next = stk.top();
+//                 stk.top()->prev = node;
+//                 stk.pop();
+//             }
+//             node = node->next;
+//         }
+//         return head;
+        stack<Node*> stack;
+        Node* travel = head;
+        while(travel != NULL || !stack.empty()) {
+            if(travel->child != NULL) {
+                if(travel->next != NULL) stack.push(travel->next);
+                travel->next = travel->child;
+                travel->next->prev = travel;
+                travel->child = nullptr;
+            }else {
+                if(travel->next == nullptr && !stack.empty()) {
+                    travel->next = stack.top();
+                    stack.pop();
+                    travel->next->prev = travel;
+                }
+            }
+            travel = travel->next;
+        }
+        return head;
+    }
+};
+
+备注部分是我的解法，代码是有问题的，因为你以node->next作为判断依据来进入循环的话，有可能这个node有一串的child，但就是没有next，那么这个循环就进入不了
+所以node访问的时候，千万小心，最好还是以node本身是否为Null作为判断条件，不要轻易以next作为判断条件。
