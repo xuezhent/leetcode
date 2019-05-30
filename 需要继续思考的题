@@ -18,6 +18,7 @@
 641. Design Circular Deque  单vector的写法
 776. Split BST  需要理解方法
 886. Possible Bipartition 具体要思考的问题看该题的github文档
+907. Sum of Subarray Minimums 考虑如何用单调stack去解决
 1048. Longest String Chain  尝试用DFS去解决
 
 
