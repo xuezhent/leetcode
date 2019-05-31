@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int findSecondMinimumValue(TreeNode* root) {
+        cout << res << endl;
+        helper(root);
+        return res == 2147483648 ? -1 : res;
+    }
+    void helper(TreeNode* root) {
+        if(!root)   return;
+        if(!root->left && !root->right) return;
+        helper(root->left);
+        helper(root->right);
+        if(root->left->val != root->right->val) {
+            long tmp = max(root->left->val, root->right->val);
+            res = min(res, tmp);
+        }
+            
+    }
+private:
+    long res = 2147483648;
+};
+
+错误点：
+  因为tree中第二小的节点很可能就是INT_MAX，所以将res初始值赋为INT_MAX有一个case是通不过的。那么我想着就把它设为long，然后将它赋值为INT_MAX+1，但
+  这步会出现一个问题，就是long res = INT_MAX + 1; 首先INT_MAX+1是两个int相加，那么它们相加的临时结果也为int，而INT_MAX+1又会溢出，那么临时int
+  变量的值就会是溢出后的截断值，然后再赋给long,所以long其实是-2147483648。
