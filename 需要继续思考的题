@@ -16,10 +16,12 @@
 474. Ones and Zeroes  需要总结下0-1背包问题，包括基本写法，优化，从上至下以及从下至上(416类似）
 536. Construct Binary Tree from String  迭代方法
 641. Design Circular Deque  单vector的写法
+645. Set Mismatch O(1)space的方法
 752. Open the Lock  需要继续考虑效率更高的写法（双向BFS)，并且考虑下什么时候在访问节点之前就将其放入visited中。
 776. Split BST  需要理解方法
 886. Possible Bipartition 具体要思考的问题看该题的github文档
 907. Sum of Subarray Minimums 考虑如何用单调stack去解决
+918. Maximum Sum Circular Subarray 更优的解法
 1048. Longest String Chain  尝试用DFS去解决
 
 
