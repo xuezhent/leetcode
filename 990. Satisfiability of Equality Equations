@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool equationsPossible(vector<string>& equations) {
+        unordered_map<char, vector<char>> mp;
+        for(auto& eq : equations) {
+            if(eq[1] == '=') {
+                char a = eq[0], b = eq[3];
+                mp[a].push_back(b);
+                mp[b].push_back(a);
+            }
+        }
+        for(auto& eq : equations) {
+            if(eq[1] == '!') {
+                char a = eq[0], b = eq[3];
+                unordered_set<char> st;
+                if(a == b || find(mp, a, b, st)) return false;
+            }
+        }
+        return true;
+    }
+    bool find(unordered_map<char, vector<char>>& mp, char a, char b, unordered_set<char>& st) {
+        if(a == b) return true;
+        st.insert(a);
+        for(auto neigh : mp[a]) {
+            if(st.find(neigh) == st.end()) {
+                if(find(mp, neigh, b, st))  return true;
+            }
+        }
+        return false;
+    }
+};
+
+错误点：
+  1.第16行，一开始写的是!find(mp, a, b, st),但应该是find(mp, a, b, st),因为你自己写的函数是找到了相悖的返回true.
+  2.第16行，一开始只写了find(mp, a, b, st)一个条件，漏写了一个条件，就是如果自己不等于自己是false的.
+  3.第25行，一定要注意了，st.find(neigh) == st.end()才正确，不要习惯了写st.find(neigh) != st.end()就一直手误写成st.find(neigh) != st.end().
