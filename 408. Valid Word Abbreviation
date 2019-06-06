@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool validWordAbbreviation(string word, string abbr) {
+        string tmp = "";
+        int j = 0;
+        for(int i = 0; i < abbr.size(); i++) {
+            if(isdigit(abbr[i])) {
+                if(tmp == "" && abbr[i] == '0') return false;
+                tmp += abbr[i];
+            } else {
+                if(tmp != "") {
+                    int gap = stoi(tmp);
+                    j += gap;
+                    tmp = "";
+                }
+                if(j >= word.size() || word[j] != abbr[i])  return false;
+                j++;
+            }
+        }
+        if(tmp != "") {
+            int gap = stoi(tmp);
+            j += gap;
+        }
+        if(j != word.size())    return false;
+        return true;
+    }
+};
+
+错误点：
+  第8行的判断要加上，因为可能会存在有leading zero的情况，而这种情况认为是false的。
