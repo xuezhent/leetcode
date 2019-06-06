@@ -12,6 +12,7 @@
 400. Nth Digit 将代码写得更简洁，思路理清
 406. Queue Reconstruction by Height
 416. Partition Equal Subset Sum 考虑用dfs做
+422. Valid Word Square  考虑更简洁的写法
 439. Ternary Expression Parser  考虑用stack做
 474. Ones and Zeroes  需要总结下0-1背包问题，包括基本写法，优化，从上至下以及从下至上(416类似）
 536. Construct Binary Tree from String  迭代方法
