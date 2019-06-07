@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minDeletionSize(vector<string>& A) {
+        int res = 0;
+        vector<int> vec(A.size(), 1);
+        for(int j = 0; j < A[0].size(); j++) {
+            bool flag = true, reser = true;
+            for(int i = 1; i < A.size(); i++) {
+                if(vec[i] && A[i-1][j] > A[i][j]) {
+                    res++;
+                    flag = false;
+                    reser = false;
+                    break;
+                } else if(vec[i] && A[i-1][j] == A[i][j]) {
+                    flag = false;
+                }
+            }
+            if(flag)    return res;
+            if(reser) {
+                for(int i = 1; i < A.size(); i++) {
+                    vec[i] = vec[i]&&(A[i-1][j] == A[i][j]);
+                }  
+            }
+        }
+        return res;
+    }
+};
+
+错误点：
+  1.有些行会因为有相同的字符而导致暂时不删除，而如果这一列暂时保留，那么对下一列进行考察时需要将之前保留的列考虑进去，不能单纯地考虑当前列。
+  2.加上21行的判断时，一开始是有错误的，没有加上vec[i]&&这个条件，这是不对的，因为你后续列判断，只判断那些之前保留下来的列不相等的，那么就必须把之前的
+  结果和当前列的结果进行结合。
