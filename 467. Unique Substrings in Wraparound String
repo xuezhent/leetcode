@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int findSubstringInWraproundString(string p) {
+        vector<int> ch(26);
+        int idx = 0, res = 0;
+        for(int i = 0; i < p.size(); i++) {
+            if(i != 0) {
+                char c = 'a' + (26+p[i]-'a'-1) % 26;
+                if(c != p[i-1]) idx = i;
+            }
+            res += max(0, i - idx + 1 - ch[p[i]-'a']);
+            ch[p[i]-'a'] = max(ch[p[i]-'a'], i - idx + 1);
+        }
+        return res;
+    }
+};
+
+错误点：
+  1.第11行,一定要加上max，因为有可能是减成负数，而一个字符即使substring都已经计算过了，那也顶多是加上0，不能加上负数的
+  2.第12行，更新最大长度的时候，一定加上max，不然，有可能更新后，每个字符对应的最大长度还反而变小了
