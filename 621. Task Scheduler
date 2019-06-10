@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int mx = 0, res = 0, cnt = 0;
+        vector<int> t(26);
+        for(auto task : tasks) {
+            t[task - 'A']++;
+            if(t[task - 'A'] == mx) cnt++;
+            if(t[task - 'A'] > mx) { cnt = 0; mx = t[task - 'A']; }
+        }
+        
+        res = tasks.size() - mx;
+        int tmp = (mx - 1) * n;
+        if(res <= tmp)  return tmp + mx + cnt;
+        else return tasks.size();
+    }
+};
+
+错误点：
+  一定要计算cnt,这里的cnt是出现次数与mx相等的元素的个数，比如[A,A,B,B],那么cnt就是1,这里不包括出现次数最多的那个元素本身（A或者B).
+  因为当你这么排的时候,A,B,idle,A,B,你计算两个A中间最多可以放2个其它的元素,但是B与A出现次数相同,即使A中间能放的元素个数tmp比res还要多,但B还是要放A
+  后面,所有出现次数与mx相同的元素都要放A后面的,所以14行要加上cnt.
