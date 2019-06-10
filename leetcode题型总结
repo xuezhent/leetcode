@@ -45,6 +45,11 @@
   416. Partition Equal Subset Sum   类0-1背包问题
   474. Ones and Zeroes  0-1背包问题
   
+  LCS问题
+  583. Delete Operation for Two Strings
+  1035. Uncrossed Lines
+  
+  
 6.BST
   94    inorder遍历，递归迭代写法
   230   就是preorder遍历，有递归和迭代两种写法
