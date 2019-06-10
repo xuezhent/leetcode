@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int maxUncrossedLines(vector<int>& A, vector<int>& B) {
+        vector<vector<int>> dp(A.size()+1, vector<int>(B.size()+1));
+        for(int i = 0; i <= A.size(); i++) {
+            for(int j = 0; j <= B.size(); j++) {
+                if(i == 0 || j == 0)    dp[i][j] = 0;
+                else if(A[i-1] == B[j-1])   dp[i][j] = dp[i-1][j-1] + 1;
+                else    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+        return dp[A.size()][B.size()];
+    }
+};
+
+典型的LCS问题
+错误点：
+  要注意这里的dp[i][j]中的i和j分别代表子问题中的A子串和B子串的长度,并不是index.
+  所以5,6两行中应该是<=,而且第8行中应该是A[i-1]和B[j-1].
