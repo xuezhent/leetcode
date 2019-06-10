@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int findDerangement(int n) {
+        if(n <= 1)  return 0;
+        long mod = 1000000007;
+        vector<long> dp(n+1);
+        dp[2] = 1;
+        for(int i = 3; i <= n; i++) {
+            dp[i] = (i-1) * (dp[i-1] + dp[i-2]) % mod;
+        }
+        return (int)dp[n];
+    }
+};
+
+思路：
+  dp[n]表示用1-n个数可以构成的derangement.对于数字n来说，它可以选择的位置有n-1个.假如它选择了位置i,接下来有两种可能的情况：
+    1.数字i选择放在位置n,那么相当于将i和n交换位置，后续就不用再管这两个数和这两个位置了，那么问题规模变成了n-2
+    2.数字i不放在位置n,那么这样可以将位置n假想成位置i，效果一样的，因为数字i本来就不能放在位置i，那么现在数字i也不能放在位置n，那么将位置n想象成位置i
+    是没有问题的。那么这就变成了规模为n-1的子问题。
