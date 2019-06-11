@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int numUniqueEmails(vector<string>& emails) {
+        unordered_set<string> st;
+        for(auto s : emails) {
+            int idx = s.find('@');
+            string str = s.substr(idx);
+            cout << str << endl;
+            
+            string local = "";
+            for(int i = 0; i < s.size(); i++) {
+                if(s[i] == '+' || s[i] == '@') break;
+                if(s[i] == '.') continue;
+                local += s[i];
+            }
+            str = local + str;
+            st.insert(str);
+        }
+        return st.size();
+    }
+};
+
+错误点：
+  第12行一定要加上s[i] == '@'
