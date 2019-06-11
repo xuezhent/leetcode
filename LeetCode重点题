@@ -148,9 +148,13 @@
 739. Daily Temperatures
       经典题，寻找后续第一个比自身大的元素。运用stack解。
       
+      
 756. Pyramid Transition Matrix
       逐层的backtracking，好题
       其中有方法用到bit去进行字符的存储，查找很高效
+
+779. K-th Symbol in Grammar
+      变相的binary tree的题目，思路很巧妙
       
 975. Odd Even Jump
       用到了map，以及map的lower_bound,upper_bound。
