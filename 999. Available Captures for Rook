@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int numRookCaptures(vector<vector<char>>& board) {
+        int cnt = 0, i = 0, j = 0;
+        for(; i < board.size(); i++) {
+            for(int k = 0; k < board[0].size(); k++) {
+                if(board[i][k] == 'R')   {j = k; break;}
+            }
+            if(board[i][j] == 'R')   break;
+        }
+        
+        int left = 0, right = 0, up = 0, down = 0;
+        for(int col = 0; col < j; col++) {
+            if(board[i][col] == 'p') left = 1;
+            if(board[i][col] == 'B') left = 0;
+        }
+        for(int col = board[0].size()-1; col > j; col--) {
+            if(board[i][col] == 'p') right = 1;
+            if(board[i][col] == 'B') right = 0;
+        }
+        for(int row = 0; row < i; row++) {
+            if(board[row][j] == 'p') up = 1;
+            if(board[row][j] == 'B') up = 0;
+        }
+        for(int row = board.size()-1; row > i; row--) {
+            if(board[row][j] == 'p') down = 1;
+            if(board[row][j] == 'B') down = 0;
+        }
+        cnt += left + right + up + down;
+        return cnt;
+    }
+};
+
+错误点：
+  第6行一开始是用第4行的j作为index,但这有个错误，就是如果第一行没有找到，那么到第二行的时候，j的初始值并不为0了。
