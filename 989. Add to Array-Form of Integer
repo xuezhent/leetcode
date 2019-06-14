@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> addToArrayForm(vector<int>& A, int K) {
+        vector<int> vec;
+        int extra = 0;
+        for(int i = A.size()-1; i >= 0 || K > 0 || extra > 0; i--) {
+            int a = i >= 0 ? A[i] : 0;
+            int tmp = a + extra + K % 10;
+            extra = tmp / 10;
+            vec.push_back(tmp % 10);
+            K /= 10;
+        }
+        reverse(vec.begin(), vec.end());
+        return vec;
+    }
+};
+
+错误点：
+  第6行，这种题一定要将边界条件考虑全了，有可能A先没的,我忽略了这一点.
