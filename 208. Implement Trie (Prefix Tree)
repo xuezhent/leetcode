@@ -1,0 +1,87 @@
+class TrieNode {
+    public:
+        vector<TrieNode*> children;
+        bool isWord;
+        bool isPrefix;
+        TrieNode(): isWord(false), isPrefix(false), children(26) {
+        }
+        ~TrieNode() {
+            for(auto child : children)  delete child;
+        }
+};
+class Trie {
+public:
+    
+    TrieNode* root;
+    
+    /** Initialize your data structure here. */
+    Trie() {
+        root = new TrieNode();
+    }
+    
+    /** Inserts a word into the trie. */
+    void insert(string word) {
+        TrieNode* cur = root;
+        for(int i = 0; i < word.size(); i++) {
+            TrieNode* next = cur->children[word[i]-'a'];
+            if(!next) {
+                next = new TrieNode();
+                cur->children[word[i]-'a'] = next;
+            }
+            cur = next;
+            cur->isPrefix = true;
+        }
+        cur->isWord = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    bool search(string word) {
+        auto node = helper(word);
+        if(!node)   return false;
+        return node->isWord;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    bool startsWith(string prefix) {
+        auto node = helper(prefix);
+        if(!node)   return false;
+        return node->isPrefix;
+    }
+    
+    TrieNode* helper(string& s) {
+        TrieNode* cur = root;
+        for(int i = 0; i < s.size(); i++) {
+            TrieNode* next = cur->children[s[i]-'a'];
+            if(!next)   return nullptr;
+            cur = next;
+        }
+        return cur;
+    }
+    
+    ~Trie() {
+        delete root;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
+ 
+ 
+ 总结：
+  1.TrieNode中不一定要用unordered_map<int,TrieNode*>去存children,也可以用数组,TrieNode* children[26],也可以使用vector,但是前提都是，你要
+  能确定string中只包含小写字母，也就是children的长度，大小你能事先确定。在效率上面，数组和vector在查找时比哈希表更快。
+  但是用vector的时候，需要注意一点，与数组不同，vector的初始化只能放在构造函数中完成，直接像数组那样初始化是不行的，因为这个vector是与类的实例挂钩的，
+  你不能在没有实例的情况下就分配空间资源了。
+  2.Trie类和TrieNode类的成员都包含有指针,都涉及到空间的分配与回收,所以这两个类都要写上析构函数.
+  3.这道题中的startswith我考虑复杂了,我认为要判断给定的string是否是Trie tree中某个word的prefix,就需要先访问到string最后一个字母,找到那个trie
+  tree node,然后往后一直找,找到某个node的isWord为true为止。但其实不用这么麻烦，只要沿着这个string去遍历trie tree,如果能一直访问到string的末尾，
+  就一定会存在一个word的prefix是该string。
+  
+  
+  
+  
