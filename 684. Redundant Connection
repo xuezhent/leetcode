@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<int> parent, ranks;
+    
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        parent.resize(n+1), ranks.resize(n+1);
+        for(int i = 1; i <= n; i++) parent[i] = i;
+        
+        for(auto& edge : edges) {
+            if(uni(parent, edge[0], edge[1]))   return edge;
+        }
+        
+        return {};
+    }
+    
+    int find(vector<int>& parent, int idx) {
+        if(parent[idx] != idx) 
+            parent[idx] = find(parent, parent[idx]);
+        return parent[idx];
+    }
+    
+    bool uni(vector<int>& parent, int x, int y) {
+        int xp = find(parent, x), yp = find(parent, y);
+        if(xp == yp)    return true;
+        if(ranks[xp] > ranks[yp])   parent[yp] = xp;
+        else if(ranks[xp] < ranks[yp]) parent[xp] = yp;
+        else {
+            parent[yp] = xp;
+            ranks[xp]++;
+        }
+        return false;
+    }
+};
+
+总结：上面是标准的union-find的写法
