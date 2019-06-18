@@ -18,6 +18,9 @@
 536. Construct Binary Tree from String  迭代方法
 641. Design Circular Deque  单vector的写法
 645. Set Mismatch O(1)space的方法
+
+685. Redundant Connection II  考虑如何将union-find应用到有向图中
+
 752. Open the Lock  需要继续考虑效率更高的写法（双向BFS)，并且考虑下什么时候在访问节点之前就将其放入visited中。
 776. Split BST  需要理解方法
 869. Reordered Power of 2 考虑更好的解法
