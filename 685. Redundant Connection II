@@ -1,0 +1,59 @@
+class Solution {
+public:
+    vector<int> parent, rank;
+    
+    int find(int idx) {
+        if(parent[idx] != idx)
+            parent[idx] = find(parent[idx]);
+        return parent[idx];
+    }
+    
+    bool uni(int x, int y) {
+        int xp = find(x), yp = find(y);
+        if(xp == yp)    return true;
+        if(rank[xp] < rank[yp]) parent[xp] = yp;
+        else if(rank[xp] > rank[yp]) parent[yp] = xp;
+        else {
+            parent[yp] = xp;
+            rank[xp]++;
+        }
+        return false;
+    }
+    
+    vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        parent.resize(n+1), rank.resize(n+1);
+        vector<int> candA, candB;
+        for (auto &edge:edges) {
+            if (parent[edge[1]] == 0)
+                parent[edge[1]] = edge[0]; 
+            else {
+                candA = {parent[edge[1]], edge[1]};
+                candB = edge;
+                edge[1] = 0;        
+            }
+        } 
+        for(int i = 0; i < parent.size(); i++)  parent[i] = i;
+        
+        for(auto& edge : edges) {
+            if(uni(edge[0], edge[1])) {
+                if(candA.empty()) return edge;
+                return candA;
+            }
+        }
+        
+        return  candB;
+    }
+};
+
+错误点：
+  1.将这题和无向图那题684做同样的处理，以为只要通过union-find找到环就好了。但是错误的地方就是，在无向图中，边[3,1]和边[2,1]是连通的，但是在有向图
+  中，[3,1],[2,1]不连通（假设由3和2指向1），那么这时候你还是用无向图union-find那套就是错误的。
+  那么如何去解决呢，因为这题中最多就是有一点的入度为2，你只需要处理这一个点就行了，那么将这点的第二条入边的末端设为0即可。
+  其实这题有三种情况，1.整个为一个环，也就是没有入度为2的点，首尾相连，那么只需要找到环后将那条边返回即可。2.整个没有环，但有入度为2的点，比如[1,2],
+  [1,3],[2,3],这种情况只用返回入度为2的那个点的最后出现的那条入边即可。 3.有环，也有入度为2的点，也就是在中间出现了环，那么按照上面的操作处理之后，
+  就会有两种情况，一种是如果处理的那条入边是属于环内的，那么将该边末端置零后，整个图中会变得没有环，成为一条直链；另一种情况就是不属于环内，那么处理后，
+  会将原先的一棵树变成两棵树，其中一棵树还是存在环的。那么只需要根据处理后是否有环来判断要返回哪一条边。
+  
+  
+  
