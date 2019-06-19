@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int pre_sum = 0, sum = INT_MIN;
+        for(int i = 0; i < nums.size(); i++) {
+            pre_sum = max(pre_sum+nums[i], nums[i]);
+            sum = max(sum, pre_sum);
+        }
+        return sum;
+    }
+};
+
+错误点：
+  1.直接用pre_sum去代替sum，没有对遍历过程中最大的pre_sum进行记录。
+  2.sum一开始设为0，有可能整个队列都是负值。
+  
+  
+follow up:返回和最大子串的首尾index
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int pre_sum = 0, sum = INT_MIN;
+        int start = 0, max_start = 0, max_end = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            if(pre_sum+nums[i] < nums[i]) {
+                pre_sum = 0;
+                start = i;
+            }
+            pre_sum += nums[i];
+            if(pre_sum > sum) {
+                sum = pre_sum;
+                max_start = start;
+                max_end = i;
+            }
+        }
+        cout << max_start << " " << max_end << endl;
+        return sum;
+    }
+};
