@@ -19,3 +19,21 @@ mistake:
   1.一开始是将mx,mn变量设成了max,min。以后表示最大，最小的变量名不要设成max,min。这样会和max,min函数会弄混，导致编译错误。
   2.将res的值一开始设置成了INT_MIN,因为loop是从1开始的，这会导致nums[0]对应的mx,mn没法比较到。如果nums.size()==1时，那么就会直接返回INT_MIN。
   
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int res = INT_MIN, mn = 1, mx = 1;
+        for(int i = 0; i < nums.size(); i++) {
+            int tmp_mx = max(nums[i], max(nums[i]*mx, nums[i]*mn));
+            int tmp_mn = min(nums[i], min(nums[i]*mx, nums[i]*mn));
+            mx = tmp_mx;
+            mn = tmp_mn;
+            res = max(res, mx);
+        }
+        return res;
+    }
+};
+上面的写法比之前的写法更加清晰简洁一点
+
+错误点：
+    1.没有设tmp_mx和tmp_mn，直接写成mx = 和 mn =，这里的错误就是更新完mx后，mn的计算用到的还是之前的mx
