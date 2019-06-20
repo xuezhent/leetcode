@@ -17,3 +17,32 @@ public:
     }
 };
 
+
+更优的解法：
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int max_len = 0;
+        unordered_set<string> st(wordDict.begin(), wordDict.end());
+        for(auto& word : wordDict) {
+            int len = word.size();
+            max_len = max(max_len, len);
+        }
+        
+        vector<int> dp(s.size()+1);
+        dp[0] = 1;
+        for(int i = 1; i <= s.size(); i++) 
+            for(int j = i-1; j >= max(0, i - max_len); j--) {
+                string tmp = s.substr(j, i-j);
+                if(st.find(tmp) != st.end() && dp[j]) { dp[i] = 1; break; }
+            }
+        
+        return dp[s.size()];
+    }
+};
+
+总结：
+  这题思路做第二遍的时候还是比较清晰的，很快就能想出dp的解法。但是代码具体写的时候还是有一点磕磕绊绊的。
+  主要磕绊的地方在第14行和15行，14行的j的初始值，以及j的边界值怎么选，以及15行从哪开始截取substring，以及substring的长度为多少，这里写的不是很流畅
+  在做遍历之前，我获取了word的最大长度，这个有助于提高搜索效率的，在匹配字符串的时候，这个做法值得采用的。
+
