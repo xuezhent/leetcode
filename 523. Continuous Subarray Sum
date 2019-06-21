@@ -18,3 +18,23 @@ public:
 };
 
 这题呢与325类似，但是这题是求和等于k的倍数，一开始想怎么去处理这个倍数问题呢？看了别人写的，才知道倍数问题都可以转化成余数，再进行计算。
+
+错误点：
+    第8行，一定要记得判断k是否为0.因为不能对0进行求模
+    
+跟简洁的写法：
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) {
+        int sum = 0;
+        unordered_map<int, int> st;
+        st[0] = -1;
+        for(int i = 0; i < nums.size(); i++) {
+            sum += nums[i];
+            if(k != 0) sum %= k;
+            if(st.find(sum) != st.end() && i-st[sum] >= 2)  return true; 
+            if(st.find(sum) == st.end())    st[sum] = i;
+        }
+        return false;
+    }
+};
