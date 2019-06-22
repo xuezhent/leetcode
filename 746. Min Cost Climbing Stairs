@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int last_two = 0, last_one = 0;
+        for(int i = 2; i <= cost.size(); i++) {
+            int tmp = min(last_two + cost[i-2], last_one + cost[i-1]);
+            last_two = last_one;
+            last_one = tmp;
+        }
+        return last_one;
+    }
+};
+
+错误点:
+  1.主要是搞清楚这道题的起始点和终点分别是多少。
