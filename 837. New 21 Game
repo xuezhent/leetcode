@@ -1,0 +1,21 @@
+class Solution {
+public:
+    double new21Game(int N, int K, int W) {
+        if(K == 0 || N >= K + W)    return 1.0;
+        double res = 0.0, cal = 1.0;
+        vector<double> dp(N+1);
+        dp[0] = 1.0;
+        for(int i = 1; i <= N; i++) {
+            dp[i] = cal * 1.0 / W;
+            if(i - W >= 0)   cal -= dp[i-W];
+            if(i > 0 && i < K)   cal += dp[i];
+            if(i >= K)  res += dp[i];
+        }
+        return res;
+    }
+};
+
+错误点：
+  1.第4行的判断要加上，不然当K == 0的时候，循环进入不了，返回的结果是错的。
+  2.然后第10行，这个错误比较隐蔽。就是当i == W+1的时候，计算dp的时候，cal就已经要减去dp[0]了，但是这不是在i == W+1那一步进行减的，而是提前要在i == 
+  W的时候就要减去了，因为减操作（第10行）在计算操作之后（第9行）。
