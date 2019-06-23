@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        vector<vector<long>> dp(s.size()+1, vector<long>(t.size()+1));
+        for(int i = 0; i <= s.size(); i++)
+            for(int j = 0; j <= t.size(); j++) {
+                if(j == 0)  dp[i][j] = 1;
+                else if(i == 0) dp[i][j] = 0;
+                else if(s[i-1] == t[j-1])   dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+                else dp[i][j] = dp[i-1][j];
+            }
+        return dp[s.size()][t.size()];
+    }
+};
+
+错误点：
+  1.一开始第9行不是像上面那样写的，还加上了dp[i][j-1]，以为是和求最大公共子序列一样，但是这道题是有些细微的区别的。比如说"rabbbit"和"rabit",对于最
+  后一位来说，dp[i-1][j]代表着t[j]可能不和你s[i-1]对位，我可能是和前面的对位，这是完全可以的。但是dp[i][j-1]代表的意思呢就是s[i]有可能不和你t[j]
+  对位，而直接跳过你t[j]和t[j-1]对位，那在最大公共子序列中是允许的，但是在这儿不允许，因为你题目默认的就是t是s的子序列，你必须将t中的每一位都要对应到
+  s中的某一位，而不能直接将t中的某一位跳过，所以这儿是不可以带上dp[i][j-1]的。
+  2.dp中的元素记住不能是int类型，不然测例中可能会发生越界。
+总结：
+  下面的这个写法是一维数组解法。因为我们观察到上面的写法中dp[i][j]只和dp[i-1][j]，dp[i-1][j-1]有关，也就是只和dp[i-1][]有关，那么就可以进行降维，
+  这个道理和一维数组dp[i]只和dp[i-1]有关是一个道理的。但是要注意写法，注意第31行，j要从后往前，为什么呢，你看34行，你如果从前往后，你会先计算dp[j-1]，
+  然后计算dp[j]的时候，你其实是想用之前的dp[j-1]，但是之前的dp[j-1]已经被你前面的计算抹掉了，所以你要从后往前计算。
+  
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        vector<long> dp(t.size()+1);
+        for(int i = 0; i <= s.size(); i++) 
+            for(int j = t.size(); j >= 0; j--) {
+                if(j == 0)  dp[j] = 1;
+                else if(i == 0) dp[j] = 0;
+                else if(s[i-1] == t[j-1])   dp[j] = dp[j-1] + dp[j];
+                else dp[j] = dp[j];
+            }
+        return dp[t.size()];
+    }
+};
