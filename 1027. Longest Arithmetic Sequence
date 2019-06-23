@@ -16,3 +16,51 @@ public:
 };
 
 一开始用A[i]作为mp的key，这是有问题的，因为A[i]是有可能重复的。
+
+
+二刷：
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& A) {
+        int res = 0;
+        unordered_map<int, int> mp;
+        for(int i = 0; i < A.size(); i++)
+            for(int j = 0; j < i; j++) {
+                int dif = A[i] - A[j];
+                mp[dif] = mp.find(dif) != mp.end() ? mp[dif]+1 : 2;
+                cout << i << ", " << j << " : " << dif << "- "<< mp[dif] << endl;
+                res = max(mp[dif], res);
+            }
+        return res;
+    }
+};
+
+正确写法：
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& A) {
+        unordered_map<int, unordered_map<int, int>> mp;
+        int res = 0;
+        for(int i = 0; i < A.size(); i++)
+            for(int j = 0; j < i; j++) {
+                int dif = A[i] - A[j];
+                mp[i][dif] = mp[j].find(dif) != mp[j].end() ? mp[j][dif]+1 : 2;
+                res = max(mp[i][dif], res);
+            }
+        return res;
+    }
+};
+
+错误点：
+  1.这道题，我其实思路不是很清晰，以为对于每个元素来说，寻找它之前的每个元素，然后计算它们之间的dif,然后如果mp中已经有这个dif了，就去更新。这是想当然了。
+  看一个反例[1,4,3,6],一开始访问1和3的时候，那么它们之间的dif是2，访问4，6的时候，它们之间的dif也是2，那么按照第一个写法，访问4，6的时候，dif已经在
+  mp中存在了，那么就会对它进行更新，但是这种更新明显是错误的。
+  那么我们来看，这整个过程究竟是什么样的。还是拿这个例子来看，我们访问4，6时，确实，它的dif为2，但是我们什么情况下进行更新？应该是对以4为结尾的dif为2的
+  那个子结果进行加2，你看上面这个描述，有两个状态量，一个是“以4为结尾”，另一个是“dif为2”，第一种写法，明显只是将dif作为了唯一状态量，那么写出的dp算法
+  肯定是存在问题的。
+
+
+
+
+
+
