@@ -1,0 +1,38 @@
+int lenLongestFibSubseq(vector<int>& A) {
+        int mx = 0;
+        unordered_map<int, unordered_map<int, int>> dp;
+        for(int i = 0; i < A.size(); i++)
+            for(int j = 0; j < i; j++) {
+                int pre = A[i] - A[j];
+                dp[i][A[j]] = dp[j].find(pre) != dp[j].end() ? dp[j][pre]+1 : 2;
+                mx = max(mx, dp[i][A[j]]);
+            }
+        return mx >= 3 ? mx : 0;
+    }
+    
+正确写法：
+class Solution {
+public:
+    int lenLongestFibSubseq(vector<int>& A) {
+        unordered_map<int, int> mp;
+        int N = A.size(), mx = 0;
+        int dp[N][N];
+        for(int i = 0; i < A.size(); i++) {
+            mp[A[i]] = i;
+            for(int j = 0; j < i; j++) {
+                int pre = mp.find(A[i]-A[j]) == mp.end() ? -1 : mp[A[i]-A[j]];
+                dp[i][j] = (A[i] - A[j] < A[j] && pre >= 0) ? dp[j][pre] + 1 : 2;
+                mx = max(mx, dp[i][j]);
+            }
+        }
+        return mx > 2 ? mx : 0;
+    }
+};
+
+错误点：
+  1.第24行中A[i] - A[j] < A[j]这个条件很容易被忽略。因为很有可能是这种情况[1,2,3]，当访问1，3时，算出来差应该是2，但很明显，这时候算出来的结果是
+  错位的。所以我们在计算时，预设条件是算出来的pre应该是在A[j]之前的，所以这个预设条件是要加入进行判断的，这一点容易忘记。
+  2.第一种写法，会导致TLE，原因应该是双重的unordered_map的查找效率比较低。我做的时候其实是仿照1027来写的，那题中用到了双重的unordered_map，为什么
+  这题又不采用这种写法了呢？原因是1027中，第二个unordered_map中的key是dif，那么dif是什么值都有可能的，那肯定是需要用unordered_map。但是这题的第二
+  个unordered_map的key是A中的元素，是与index一一对应的，所以说是可以不使用unordered_map的。所以原则就是可以将unordered_map的维度降低就尽量降低
+  因为它的搜索效率并不高。
