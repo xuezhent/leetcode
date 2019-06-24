@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int numTrees(int n) {
+        dp.resize(n+1, vector<int>(n+1));
+        return helper(1, n);        
+    }
+    
+    int helper(int left, int right) {
+        if(right <= left)   return 1;          
+        if(dp[left][right] != 0)    return dp[left][right];
+        int sum = 0;
+        for(int i = left; i <= right; i++) 
+            sum += helper(left, i-1) * helper(i+1, right);
+        dp[left][right] = sum;
+        return sum;
+    }
+    
+private:
+    vector<vector<int>> dp;
+};
+
+错误点：
+  1.没有使用数组将中间的状态量进行存储。这会导致TLE
+  2.将第10行放在了第9行之前。这会导致数组访问越界。一开始调用helper函数时，传入的right是数组最大的index，但是第13行，还是会有一个i+1的操作，当i等于
+  right的时候，那么i+1就会访问越界了。所以第9行要在第10行之前。
+  
+ 总结：
+  什么时候需要进行中间状态量的存储呢？这主要看同一个子问题是否被多次访问了。比如说这个问题，假设n为5，对于子问题2-3来说，1-3包含它，2-4也包含它，所以
+  多个子问题中存在了交集，那么就需要对这个中间状态量进行存储。
