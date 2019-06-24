@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if(nums.size() == 0)    return 0;
+        if(nums.size() == 1)    return nums[0];
+
+        int res = 0;
+        vector<int> dp(nums.size()+1);
+        
+        dp[1] = dp[2] = nums[0];
+        for(int i = 2; i <= nums.size()-1; i++) dp[i+1] = max(dp[i], dp[i-1] + nums[i]);            
+        res = max(res, dp[nums.size()-1]);
+        
+        dp[1] = 0;
+        for(int i = 1; i < nums.size(); i++)    dp[i+1] = max(dp[i], dp[i-1] + nums[i]);
+        res = max(res, dp[nums.size()]);
+        
+        return res;
+    }
+};
+
+错误点：
+  1.第8行，将dp的size设成了nums.size()，这会造成什么问题呢？如果dp的size只有nums.size()，那么第15行，它从nums[1]开始，而且此时它所对应的dp值为
+  dp[i]而不是dp[i+1]，而且它的计算依赖于dp[i-2]，那么此时就会越界。
+  2.第10行，一开始只设了dp[1]的值，而没有管dp[2]，这显然是对dp值的具体含义不是很清楚，因为这里的dp值表示的是从0-i可以获得的最大值，那么dp[2]即使确定
+  了nums[0]被选，nums[1]不被选，那么0-1可以获得的最大值就是nums[0]的值了，而不是想当然的0.
