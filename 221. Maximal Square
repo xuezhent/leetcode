@@ -1,0 +1,69 @@
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int mx_sz = 0, n = matrix.size(), m = n ? matrix[0].size() : 0;
+        vector<vector<int>> dp(n, vector<int>(m));
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < m; j++) {
+                if(matrix[i][j] != '0') {
+                    if(i == 0 || j == 0)    dp[i][j] = 1;
+                    else dp[i][j] = min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1])) + 1;
+                    mx_sz = max(mx_sz, dp[i][j]);
+                }
+            }
+        return mx_sz * mx_sz;
+    }
+};
+
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int mx_sz = 0, n = matrix.size(), m = n ? matrix[0].size() : 0, old_last, cur_last;
+        vector<int> dp(m);
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < m; j++) {
+                if(matrix[i][j] != '0') {
+                    if(i == 0)    dp[j] = 1;
+                    else if(j == 0) {
+                        old_last = dp[j];
+                        dp[j] = 1;
+                    } 
+                    else {
+                        cur_last = dp[j];
+                        dp[j] = min(old_last, min(dp[j], dp[j-1])) + 1;
+                        old_last = cur_last;
+                    }
+                    mx_sz = max(mx_sz, dp[j]);
+                } else dp[j] = 0; 
+            }
+        return mx_sz * mx_sz;
+    }
+};
+
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int mx_sz = 0, n = matrix.size(), m = n ? matrix[0].size() : 0, old_last, cur_last;
+        vector<int> dp(m);
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < m; j++) {
+                cur_last = dp[j];
+                if(i == 0 || j == 0 || matrix[i][j] == '0') 
+                    dp[j] = matrix[i][j] - '0';
+                else {
+                    cur_last = dp[j];
+                    dp[j] = min(old_last, min(dp[j], dp[j-1])) + 1;
+                    old_last = cur_last;
+                }
+                old_last = cur_last;
+                mx_sz = max(mx_sz, dp[j]);                  
+            }
+        return mx_sz * mx_sz;
+    }
+};
+
+总结：
+  一开始这道题的dp方法有点想不出来，但其实这种二维的dp题套路还是比较明显的，无非就是对于dp[i][j]的定义问题，然后寻找与dp[i-1][j-1],dp[i-1][j]
+  dp[i][j-1]之间的关系。
+  第一个写法是二维数组的解法，第二个写法是我一开始的一维数组的解法，第三个是对第二个写法的优化。
+  从第一个方法的递推公式可以看出来，是符合数组降维的条件的。
