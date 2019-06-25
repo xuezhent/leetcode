@@ -1,4 +1,4 @@
-95. Unique Binary Search Trees II   Dp解法
+95. Unique Binary Search Trees II 考虑DP做法
 163. Missing Ranges   最简洁解法
 191. Number of 1 Bits
 254. Factor Combinations  思路不清晰，解法不明确，时间复杂度不太明确
@@ -11,10 +11,11 @@
 377. Combination Sum IV 它的follow up
 400. Nth Digit 将代码写得更简洁，思路理清
 406. Queue Reconstruction by Height
+410. Split Array Largest Sum  二叉搜索解法
 416. Partition Equal Subset Sum 考虑用dfs做
 422. Valid Word Square  考虑更简洁的写法
 439. Ternary Expression Parser  考虑用stack做
-474. Ones and Zeroes  需要总结下0-1背包问题，包括基本写法，优化，从上至下以及从下至上(416类似）
+486. Predict the Winner 搞清楚它的DP解
 536. Construct Binary Tree from String  迭代方法
 641. Design Circular Deque  单vector的写法
 645. Set Mismatch O(1)space的方法
