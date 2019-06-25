@@ -75,5 +75,9 @@
     290中用到
     可用来分割string中的word。
 
+10.std::numeric_limits<T>::min
+    Returns the minimum finite value representable by the numeric type T.
+    示例： int mx = std::numeric_limits<T>::min();
+
 10.*max_element
 11.string.compare()
