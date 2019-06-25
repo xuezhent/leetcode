@@ -1,0 +1,47 @@
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int idx = inorder.size()-1;
+        for(int i = 0; i < inorder.size(); i++) mp[inorder[i]] = i;
+        return helper(inorder, postorder, 0, inorder.size()-1, idx);
+    }
+    
+    TreeNode* helper(vector<int>& in, vector<int>& post, int start, int end, int& idx) {
+        if(start > end) return nullptr;
+        int pos = mp[post[idx]];
+        TreeNode* node = new TreeNode(post[idx--]);
+        node->right = helper(in, post, pos+1, end, idx);
+        node->left = helper(in, post, start, pos-1, idx);
+        return node;
+    }
+
+private:
+    unordered_map<int, int> mp;
+};
+
+
+
+105题的代码，通过inorder和preorder构建binary tree.
+
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int idx = 0;
+        for(int i = 0; i < inorder.size(); i++) mp[inorder[i]] = i;
+        return helper(preorder, inorder, 0, preorder.size()-1, idx);
+    }
+    
+    TreeNode* helper(vector<int>& pre, vector<int>& in, int start, int end, int& idx) {
+        if(start > end) return nullptr;
+        TreeNode* node = new TreeNode(pre[idx++]);
+        int pos = mp[node->val];
+        node->left = helper(pre, in, start, pos-1, idx);
+        node->right = helper(pre, in, pos+1, end, idx);
+        return node;
+    }
+private:
+    unordered_map<int, int> mp;
+};
+
+总结：
+  105题和106题区别不大，一个通过preorder，一个通过postorder。两者区别在于构建顺序不同，preorder从左子树开始构建起，postorder从右子树开始构建。
