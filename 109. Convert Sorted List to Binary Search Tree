@@ -1,0 +1,27 @@
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        return helper(head, nullptr);
+    }
+    
+    TreeNode* helper(ListNode* head, ListNode* tail) {
+        if(head == tail)    return nullptr;
+        
+        auto fast = head, slow = head;
+        while(fast != tail && fast->next != tail) {
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        TreeNode* node = new TreeNode(slow->val);
+        node->left = helper(head, slow);
+        node->right = helper(slow->next, tail);
+        return node;
+    }
+};
+
+总结：
+  这题主要涉及到一个linked list怎么求位置在中间的那个数。那么就用到了slow和fast两个指针。麻烦的地方就只在于如何确定第11行这个循环条件。
+  但其实很好理解。你稍微算一下就可以知道第11行这两个条件分别对应两种情况，一个是这个list长度为奇数，这个时候fast最后正好是落到了最后那个元素，那么这时
+  fast->next == nullptr。一个情况是长度为偶数，那fast最后是落到了末尾的那个nullptr上，那么这时候fast == nullptr.
+  第8行这个条件呢也很好理解，你主要要判断head和tail分别代表什么。head代表开头，必然是包含head所指的这个元素。tail表示末尾，它类似于末尾的nullptr，
+  区间中的元素是不含上它的，那么边界条件就是head == tail了，这时候区间内没有任何元素。
