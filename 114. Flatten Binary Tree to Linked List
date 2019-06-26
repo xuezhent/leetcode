@@ -1,0 +1,42 @@
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(!root)   return;
+        if(pre != nullptr) pre->right = root;
+        pre = root;
+        TreeNode* r = root->right;
+        flatten(root->left);
+        root->left = nullptr;
+        flatten(r);
+    }
+private:
+    TreeNode* pre = nullptr;
+};
+
+
+
+总结：
+  这道题看上去有以下几个特点：
+  1.它比较符合递归解法，因为对于一个节点来说，将它展开的同时，它的左右子树均要展开。
+  2.它最后构成链的顺序其实就是一个先序遍历顺序。那么按照先序的顺序，先访问root，将pre->right = root,然后将pre = root,然后再去访问左子树，再去访问
+  右子树。但是记住这里，一个是要有第9行，在访问完左子树后，将左子树设为空指针。还有要事先将root->right先保存，不然会将右子树覆盖掉。
+  3.它是典型的按序访问，将其构成链的题。
+  
+
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(!root)   return;
+        
+        flatten(root->right);
+        flatten(root->left);
+        root->right = pre;
+        root->left = nullptr;
+        pre = root;
+    }
+private:
+    TreeNode* pre = nullptr;
+};
+
+上面这个代码，是改进的版本。因为我们知道如果按顺序先序的话，会存在一个问题，右子树被覆盖，那么如果解决呢？我们先访问右子树是不是可以解决这个问题呢？如果
+先访问右子树，那就要按照逆先序顺序来访问了。而且我们发现，当先访问右子树后，不需要再担心右子树被覆盖的问题了。
