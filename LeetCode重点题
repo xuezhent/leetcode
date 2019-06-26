@@ -29,6 +29,9 @@
 111. Minimum Depth of Binary Tree
       recursive方法我想的还是有点卡
       
+116. Populating Next Right Pointers in Each Node
+      这个题的O(1) space解法还是值得多去做一做的
+      
 127. Word Ladder
       需要熟练掌握。就是BFS的变形。
       
