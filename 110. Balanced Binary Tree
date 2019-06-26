@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        return helper(root) != -1;
+    }
+    
+    int helper(TreeNode* root) {
+        if(!root)   return 0;
+        int left = helper(root->left);
+        int right = helper(root->right);
+        if(left == -1 || right == -1)   return -1;
+        return abs(right-left) < 2 ? max(left, right) + 1 : -1;
+    }
+};
+
+错误点：
+  1.一开始以为将tree中最大的depth和最小的depth找出来，然后判断它们的差是否小于2，这个错误是因为对题目的描述理解的不透彻，题目说的是对于任一节点来说，
+  左子树的高度和右子树的高度只差不超过1，而左右子树的高度又是由它们的最高子树的高度决定的，所以我的这个解法是不对的。
+  2.第11行一定要加上，不然，如果对于同一个节点，如果它的左子树不是balance的，返回-1，同时它的右子树也不是balance的话，同样返回-1，这又会是的right和
+  left的差值小于2，又使该节点看上去又是balance的，这显然不符合预期。
