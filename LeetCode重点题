@@ -38,6 +38,9 @@
 128. Longest Consecutive Sequence
       就是array的前后状态进行记录，可以有更优解。
       
+133. Clone Graph
+      写的很不顺畅，题目理解也有点
+      
 139. Word Break
       经典题，方法比较多
     
