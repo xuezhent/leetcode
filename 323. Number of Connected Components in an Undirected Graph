@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int countComponents(int n, vector<vector<int>>& edges) {
+        unordered_map<int, vector<int>> graph;
+        for(auto& e : edges) {
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        
+        int res = 0;
+        unordered_set<int> visited;
+        for(auto& e : edges)
+            if(visited.find(e[0]) == visited.end()) {
+                dfs(graph, e[0], visited, -1);
+                res++;
+            }
+        return res;
+    }
+    
+    void dfs(unordered_map<int, vector<int>>& graph, int node, unordered_set<int>& visited, int parent) {
+        if(visited.find(node) != visited.end()) return;
+        visited.insert(node);
+        for(auto neigh : graph[node]) 
+            if(neigh != parent)
+                dfs(graph, neigh, visited, node);
+    }
+};
+
+错误点：
+  1.第12行的这个遍历是有问题的，因为如果有单独点构成的联通分量，它是不出现在edges中的，所以你是遍历不到它的，所以还是要用下面这种写法。
+  
+class Solution {
+public:
+    int countComponents(int n, vector<vector<int>>& edges) {
+        unordered_map<int, vector<int>> graph;
+        for(auto& e : edges) {
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        
+        int res = 0;
+        unordered_set<int> visited;
+        for(int i = 0; i < n; i++)
+            if(visited.find(i) == visited.end()) {
+                dfs(graph, i, visited, -1);
+                res++;
+            }
+        return res;
+    }
+    
+    void dfs(unordered_map<int, vector<int>>& graph, int node, unordered_set<int>& visited, int parent) {
+        if(visited.find(node) != visited.end()) return;
+        visited.insert(node);
+        for(auto neigh : graph[node]) 
+            if(neigh != parent)
+                dfs(graph, neigh, visited, node);
+    }
+};
