@@ -30,3 +30,36 @@ public:
   if(!detectCyc(-1, edges[0][0], graph, visited))这个判断条件写成了if(!detectCyc(-1, 0, graph, visited))，但有种情况不可行，就是0这个
 节点是孤立的，但是其他点正好构成一个环，如[[1,2],[2,3],[3,1]]。
 然后你还得考虑edges是否为空，因为你直接访问了edges[0][0]。
+
+在二刷的时候发现，上述的写法依然是错误的，原因如下：如果graph是valid的，那么正常的就是没有环，然后每个节点都是连通的。那么如果我现在想让它变的不valid，
+但是我使得边数与点数之间仍然满足eges.size() == n-1，那也就是我随便从这个valid graph中选取一条边，将它去掉，然后这时，这个graph分成两个联通分量，再
+任取其中一个，加入新的一条边构成一个环，那么你这时候只判断一个单独点0是否是孤立的是不足够的。因为它是有可能分成了两个联通分量，单独点0孤立只是其中一个特殊
+情况，就是其中一个联通分量的点数为1。
+所以应该用如下办法。
+
+class Solution {
+public:
+    bool validTree(int n, vector<vector<int>>& edges) {
+        if(edges.size() != n-1) return false;
+    
+        unordered_map<int, vector<int>> graph;
+        for(auto& e : edges) {
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        
+        unordered_set<int> visited;
+        for(auto& e : edges) {
+            if(visited.find(e[0]) == visited.end() && detectCyc(graph, e[0], visited, -1))    return false;
+        }
+        return true;       
+    }
+    
+    bool detectCyc(unordered_map<int, vector<int>>& graph, int node, unordered_set<int>& visited, int parent) {
+        if(visited.find(node) != visited.end()) return true;
+        visited.insert(node);
+        for(auto neigh : graph[node]) 
+            if(neigh != parent && detectCyc(graph, neigh, visited, node))   return true;
+        return false;
+    }
+};
