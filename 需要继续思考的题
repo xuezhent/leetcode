@@ -4,10 +4,11 @@
 191. Number of 1 Bits
 254. Factor Combinations  思路不清晰，解法不明确，时间复杂度不太明确
 255. Verify Preorder Sequence in Binary Search Tree 空间O(n)方法
-261. Graph Valid Tree 高效解法
+261. Graph Valid Tree 高效解法  union-find解法
 287. Find the Duplicate Number  O(n)解法
 300. Longest Increasing Subsequence   O(nlogn)解法
 320. Generalized Abbreviation   permutation解法
+323. Number of Connected Components in an Undirected Graph  union-find解法
 324. Wiggle Sort II 最优解法
 377. Combination Sum IV 它的follow up
 400. Nth Digit 将代码写得更简洁，思路理清
