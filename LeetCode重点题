@@ -136,6 +136,9 @@
 380. Insert Delete GetRandom O(1)
       vector insert & remove in O(1)
       
+394. Decode String
+      二刷还是不熟练
+      
 406. Queue Reconstruction by Height
       一开始做，方法有点混乱，不简洁
       
