@@ -1,0 +1,10 @@
+133. Clone Graph  把题目想明白，把思路想清楚，顺着自己之前思路想，看哪儿卡壳
+207. Course Schedule  拓扑排序
+261. Graph Valid Tree   union-find，总结图中找环
+394. Decode String    把思路理清
+802. Find Eventual Safe States  思路不清晰，空间复杂度有点高，不简洁
+851. Loud and Rich    思路不清晰，而且出错
+897. Increasing Order Search Tree   二刷写错
+971. Flip Binary Tree To Match Preorder Traversal   思路不清晰
+1061. Lexicographically Smallest Equivalent String  union-find做法，并比较总结dfs和union-find在划分群上的优劣
+
