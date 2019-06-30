@@ -1,0 +1,16 @@
+class Solution {
+public:
+    TreeNode* increasingBST(TreeNode* root) {
+        stack<TreeNode*> stk;
+        while(!stk.empty() || root) {
+            while(root) {
+                stk.push(root);
+                root = root->left;
+            }
+            root = stk.top();
+            stk.pop();
+            root = root->right;
+        }
+        return head;
+    }
+};
