@@ -2,6 +2,7 @@
 207. Course Schedule  拓扑排序
 261. Graph Valid Tree   union-find，总结图中找环
 394. Decode String    把思路理清
+785. Is Graph Bipartite?    BFS解法
 802. Find Eventual Safe States  思路不清晰，空间复杂度有点高，不简洁
 851. Loud and Rich    思路不清晰，而且出错
 897. Increasing Order Search Tree   二刷写错
