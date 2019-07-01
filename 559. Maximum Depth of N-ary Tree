@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxDepth(Node* root) {
+        if(!root)   return mx_dep;
+        dfs(root, 1);
+        return mx_dep;
+    }
+    
+    void dfs(Node* root, int dep) {
+        mx_dep = max(mx_dep, dep);
+        for(auto child : root->children)  dfs(child, dep+1);
+    }
+    
+private:
+    int mx_dep = 0;
+};
+
+错误解法：
+  第10行一开始写成
+  if(!root) {
+    mx_dep = max(mx_dep, dep);
+    return;
+  }
+  问题原因就是root->children中不会存nullptr，所以它不像binary tree中left,right可能会nullptr，所以不能通过binary tree的那种方法写成if(!root)
