@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        queue<vector<int>> q;
+        q.push(click);
+        while(!q.empty()) {
+            auto node = q.front();
+            q.pop();
+            int x = node[0], y = node[1];
+            if(board[x][y] == 'M') {
+                board[x][y] = 'X';
+                return board;
+            }
+            if(board[x][y] != 'E')  continue;
+            else {
+                int num = calM(board, x, y);
+                if(num > 0) board[x][y] = '0' + num;
+                else {
+                    board[x][y] = 'B';
+                    for(int i = 0; i < dir.size(); i++) {
+                        int tmp_x = x + dir[i][0], tmp_y = y + dir[i][1];                 
+                        if(tmp_x >= 0 && tmp_x < board.size() && tmp_y >= 0 && tmp_y < board[0].size() 
+                           && board[tmp_x][tmp_y] == 'E') 
+                            q.push({tmp_x, tmp_y});                                                     
+                    }
+                }
+            }            
+        }
+        return board;
+    }
+    
+    int calM(vector<vector<char>>& board, int x, int y) {
+        int res = 0;
+        for(auto& d : dir) {
+            int tmp_x = x + d[0], tmp_y = y + d[1];
+            if(tmp_x >= 0 && tmp_x < board.size() && tmp_y >= 0 && tmp_y < board[0].size())
+                if(board[tmp_x][tmp_y] == 'M')
+                    res++;
+        }
+        return res;
+    }
+private:
+    vector<vector<int>> dir = {{-1,0},{0,-1},{0,+1},{+1,0},{-1,-1},{-1,+1},{+1,-1},{+1,+1}};
+};
+
+错误点：
+  1.第20行，BFS展开搜索的时候，我以为这道题的相邻点还是上下左右4个方向，但实际上这道题无论是计算相邻地雷数还是展开相邻点搜索都是8方向的相邻。
