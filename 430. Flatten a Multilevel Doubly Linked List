@@ -46,3 +46,32 @@ public:
 
 备注部分是我的解法，代码是有问题的，因为你以node->next作为判断依据来进入循环的话，有可能这个node有一串的child，但就是没有next，那么这个循环就进入不了
 所以node访问的时候，千万小心，最好还是以node本身是否为Null作为判断条件，不要轻易以next作为判断条件。
+
+
+class Solution {
+public:
+    Node* flatten(Node* head, Node* tail = nullptr) {
+        Node* h = head;
+        while(head) {
+            iter = head;
+            if(head->child) {
+                Node* next = head->next;
+                Node* child_next = flatten(head->child, next);
+                head->next = child_next;
+                child_next->prev = head;
+                head->child = nullptr;
+                if(next) next->prev = iter;
+                head = next;
+            } else  head = head->next; 
+        }
+        if(iter)    iter->next = tail;
+        if(tail)    tail->prev = tail;
+        return h;
+    }
+private:
+    Node* iter = nullptr;
+};
+
+
+错误点：
+  1.忘记第13行，这相当于对双向链表，向其中插入某个节点，忘记了更新后面那个节点的prev。所以链表题还是要理清要更新哪些指针。
