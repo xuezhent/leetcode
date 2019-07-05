@@ -1,0 +1,31 @@
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        if(!node)   return nullptr;
+        if(mp.find(node) != mp.end())   return mp[node];
+        
+        mp[node] = new Node(node->val, {});
+        for(auto neigh : node->neighbors)
+            mp[node]->neighbors.push_back(cloneGraph(neigh));
+       
+        return mp[node];
+    }
+
+private:
+    unordered_map<Node*, Node*> mp;
+};
+
+总结：
+  这道题是典型的dfs题，而且是graph型的dfs，也就是parent能访问children，而children又可以访问到parent，所以需要标记访问过的点，防止重复访问。
+  那么只需要一个哈希表就可以了，如果这个点已经访问过了，就直接返回这个点的哈希值。
+
+错误点：
+  1.第7-9行，我一开始是这样写的
+    Node* nw_node = new Node(node->val, {});
+    for(auto neigh : node->neighbors)
+            nw_node->neighbors.push_back(cloneGraph(neigh));
+    mp[node] = nw_node;
+    这个错误点在于呢，比如1-2-3-4-1这么一个环，因为你是以哈希表中是否存在对应的key来判断是否已经访问过了，所以访问到一个点的时候，在它展开访问children
+    之前，我们需要先标记该点，也就是哈希表中就应该有该点对应的key了，但是我上面这个写法是先遍历，遍历完我再向哈希表中加入该点对应的key，这个明显会造成
+    无限循环的，因为再次访问到1的时候，1的dfs还没完成，因而哈希表中没有1对应的key，所以还是会继续遍历下去。
+
