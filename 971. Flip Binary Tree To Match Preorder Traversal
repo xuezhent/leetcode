@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<int> flipMatchVoyage(TreeNode* root, vector<int>& voyage) {
+        int idx = 0;
+        vector<int> res;
+        if(!helper(root, voyage, res, idx)) return {-1};
+        return res;
+    }
+    
+    bool helper(TreeNode* root, vector<int>& v, vector<int>& res, int& idx) {
+        if(!root)   return true;
+        if(root->val != v[idx]) return false;
+        
+        idx++;
+        bool left, right;
+        if(root->left && root->left->val != v[idx]) {
+            res.push_back(root->val);
+            left = helper(root->right, v, res, idx);
+            right = helper(root->left, v, res, idx);
+        } else {
+            left = helper(root->left, v, res, idx);
+            right = helper(root->right, v, res, idx);
+        }
+        
+        return left && right;
+    }
+};
+
+总结：
+  首先拿到这个题，看到要让树符合先序排列，典型的排列对应的题，那么很明显的方法就是用一个&idx去做。那么下一步就是如何swap，什么时候swap呢？因为涉及到
+  左右子树的swap，那肯定是在parent层就开始进行比较，在parent层，去比较它的children与voyage对应位置上的元素是否相同，如果不同，那么直接交换它的左右
+  子树。一开始，我想的是比较的话，当然是比较root与idx的值最好了，但是这样，如果对应不上，怎么去swap呢？没法swap，要想swap，只能是像16行那样，比较
+  children的。
+  那什么情况下要swap呢？如果有左子树，并且与对应的voyage元素不同(因为是先序，所以如果有左子树的话，对应的就应该是idx+1),那么进行swap。
+
+错误点：
+  1.第16行，一开始写成v[idx+1]，因为14行，已经进行自增操作了，那么16行就应该是v[idx]。
