@@ -1,0 +1,94 @@
+class Solution {
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> vec;
+        backTrack(nums, -1, "", res, vec);
+        return res;
+    }
+    
+    void backTrack(vector<int>& nums, int idx, string s, vector<vector<int>>& res, vector<int>& vec) {
+        if(vec.size() >= 2 && st.find(s) == st.end()) {
+            st.insert(s);
+            res.push_back(vec);
+        }
+        
+        for(int i = idx+1; i < nums.size(); i++) {
+            if(vec.empty() || nums[i] >= vec.back()) {
+                vec.push_back(nums[i]);
+                string tmp = s + to_string(nums[i]) + "->";
+                backTrack(nums, i, tmp, res, vec);
+                vec.pop_back();
+            }
+        }
+    }
+        
+private:
+    unordered_set<string> st;
+};
+
+改进写法1：
+class Solution {
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> vec;
+        backTrack(nums, -1, "", res, vec);
+        return res;
+    }
+    
+    void backTrack(vector<int>& nums, int idx, string s, vector<vector<int>>& res, vector<int>& vec) {
+        if(st.find(s) != st.end())  return;
+        if(vec.size() >= 2) {
+            st.insert(s);
+            res.push_back(vec);
+        }
+        
+        for(int i = idx+1; i < nums.size(); i++) {
+            if(vec.empty() || nums[i] >= vec.back()) {
+                vec.push_back(nums[i]);
+                string tmp = s + to_string(nums[i]) + "->";
+                backTrack(nums, i, tmp, res, vec);
+                vec.pop_back();
+            }
+        }
+    }
+        
+private:
+    unordered_set<string> st;
+};
+
+
+改进写法2：
+class Solution {
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> vec;
+        backTrack(nums, -1, res, vec);
+        return res;
+    }
+    
+    void backTrack(vector<int>& nums, int idx, vector<vector<int>>& res, vector<int>& vec) {
+        if(vec.size() >= 2) res.push_back(vec);
+        
+        unordered_set<int> st;
+        for(int i = idx+1; i < nums.size(); i++) {
+            if((vec.empty() || nums[i] >= vec.back()) && st.find(nums[i]) == st.end()) {
+                vec.push_back(nums[i]);
+                backTrack(nums, i, res, vec);
+                vec.pop_back();
+                st.insert(nums[i]);
+            }
+        }
+    }     
+};
+
+总结：
+  这题很明显是backtrack的题，主要的难点在于如何解决重复的问题。一开始，我的做法是将vector中的每个元素放到字符串中，然后判断这个字符串是否出现过。
+  原始写法的效率会比较低，因为每个数字如果是重复的话，要到最后才能判断是否放入到结果中。那么就有了改进写法1，它的改进是基于如果一个subsequence出现过
+  的话，是没有继续下去的必要了。
+  改进写法2，当我上次用过这个数字了，那我下次不再用这个数字了，用一个unordered_set去记录。难的在于这个unordered_set声明在哪，而且用来记录什么。
+  首先，我们随便假设一个场景，[1,2,3]，如果我们将3从这个subsequence中pop掉，然后继续让其中加入一个元素，那么这时候我们就不能再选3放进去了。那么注意
+  观察就会发现其实这种元素不可重复使用是出现在backTrack这个函数的层面中，尤其是第76行的这个for循环中，那么这个unordered_set也就放在这个层面上。
+        
