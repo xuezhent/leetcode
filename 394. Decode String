@@ -1,0 +1,103 @@
+递归法版本1：
+class Solution {
+public:
+    string decodeString(string s) {
+        string res = "", num = "", tmp_str = "";
+        for(int i = 0; i < s.size(); i++) {
+            if(isdigit(s[i])) {
+                num += s[i];
+            } else if(s[i] == '[') {
+                i++;
+                int cnt = 1;
+                while(cnt != 0) {
+                    if(s[i] == '[') cnt++;
+                    else if(s[i] == ']')    cnt--;
+                    if(cnt != 0) tmp_str += s[i++];
+                }
+                string tmp_res = decodeString(tmp_str);
+                int times = stoi(num);
+                for(int j = 0; j < times; j++)  res += tmp_res;
+                num = "";
+                tmp_str = "";
+            } else if(s[i] == ']')  continue;
+            else res += s[i];
+        }
+        return res;
+    }
+};
+
+递归法版本2：
+class Solution {
+public:
+    string decodeString(string s) {
+        int pos = 0;
+        return helper(pos, s);
+    }
+    
+    string helper(int& pos, string s) {
+        string res = "", num = "";
+        for(; pos < s.size(); pos++) {
+            if(isdigit(s[pos])) num += s[pos];
+            else if(s[pos] == '[') {
+                int times = stoi(num);
+                string tmp = helper(++pos, s);
+                for(int i = 0; i < times; i++)  res += tmp;
+                num = "";
+            } else if(s[pos] == ']') {
+                //pos++;
+                return res;
+            }
+            else res += s[pos];
+        }
+        return res;
+    }
+};
+
+错误点：
+  1.第47行一开始是写了pos++，这是错误的，因为刚开始是以为48行返回回去后，pos还是会指向']'。但是你要注意，48行返回回去后，是回到了第43行，然后到45行
+  走完当前分支，pos进行自增，所以不用担心pos继续指向']'。
+  
+stack版本：
+class Solution {
+public:
+    string decodeString(string s) {
+        string res = "";
+        stack<string> stk;
+        stack<int> num_stk;
+        for(int i = 0; i < s.size(); i++) {
+            if(isdigit(s[i])) {
+                string n = "";
+                while(isdigit(s[i])) n += s[i++];
+                num_stk.push(stoi(n));
+                i--;
+            } else if(s[i] == '[') {
+                stk.push(res);
+                res = "";
+            } else if(s[i] == ']') {
+                string tmp = stk.top();
+                stk.pop();
+                int time = num_stk.top();
+                num_stk.pop();
+                for(int j = 0; j < time; j++)   tmp += res;
+                res = tmp;
+            } else res += s[i];
+        }
+        return res;
+    }
+};
+
+总结：
+  其实递归与stack在本质上是很相似的。看到这道题呢，我一开始想对于每对[]中的string来说，它又可以当做string s来调用一次decodeString()，所以就想出了
+  第一个版本的递归写法。但是效率并不是很高，你每次构建string的时候需要遍历一次，然后调用decodeString后还要再遍历，所以会存在重复的遍历。
+  那么再往前进一步，如何避免重复遍历呢？传参的时候，我想就是尽量能传迭代器之类的，就尽量避免传整个字符串。而这里，其实有必要每次都将整个字符串都传入吗？
+  其实没必要，只要传入一个index，然后将整个字符串传入就可以了。看到[，就进入到下一层。看到]就本层结束，返回。
+  对于stack版本来说的话，我们用res一直来保存当前层的结果，比如3[a2[c]ef]，比如[a2[c]ef]这一层来说，res先是等于"a"，然后遇到2，将它放到数字stack中
+  然后遇到[，那么进入下一层，进入一下层之前，我们先将结果存到stack中，为什么说递归与stack类似呢，对于递归来说，我们进入下一层来说，我们不需要将这个"a"
+  人为存到stack中，它是存在于这一层的函数变量空间中，而用stack的话，我们相当于用stack来记录这种函数变量空间的嵌套关系。那么遇到]后，需要将顶部的"a"
+  取出，然后加上两次的"c"，然后再继续这一层的遍历。
+
+  
+  
+  
+  
+  
