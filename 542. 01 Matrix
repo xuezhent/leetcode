@@ -1,0 +1,76 @@
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        queue<vector<int>> q;
+        for(int i = 0; i < matrix.size(); i++)
+            for(int j = 0; j < matrix[0].size(); j++) 
+                if(matrix[i][j] == 1) {
+                    if(i > 0 && matrix[i-1][j] == 0 ||
+                      i < matrix.size()-1 && matrix[i+1][j] == 0 ||
+                      j > 0 && matrix[i][j-1] == 0 ||
+                      j < matrix[0].size()-1 && matrix[i][j+1] == 0) {
+                        q.push({i, j});
+                        matrix[i][j] = 1;
+                    } else matrix[i][j] = INT_MAX;
+                }
+        
+        while(!q.empty()) {
+            int sz = q.size(), cnt = 0;
+            while(cnt < sz) {
+                auto node = q.front();
+                q.pop();
+                for(auto d : dir) {
+                    int x = node[0] + d[0], y = node[1] + d[1];
+                    if(x >= 0 && x < matrix.size() && y >= 0 && y < matrix[0].size() && 
+                       matrix[x][y] == INT_MAX) {
+                        matrix[x][y] = matrix[node[0]][node[1]] + 1;
+                        q.push({x, y});
+                    }
+                }
+                cnt++;
+            }
+        }
+        return matrix;
+    }
+    
+private:
+    vector<vector<int>> dir = {{0, -1}, {0, +1}, {-1, 0}, {+1, 0}};
+};
+
+
+
+
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        int range = matrix.size() * matrix[0].size();
+        
+        for(int i = 0; i < matrix.size(); i++)
+            for(int j = 0; j < matrix[0].size(); j++) {
+                if(matrix[i][j] == 0)   matrix[i][j] = 0;
+                else {
+                    matrix[i][j] = range;
+                    if(i > 0) matrix[i][j] = min(matrix[i][j], matrix[i-1][j]+1);
+                    if(j > 0) matrix[i][j] = min(matrix[i][j], matrix[i][j-1]+1);
+                }
+            }
+        
+        for(int i = matrix.size()-1; i >= 0; i--)
+            for(int j = matrix[0].size()-1; j >= 0; j--) {
+                if(i < matrix.size()-1) matrix[i][j] = min(matrix[i][j], matrix[i+1][j]+1);
+                if(j < matrix[0].size()-1) matrix[i][j] = min(matrix[i][j], matrix[i][j+1]+1);
+            }
+        
+        return matrix;
+    }
+};
+
+总结：
+  第一个方法，第二次刷的时候有点思路不清晰，也就是BFS的展开方式不对，想着对每个不为0的点进行展开，这方向很明显错了。这棵树的顶点是那些为0的点，如果从不
+  为0的开始展开，这明显是从叶子往顶点展开了。
+  这题也可以用第二种类似于dp的方法做。
+  
+错误点：
+  1.第52行，一开始漏掉，但是，这是不正确的，需要一开始将matrix[i][j]设成一个比较大的值的，一开始设成了INT_MAX，但是会有可能在第53，54行造成越界。
+
+
