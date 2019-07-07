@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        for(auto& ac : accounts) {
+            for(int i = 1; i < ac.size(); i++) {
+                names[ac[i]] = ac[0];
+                if(i == 1)  continue;
+                graph[ac[i]].insert(ac[i-1]);
+                graph[ac[i-1]].insert(ac[i]);
+            }
+        }
+        
+        unordered_set<string> visit;
+        vector<vector<string>> res;
+        for(auto pr : names) {
+            if(visit.find(pr.first) == visit.end()) {
+                vector<string> v = {names[pr.first]};
+                dfs(v, pr.first, visit);
+                sort(v.begin()+1, v.end());
+                res.push_back(v);
+            }
+        }
+        return res;
+    }
+    
+    void dfs(vector<string>& res, string cur, unordered_set<string>& visit) {
+        if(visit.find(cur) != visit.end())  return;
+        res.push_back(cur);
+        visit.insert(cur);
+        for(auto next : graph[cur]) dfs(res, next, visit);
+    }
+    
+    
+private:
+    unordered_map<string, unordered_set<string>> graph;
+    unordered_map<string, string> names;
+};
+
+总结：
+  这就是典型的一道找图的连通分量的题，这种题呢，就是依次访问图中各点，而且每个点只用访问一次，因为它只会属于一个连通分量。这道题的难点主要在于如何构造
+  图。主要在4-11行，一开始我以为对于每个account中的每对email都要进行类似8-9行的操作，也就是将每对email之间都连接起来，但其实没有必要，你要找的是
+  连通分量，你只需要将属于一个account的email们作为节点构成一个连通的图就行了，而且这个图是无向的，那么只需要依次地将相邻的两个email双向连接起来就
+  可以了。
