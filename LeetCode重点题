@@ -145,6 +145,9 @@
 433. Minimum Genetic Mutation
       自己构建搜索图，并且用BFS查找路径，经典题
       
+439. Ternary Expression Parser
+      stack解法没有想出来
+      
 543. Diameter of Binary Tree
       寻找binary-tree中结点间最长的路径。注意最长路径不一定是经过root
       
@@ -159,7 +162,6 @@
       
 739. Daily Temperatures
       经典题，寻找后续第一个比自身大的元素。运用stack解。
-      
       
 756. Pyramid Transition Matrix
       逐层的backtracking，好题
