@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> res;
+        unordered_map<int, vector<int>> graph;
+        for(auto& pre : prerequisites)  graph[pre[1]].push_back(pre[0]);
+        
+        vector<bool> visited(numCourses, false), onpath(numCourses, false);
+        for(int i = 0; i < numCourses; i++) {
+            if(!visited[i] && !hasCycle(i, visited, onpath, graph, res))    return {};
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+    
+    bool hasCycle(int node, vector<bool>& visited, vector<bool>& onpath, unordered_map<int, vector<int>>& graph, vector<int>& res) {
+        if(onpath[node])    return false;
+        if(visited[node])   return true;
+        
+        onpath[node] = visited[node] = true;
+        for(auto next : graph[node])
+            if(!hasCycle(next, visited, onpath, graph, res))    return false;
+        res.push_back(node);
+        onpath[node] = false;
+        return true;
+    } 
+};
+
+总结：
+  上面只列出了DFS解法，这里的DFS思想主要如下，当一个节点有children的时候，它说明children比它后上。我们先将最后上的课放进res中，然后最后进行reverse。
+ 为什么这么做呢？你想比如，0-1-3，0-2-3.你如果按照dfs访问的顺序去放进res的话，那么第一轮dfs之后，res会变成0-1-3，你再进行dfs，后面的2怎么放到3之前？
+ 所以，这种只能是从后往前放，那么对于每个节点来说，只要它还有没访问过的children，它就还不能放，等所有children访问完了，才能放它。
+
+
+
+
