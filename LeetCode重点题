@@ -7,6 +7,9 @@
 33. Search in Rotated Sorted Array
       写的不熟练，corner case没考虑好
       
+40. Combination Sum II
+      需要一些sort之类的小处理      
+      
 47. Permutations II
       经典的permutation，第一次做花了点时间，没有一遍做对
 
@@ -111,6 +114,8 @@
       无序数组中找升序Triplet
       自己的思路不清晰
       
+337. House Robber III
+      
 341. Flatten Nested List Iterator
       目前使用的是dfs做法，但可以有更优的使用stack的解法。
 
@@ -141,6 +146,9 @@
       
 406. Queue Reconstruction by Height
       一开始做，方法有点混乱，不简洁
+      
+417. Pacific Atlantic Water Flow
+      做起来有点烦
       
 433. Minimum Genetic Mutation
       自己构建搜索图，并且用BFS查找路径，经典题
