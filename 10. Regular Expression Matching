@@ -1,0 +1,49 @@
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        vector<vector<bool>> dp(s.size()+1, vector<bool>(p.size()+1, false));
+        
+        for(int i = 0; i <= s.size(); i++)
+            for(int j = 0; j <= p.size(); j++) {
+                if(i == 0 && j == 0)    dp[i][j] = true;
+                else if(i == 0 || j == 0)   dp[i][j] = false;
+                else if(s[i-1] == p[j-1] || p[j-1] == '.')   dp[i][j] = dp[i-1][j-1];
+                else if(p[j-1] == '*') {
+                    if(s[i-1] == p[j-2] || p[j-2] == '.')
+                        dp[i][j] = dp[i-1][j] || dp[i-1][j-2] || dp[i][j-2];
+                    else
+                        dp[i][j] = dp[i][j-2];
+                }
+            }
+        
+        return dp[s.size()][p.size()];
+    }
+};
+
+错误点：
+  1.第9行，不能单纯地认为i为0，j不为0就是匹配失败，还有可能是这样的，s为"aab"，p为"c*a*b"，这样，当i为0的时候，"c*"仍然是匹配成功的。所以应该是下面
+  这种写法，但是下面这种写法需要将40行的判断放在48行的判断之前，因为你有可能是i为0，然后p为"c*a*b"且j为2，那么第39行的判断没有进入，如果48行的判断在
+  前，那么会判断s[i-1] == p[j-1]，这就会越界。
+   
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        vector<vector<bool>> dp(s.size()+1, vector<bool>(p.size()+1, false));
+        
+        for(int i = 0; i <= s.size(); i++)
+            for(int j = 0; j <= p.size(); j++) {
+                if(i == 0 && j == 0)    dp[i][j] = true;
+                else if(j == 0 || (i == 0 && p[j-1] != '*'))   dp[i][j] = false; 
+                else if(p[j-1] == '*') {
+                    if(i == 0)
+                        dp[i][j] = dp[i][j-2];
+                    else if(s[i-1] == p[j-2] || p[j-2] == '.')
+                        dp[i][j] = dp[i-1][j] || dp[i-1][j-2] || dp[i][j-2];
+                    else
+                        dp[i][j] = dp[i][j-2];
+                }
+                else if(s[i-1] == p[j-1] || p[j-1] == '.')   dp[i][j] = dp[i-1][j-1];
+            }
+        return dp[s.size()][p.size()];
+    }
+};
