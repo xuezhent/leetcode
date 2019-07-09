@@ -10,11 +10,17 @@
 40. Combination Sum II
       需要一些sort之类的小处理      
       
+46. Permutations
+      很巧妙的方法      
+      
 47. Permutations II
       经典的permutation，第一次做花了点时间，没有一遍做对
 
 50. Pow(x, n)
       思路不太会
+
+60. Permutation Sequence
+      并不能很轻松地就写出来
       
 91. Decode Ways
       corner case不太好处理
