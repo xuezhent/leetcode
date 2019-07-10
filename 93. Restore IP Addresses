@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> res;
+        helper(res, s, "", 0, 0);
+        return res;
+    }
+    
+    void helper(vector<string>& res, string& s, string str, int idx, int cnt) {
+        if(idx == s.size() && cnt == 4) {
+            str.pop_back();
+            res.push_back(str);
+            return;
+        }
+        
+        int sz = s.size();
+        string tmp = "";
+        for(; idx < min(idx+3, sz); idx++) {
+            tmp += s[idx];
+            if(stoi(tmp) < 256)
+                helper(res, s, str+tmp+".", idx+1, cnt+1);
+            else    break;
+        }
+    }
+};
+
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> res;
+        helper(res, s, "", 0, 0);
+        return res;
+    }
+    
+    void helper(vector<string>& res, string& s, string str, int idx, int cnt) {
+        if(idx == s.size() && cnt == 4) {
+            str.pop_back();
+            res.push_back(str);
+            return;
+        }
+        if(cnt == 4)    return;
+        
+        string tmp = "";
+        int sz = s.size();
+        int bound = s[idx] == '0' ? idx+1 : min(idx+3, sz);
+        for(; idx < bound; idx++) {
+            tmp += s[idx];
+            if(stoi(tmp) < 256) helper(res, s, str+tmp+".", idx+1, cnt+1);
+            else    break;
+        }
+    }
+};
+
+错误点：
+  1.第一个为错误写法，而且在第一个写法之前还有一个错误的写法，那个写法还没有将cnt考虑进去。首先，cnt必须要考虑，不然会生成大于4段的IP地址，这个很明显
+  是不符合标准的。
+  2.第一个写法没有考虑到开头为0的情况，需要像第二个写法那样进行处理，其次当cnt为4的时候，需要尽快地剪枝。
