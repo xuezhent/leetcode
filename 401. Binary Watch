@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<string> readBinaryWatch(int num) {
+        vector<string> res, h_v, m_v;
+        vector<int> h = {8, 4, 2, 1}, m = {32, 16, 8, 4, 2, 1};
+        for(int i = 0; i <= num; i++) {
+            helper(h_v, h, 0, i, 0);
+            helper(m_v, m, 0, num-i, 0);
+            for(auto h_elem : h_v) {
+                if(stoi(h_elem) >= 12)   continue;
+                for(auto m_elem : m_v) {
+                    if(stoi(m_elem) >= 60)  continue;
+                    string tmp = h_elem + ":" + m_elem;
+                    res.push_back(tmp);
+                }
+            }
+            h_v.clear();
+            m_v.clear();
+        } 
+        return res;
+    }
+    
+    void helper(vector<string>& res, vector<int>& elem, int idx, int num, int sum) {
+        if(num == 0) {
+            if(sum == 0)    elem.size() == 4 ? res.push_back("0") : res.push_back("00");
+            else if(sum < 10) elem.size() == 4 ? res.push_back(to_string(sum)) : res.push_back("0"+to_string(sum));
+            else res.push_back(to_string(sum));
+            return;
+        }
+        if(idx == elem.size())  return;
+        helper(res, elem, idx+1, num-1, sum+elem[idx]);
+        helper(res, elem, idx+1, num, sum);
+    }
+};
+
+错误点：
+  1.第31行一开始写的num--,这个要注意
+  2.第10行，第12行的判断一开始没有加，为什么这个表不能表示大于等于12的小时数呢，因为你把8，4，2，1全都加起来也不够表示24小时制的小时数，说明它是12小时
+  制的，所以小时数在0-11之间。
