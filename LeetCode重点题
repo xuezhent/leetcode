@@ -44,6 +44,9 @@
 116. Populating Next Right Pointers in Each Node
       这个题的O(1) space解法还是值得多去做一做的
       
+126. Word Ladder II
+      可以通过双向BFS去做
+      
 127. Word Ladder
       需要熟练掌握。就是BFS的变形。
       
@@ -83,6 +86,9 @@
       
 261. Graph Valid Tree
       确定图是否为树，经典题目
+      
+267. Palindrome Permutation II
+      有一些易错点
       
 274. H-Index
       二刷时一开始不会，且题目意思理解有问题
@@ -136,6 +142,9 @@
       
 351. Android Unlock Patterns
       写的磕磕绊绊
+      
+357. Count Numbers with Unique Digits
+      写的磕磕绊绊      
       
 360. Sort Transformed Array
       没做出来
