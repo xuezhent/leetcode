@@ -20,3 +20,28 @@ public:
 
 错误点：
   15，16行要记得加上(char)，因为这两个函数返回的是int类型
+  
+  
+class Solution {
+void backtrack(string &s, int i, vector<string> &res) {
+    if (i == s.size()) {
+        res.push_back(s);
+        return;
+    }
+    backtrack(s, i + 1, res);
+    if (isalpha(s[i])) {
+        // toggle case
+        s[i] ^= (1 << 5);
+        backtrack(s, i + 1, res);
+    }
+}
+public:
+    vector<string> letterCasePermutation(string S) {
+        vector<string> res;
+        backtrack(S, 0, res);
+        return res;
+    }
+};
+
+总结：
+    第34行是个好的技巧。其次，这道题因为是toggle，它不需要像其他的backtrack题目那样需要在结束的时候将它置成初始状态。
