@@ -1,0 +1,55 @@
+vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+     
+        int min_sz = INT_MAX;
+        vector<string> vec;
+        vector<vector<string>> res;
+        unordered_set<string> dic(wordList.begin(), wordList.end()), visit;
+        
+        if(dic.find(endWord) == dic.end())  return {};
+        
+        queue<vector<string>> q;
+        q.push({beginWord});
+        
+        while(!q.empty()) {
+            int sz = q.size(), cnt = 0;
+            for(auto elem : visit) {
+                dic.erase(elem);
+            }
+            visit.clear();
+            
+            while(cnt < sz) {
+                cnt++;
+                auto node = q.front();
+                q.pop();
+                string bk = node.back();
+                
+                for(int i = 0; i < bk.size(); i++) {
+                    char ch = bk[i];
+                    for(char c = 'a'; c <= 'z'; c++) {
+                        if(c == ch) continue;
+                        bk[i] = c;
+                        if(dic.find(bk) != dic.end()) {
+                            auto tmp_node = node;
+                            tmp_node.push_back(bk);
+                            if(bk == endWord) {
+                                min_sz = tmp_node.size();
+                                res.push_back(tmp_node);
+                            } else {
+                                visit.insert(bk);
+                                q.push(tmp_node);
+                            }
+                            
+                        }
+                    }
+                    bk[i] = ch;
+                }
+            }
+            if(min_sz != INT_MAX)   break;
+        }
+        return res;
+    }
+    
+    总结：
+      这道题的BFS和其他题有点不太相同的地方，首先queue记录的节点并不是单纯的数值类型，而是vector<string>类型。
+      其次，BFS防止重复访问的方式是逐层的，也就是不同的parent是可以访问同一个child的，但是仅限于这个child和parent只相隔一层，一旦这一层这个节点
+      被访问过了，之后层中是不可以再访问这一节点的。所以需要15-17行每一层开始的时候，需要将上一层用过的节点从wordList中删除。
