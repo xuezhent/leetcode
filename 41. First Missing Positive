@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        if(nums.empty())    return 1;
+        nums.push_back(-1);
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] == i)    continue;
+            if(nums[i] < 0 || nums[i] >= nums.size())   continue;
+            while(nums[i] != i) {
+                if(nums[i] < 0 || nums[i] >= nums.size())   break;
+                if(nums[nums[i]] == nums[i])    break;
+                int tmp = nums[nums[i]];
+                nums[nums[i]] = nums[i];
+                nums[i] = tmp;
+            }
+        }
+        
+        for(int i = 1; i < nums.size(); i++) 
+            if(nums[i] != i)    return i;
+        return nums.back()+1;
+    }
+};
+
+
+
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int len = nums.size();
+        for(int i=0; i<len; i++) {
+            while(nums[i]>0 && nums[i]<=len && nums[i]!=nums[nums[i]-1]){
+                swap(nums[i], nums[nums[i]-1]);
+            }
+        }
+        
+        for(int i=0; i<len; i++) {
+            if(nums[i]!=i+1)
+                return i+1;
+        }
+        return nums.size()+1;
+    }
+};
+
+总结：
+  为什么会想起来加上第5行呢，是有一个case比如[2,1]，明显nums[2]已经越界了，那么就想着要不就push_back一个，这样怎么都不会越界了。
+  当然第二个方法更加简洁一点。要注意的是，第31行nums[i]!=nums[nums[i]-1]有两个作用，一个是判断第i位是否已经放好了，比如nums[0]如果是1，那么就
+  表示第0位已经放好了；另一个作用就是防止死循环，比如[2,2]，访问nums[0]时，如果没有这个判断的话，会一直swap(nums[1], nums[0])。
+  
+  
+  
+  
+  
+  
