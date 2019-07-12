@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<string> generatePalindromes(string s) {
+        char middle;
+        int cnt = 0;
+        vector<string> res;    
+        for(auto c : s) mp[c]++;
+        for(auto pr : mp) {
+            if(pr.second % 2 != 0) {
+                cnt++;
+                middle = pr.first;
+            }      
+        }
+        if(cnt > 1) return {};
+            
+        helper(res, "", "", middle, s);
+        return res;
+    }
+    
+    void helper(vector<string>& res, string head, string tail, char middle, string s) {
+        if(head.size() + tail.size() == s.size()) {
+            res.push_back(head+tail);
+            return;
+        }
+        if(head.size() + tail.size() + 1 == s.size()) {
+            res.push_back(head+middle+tail);
+            return;
+        }
+        for(auto& pr : mp) {
+            if(pr.second != 0 && pr.second >= 2) {
+                pr.second -= 2;
+                helper(res, head+pr.first, pr.first+tail, middle, s);
+                pr.second += 2;
+            }
+        }
+    }
+private:
+    unordered_map<char, int> mp;
+};
+
+错误点：
+  1.第29行因为要进行修改操作，所以一定要加上引用符号。
+  2.这题要用unordered_map去存字符出现次数，一开始用vector，想当然地以为只有小写字母，其实什么字符都是可以出现的。
+  3.第14行要进行判断，这样可以防止有些case出现TLE。
+  4.第30行一开始写的是pr.second % 2 == 0，但是有可能是这种情况，比如"aaa"，middle是该字符，然后剩下的还是偶数个，这样就不能单纯地用%2 == 0去判断
+  了。
+        
+        
