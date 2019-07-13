@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows <= 1) return s;
+        string res = "";
+        int N = numRows;
+        while(numRows > 0) {
+            int idx = N - numRows, step1 = 2*N-2*idx-2, step2 = 2*N-2-step1;
+            while(idx < s.size()) {
+                res += s[idx];
+                idx += step1 == 0 ? step2 : step1;
+                if(idx < s.size())  res += s[idx];
+                else    break;
+                idx += step2 == 0 ? step1 : step2;
+            }
+            numRows--;
+        }
+        return res;
+    }
+};
+
+错误点：
+  1.第11行，第14行，如果step1或step2为0的时候，它们分别会将拐角处的字符加两遍。因为你每次进入第9行的循环中，第10行都会将字符加上，所以每次退出循环
+  之前都要让idx进行改变。
+  2.第4行，如果numRows为1的时候，会让step1和step2都为0，idx会跑不动，陷入死循环，所以要单独处理。
