@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int myAtoi(string str) {
+        int idx = 0, flag = 1;
+        while(str[idx] == ' ')  idx++;
+        if(str[idx] == '+' || str[idx] == '-') {
+            if(str[idx] == '-') flag = -1;
+            idx++;
+        } 
+        
+        int res = 0; 
+        for(; idx < str.size(); idx++) {
+            if(!isdigit(str[idx]))  break;
+            if(res > INT_MAX / 10 || res < INT_MIN / 10)    return flag == 1 ? INT_MAX : INT_MIN;
+            res *= 10;
+            int digit = str[idx]-'0';
+            if(flag == 1) {                
+                if(res > INT_MAX - digit)   return INT_MAX;
+                else res += digit;
+            } else {
+                if(res < INT_MIN + digit)   return INT_MIN;
+                else res -= digit;
+            }
+        }
+        return res;
+    }
+};
+
+错误点：
+  1.第17行到第23行的判断，一开始没有写，而是直接对res进行加减操作。
+  
+总结：
+  这道题虽然corner case是比较多的，但是如果思路清晰，是不难做出来的。
+  首先第5行，进行开头空白字符的过滤。
+  过滤之后，对于str[idx]有三种情况，1.是数字；2.是正负号；3.是字符。  对于1，2两种情况，是合法的。对于第3种情况是非法的。我们要做的是找到第一个在进入
+  第12行的循环之前，将idx指向第一个待处理的可能是数字的字符上，比如说“-21“，在循环前，我们就将idx指向2，”-+3“，我们将idx指向+，因为第一个负号我们看
+  做是符号，那么接下来我们预期第一个数字应该是跟着符号之后的，也就是负号之后我们期望跟着的是一个数字，现在它是正好就说明是不合法的，这个留到循环中再进行
+  处理。所以就要想第6-8行那样，如果第一个字符为符号，那么就将它看成是合法符号，将idx进行自增，并且同时记录数字的正负。
+  进入到12行的循环，也就是开始进行数字的处理。那么这个时候只要碰到非数字符号，就跳出，13行的功能。
+  然后，没有跳出，就说明当前的字符是数字，那么正常要将这个数字加到res上，进行两步操作，1.res *= 10; 2.根据正负号，决定res加减digit。
+  这两步任意一步都有可能发生越界问题。那么对于第一个的越界，用第14行进行判断；对于第二个的越界，用第18行和第21行进行判断。
