@@ -14,7 +14,7 @@
       经典的处理链表指针的问题
       
 27. Remove Element
-      没有一边写对
+      没有一遍写对
       
 29. Divide Two Integers
       这道题思路完全不对，通过bit manipulations来计算除法      
@@ -39,9 +39,14 @@
 
 50. Pow(x, n)
       思路不太会
+      
+54. Spiral Matrix
+      循环条件写的时候需要注意      
 
 60. Permutation Sequence
       并不能很轻松地就写出来
+      
+69. Sqrt(x)      
       
 89. Gray Code（与784. Letter Case Permutation的方法有类似的地方）
       方法很巧妙
