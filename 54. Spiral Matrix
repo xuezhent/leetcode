@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int N = matrix.size(), M = N ? matrix[0].size() : 0, num = N * M, cnt = 0;
+        int up = 0, right = M-1, down = N-1, left = 0;
+        
+        vector<int> res;
+        while(cnt < num) {
+            for(int i = left; i <= right && cnt < num; i++, cnt++)  res.push_back(matrix[up][i]);
+            for(int i = up+1; i <= down && cnt < num; i++, cnt++)  res.push_back(matrix[i][right]);            
+            for(int i = right-1; i >= left && cnt < num; i--, cnt++)   res.push_back(matrix[down][i]);
+            for(int i = down-1; i > up && cnt < num; i--, cnt++)   res.push_back(matrix[i][left]);
+            up++, right--, down--, left++;
+        }
+        return res;
+    }
+};
+
+错误点：
+  1.第9行一开始写的是i < right，并没有加上=号，但是有个case，比如说最后只剩一个元素没有加上了，这时候left和right应该是指向同一个元素，那么会陷入
+  死循环。
+  
+  
