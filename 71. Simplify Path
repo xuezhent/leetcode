@@ -1,0 +1,19 @@
+class Solution {
+public:
+    string simplifyPath(string path) {
+        string dir, res;
+        stack<string> stk;
+        stringstream ss(path);
+        while(getline(ss, dir, '/')) {
+            if(dir == "" || dir == ".") continue;
+            if(dir == ".." && !stk.empty()) stk.pop();
+            else if(dir != "..") stk.push(dir);
+        }
+        
+        for(; !stk.empty(); stk.pop()) res = '/' + stk.top() + res;
+        return res.empty() ? "/" : res;
+    }
+};
+
+总结：
+  第6-7行利用stringstream和getline实现类似split的功能。
