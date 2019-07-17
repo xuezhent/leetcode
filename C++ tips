@@ -74,6 +74,11 @@
 9.istringstream
     290中用到
     可用来分割string中的word。
+    
+    71题中分割string，分隔符为'/'，将每次分割的word存入到dir中。
+    string dir;
+    stringstream ss(path); （path是要进行分割的string）
+    while(getline(ss, dir, '/'))
 
 10.std::numeric_limits<T>::min
     Returns the minimum finite value representable by the numeric type T.
