@@ -1,0 +1,26 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        if(nums.size() < 2) return;
+        for(int i = nums.size()-2; i >= 0; i--) {
+            if(nums[i] < nums[i+1]) {
+                helper(nums, i, nums.size()-1);
+                return;
+            }
+        }
+        sort(nums.begin(), nums.end());
+    }
+    
+    void helper(vector<int>& nums, int start, int end) {
+        for(int i = end; i > start; i--)
+            if(nums[i] > nums[start]) {
+                swap(nums[start++], nums[i]);
+                break;
+            }           
+        reverse(nums.begin()+start, nums.end());
+    }
+};
+
+错误点：
+  1.第15行到第19行，一开始我是想当然地将nums[end]和nums[start]进行swap，但是你比如说有个permutation，2431，直接将nums[end]和nums[start]进行
+  swap的话，就是将1和2交换了，这明显不对，要交换的话也是要将2后面的数字中比2大的最小的数字与它交换，也就是将3与它交换。
