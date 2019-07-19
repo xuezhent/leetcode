@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int lo = 0, hi = nums.size()-1;
+        while(lo <= hi) {
+            int mid = lo + (hi-lo)/2;
+            if(nums[mid] == target) return true;
+            if(nums[mid] == nums[0]) {
+                if(nums[lo] == nums[0]) lo++;
+                if(nums[hi] == nums[0]) hi--;
+            }
+            else if(nums[mid] > nums[0]) {
+                if(target > nums[mid])  lo = mid+1;
+                else if(target >= nums[0])  hi = mid-1;
+                else lo = mid+1;
+            } else {
+                if(target < nums[mid])  hi = mid-1;
+                else if(target < nums[0])   lo = mid+1;
+                else hi = mid-1;
+            }
+        }
+        return false;
+    }
+};
+
+总结：
+  这题与33. Search in Rotated Sorted Array的区别主要在于这题给的数组中可能包含重复的数字。在33题中，我们是怎么进行二分查找的？先是用mid和nums[0]
+  比较，判断mid是处于有序的上升段还是处于包含拐点的那一段，然后再根据target和nums[0]与nums[mid]之间的关系来更新lo和hi。但是现在可以有重复了，那么
+  mid和nums[0]之间的关系就分为3种，需要单独处理它们相等的情况，因为当它们俩相等的时候，你没办法判断是处于哪一段。那怎么办？二叉搜索的核心思想不就是一直
+  缩小搜索范围嘛，那mid和nums[0]两个相等，虽然不能判断处于哪一段，但是我们最起码知道经过第7行的判断后，target和mid不相等，那么通过第9-10行进行范围缩
+  小，虽然这个缩小的程度不如二叉搜索那么大，但是平均下来还是能起到二叉的效果。
