@@ -1,0 +1,11 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digit) {
+        for(int i = digit.size(); i--; digit[i] = 0) {
+            if(digit[i]++ < 9) return digit;      
+        }
+        digit[0]++;
+        digit.push_back(0);
+        return digit;
+    }
+};
