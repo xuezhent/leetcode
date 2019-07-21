@@ -1,0 +1,66 @@
+方法一：
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if(nums.empty())    return {-1, -1};
+        int start = -1, end = -1;
+        
+        int lo = 0, hi = nums.size()-1;
+        while(lo < hi) {
+            int mid = lo + (hi-lo)/2;
+            if(nums[mid] < target) lo = mid+1;
+            else hi = mid;
+        }
+        if(nums[lo] != target)  return {-1, -1};
+        start = lo;      
+                
+        hi = nums.size()-1;
+        while(lo < hi) {
+            int mid = lo + (hi-lo+1)/2;
+            if(nums[mid] <= target) lo = mid;
+            else hi = mid-1;
+        }
+        end = lo;
+        return {start, end};
+    }
+};
+
+总结：
+  这个方法巧妙的地方在于18-22行，这是第二轮二叉搜索，第二轮二叉搜索所要完成的任务是找到target的右边界。
+  那么按照正常的binary search流程走，先计算mid，然后判断nums[mid]与target之间的大小关系，既然是求右边界，也就是target >= nums[mid]，我们要找的
+  位置在右边，且这个右边得包含mid，我们很清楚一旦二叉搜索写成像20行这样，也就是出现了lo = mid这种情况的时候，是会陷入死循环的。
+  那么如何改进？
+  陷入死循环的原因是什么？就是mid的计算机制导致的。为什么？因为我们计算mid总是求的是除法下界，就是类似于第10行那样。比如说lo为3，hi为4，求出来是3，这
+  是死循环的原因。那如果我们每次求除法上界，这个问题就能解决，因为这样lo每次都是会被改变的。那要求除法上界，就得写成第19行这样。
+  还有一点要注意的，就是进行第二轮二叉搜索的时候是没必要将lo置零的，因为第二轮二叉搜索我们要找的位置一定是在第一轮二叉搜索求出的lo之后的，所以不置零是没
+  有影响的。
+  
+方法二：
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if(nums.empty())    return {-1, -1};
+        int start = binarySearch(nums, target);
+        if(start == nums.size() || nums[start] != target)   return {-1, -1};
+        int end = binarySearch(nums, target+1)-1;
+        return {start, end};
+    }
+    
+    int binarySearch(vector<int>& nums, int target) {
+        int lo = 0, hi = nums.size();
+        while(lo < hi) {
+            int mid = lo + (hi-lo)/2;
+            if(nums[mid] < target) lo = mid+1;
+            else hi = mid;
+        }
+        return lo;
+    }
+};
+
+总结：
+  这个方法的巧妙之处在于我将求target的右边界转化为求target+1的左边界，这样可以共用一套binary search的代码。
+  当然我们求target+1的左边界，并不一定是说nums中存在target+1这个数，因为上面这套binary search代码求的其实是一个大于等于某个数的最小index，所以
+  求target+1的左边界，也不过是求的第一个比target大的数的index。
+  但问题是，一定会存在比target大的数吗？不一定，比如说nums=[1],target=1，那就不存在比target大的数，那么我们要返回什么呢？明显是要返回nums.end()
+  对应的那个index,也就是2。那么我们就不能将hi继续设成nums.size()-1了，因为这样是不可能有机会返回nums.size()的，那只能将hi设成nums.size()。
+  
