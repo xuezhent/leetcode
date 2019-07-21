@@ -1,0 +1,28 @@
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(!head)   return head;
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* pre = dummy, *cur = head;
+        bool repeat = false;
+        while(cur->next) {
+            if(cur->val == cur->next->val)  repeat = true;
+            else {
+                if(!repeat) {            
+                    pre->next = cur;
+                    pre = cur;
+                }
+                repeat = false;
+            }
+            cur = cur->next;
+        }
+        if(repeat)  pre->next = nullptr;
+        else pre->next = cur;
+        return dummy->next;
+    }
+};
+
+错误点：
+  1、第21行一定要加上，数组的末尾有两种情况，一种是数组末尾重复，那么要将pre->next置为null；还有一种就是末尾不重复，那么还是需要处理的，要将pre->next
+  设为cur。
