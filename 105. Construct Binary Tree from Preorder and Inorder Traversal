@@ -35,3 +35,33 @@ idea:
 mistake:
     一开始没有设置inend参数，那么这样没有判断的话，会导致其实子树没有更多的元素了但是还是会不断迭代下去，这样会导致出错。所以一定要有个inend参数配合
 instart参数来检查子树是否已经为空了。
+
+
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int idx = 0;
+        for(int i = 0; i < inorder.size(); i++) mp[inorder[i]] = i;
+        return helper(preorder, inorder, idx, 0, inorder.size()-1);
+    }
+    
+    TreeNode* helper(vector<int>& preorder, vector<int>& inorder, int& idx, int left_bound, int right_bound) {
+        if(left_bound > right_bound) return nullptr;
+        
+        int cur_val = preorder[idx++];
+        int index = mp[cur_val];
+        TreeNode* node = new TreeNode(cur_val);
+        node->left = helper(preorder, inorder, idx, left_bound, index-1);
+        node->right = helper(preorder, inorder, idx, index+1, right_bound);
+        return node;
+    }
+    
+private:
+    unordered_map<int, int> mp;
+};
+
+总结：
+    之前的写法太过冗杂了，而且上面的总结也有点问题，比如说preorder中root紧接着的元素并不一定是左子树的root，如果左子树为空，那它就是右子树的root了。
+    那么这整个思想是怎样的呢？用一个idx索引，但要怎么样让idx按顺序指向要构建的元素呢？那就要看preorder是按什么顺序获得的了。preorder就是先访问当前
+    节点，然后访问左子树，再访问右子树。那么我们构建的时候也这样构建，先构建当前节点node，然后构建左子树，再构建右子树。这样就能让idx依次地指向我们想
+    要的元素了。
