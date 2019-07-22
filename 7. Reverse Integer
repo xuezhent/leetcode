@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int reverse(int x) {        
+        int res = 0;
+        // long num = abs((long) x);
+        bool sign = x >= 0;
+        while(x) {
+            int digit = x % 10;
+            x /= 10;
+            if(res > INT_MAX / 10 || res < INT_MIN / 10)    return 0;
+            res *= 10;
+            
+            if(res > INT_MAX - abs(digit) || res < INT_MIN + abs(digit))  return 0;
+            // sign ? res += digit : res -= digit;
+            res += digit;
+        }
+        return res;
+    }
+};
+
+总结：
+  一开始我是像备注那样将x转换成正数进行计算的，然后根据正负决定是加还是减。
+  但其实完全不用管正负号，直接计算，第8行正数求出来的余数就是正数，负数求出来的余数就是负数。可以直接进行第15行那样的加法操作。
