@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int sumNumbers(TreeNode* root) {
+        helper(root, 0);
+        return res;
+    }
+    
+    void helper(TreeNode* root, int num) {
+        if(!root) return;
+        num = num*10 + root->val;
+        if(!root->left && !root->right) res += num;
+        helper(root->left, num);
+        helper(root->right, num);
+    }
+private:
+    int res = 0;
+};
+
+错误点：
+  1.一开始将res += num写在了第9行。这个终止条件明显是错误的。比如说，一个叶子节点，它有左右两个为空节点的children，那么它就会被加两次。
+  所以这道题的正确终止条件是该节点为叶子节点。
