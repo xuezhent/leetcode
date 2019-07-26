@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode* slow = head, *fast = head;
+        while(fast) {
+            slow = slow->next;
+            fast = fast->next;
+            if(fast)    fast = fast->next;
+            if(fast && slow == fast)    return true;
+        }
+        return false;
+    }
+};
+
+错误点：
+  1.第9行一定要加上对fast的判断。因为有环的条件其实是fast追上了slow且fast不可能是nullptr,你要注意当head只有一个元素的情况，slow会和head都是
+  nullptr。
