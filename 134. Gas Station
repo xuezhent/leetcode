@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int start = 0, tank = 0, total = 0;
+        for(int i = 0; i < gas.size(); i++) {
+            tank += gas[i] - cost[i];
+            if(tank < 0) {
+                start = i+1;
+                total += tank;
+                tank = 0;
+            }
+        }
+        if(tank + total >= 0)   return start;
+        return -1;
+    }
+};
+
+总结：
+  这题主要有两点需要弄清楚
+  1.这题我们肯定是要设置一个start用来记录每一段的开头，然后遍历元素，那么如果你遍历到某一个i，算出来从start开始到这个i结束，算出的gas总和小于cost，
+  那么我们需要更新start，重新计算，那么这个新的start应该设为多少？是设为start+1,然后重新开始遍历计算看是否符合吗？这显然时间复杂度太高了。能否优化？
+  我们想是否可以在发现不满足情况的时候，将start直接更新为i+1？
+  那么需要我们证明一下，我们可以知道从start遍历到i才不满足，说明start到i之间对于任意的i来说，遍历到它的时候gas和大于cost和，那如果我们说start和i中间有一个
+  k可以作为一个新的start，这显然是不可能的。我们假设start-k之间的gas和减去cost和为sum1,k-i之间的gas和减去cost和为sum2，那么start到i的gas和减去
+  cost和即为sum1+sum2,我们又知道sum1 > 0, sum1 + sum2 < 0,那么sum2一定是 < 0，所以start与i之间不可能有满足条件的k。
+  
+  2.根据1我们得知了每次不满足条件的时候，我们会将start更新为i+1，但是我们又要明确一点的就是当i已经越过终点再回到数组起点的时候，也就是i < start的时候。
+  我们在这种情况下是不更新start的，因为小于start的那些i已经在之前被访问过了，再更新就会陷入重复。
+  那么也就是说当我们遍历到数组末尾，我们也就不再遍历了。因为正如上面说的，我们及时再转回起点开始遍历也不会更新start。那么我们只需要在最后判断一下以start
+  为起点的gas和是否大于cost和。
