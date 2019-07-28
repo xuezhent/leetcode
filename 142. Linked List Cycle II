@@ -1,0 +1,33 @@
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* slow = head, *fast = head;
+        while(fast) {
+            slow = slow->next;
+            fast = fast->next;
+            if(fast)    fast = fast->next;
+            if(fast == slow)    break;
+        }
+        if(!fast)    {
+            return nullptr;
+        }
+        
+        while(head != slow) {
+            head = head->next;
+            slow = slow->next;
+        }
+        return slow;
+    }
+};
+
+
+
+总结：
+  这题主要用到的难点是知道了slow和fast的见面点之后如何求解出环的入口。
+  我当时是想应该是和fast和slow之间的关系有关。那么我们先来看下slow和fast分别等于什么。先设几个变量。
+  假设head到环的入口之间的距离为s,环的入口到slow之间的距离为x，环的周长为r, slow到环的入口的距离为y。
+  那么slow走过的距离为s+x+n1*r; fast走过的距离就为s+x+n2*y;
+  我们又知道s+x+n2*r = 2(s+x+n1*r)
+  (n2-n1)*r = x + s;
+  也就是s相当于转n圈然后减去x。那么如果从slow出发，转n圈肯定还是回到当前这个位置，然后减去x，就是环的入口，因为环的入口到slow的距离为x。
+  那么从head出发，走了s距离之后，到达环的入口，slow从当前位置出发，走过s距离，根据上面分析，也是到了环的入口。那么它们相遇的点就是环的入口。
