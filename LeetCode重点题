@@ -91,7 +91,9 @@
 139. Word Break
       经典题，方法比较多
       
-142. Linked List Cycle II      
+142. Linked List Cycle II     
+
+146. LRU Cache
     
 155. Min Stack
       最优的方法不会
