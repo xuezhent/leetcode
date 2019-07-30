@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int lo = 0, hi = nums.size()-1;
+        while(lo < hi) {
+            int mid = lo + (hi-lo) / 2;
+            if(nums[mid] >= nums[0]) lo = mid + 1;
+            else hi = mid;            
+        }
+        return nums[lo] < nums[0] ? nums[lo] : nums[0];
+    }
+};
+
+错误点：
+  1.第8行我直接写成了hi = mid-1;这显然是把范围缩错了。因为是有可能包含mid的。
+  2.第10行直接返回nums[lo]，但是有一种情况被忽略了，就是本身是有序的这种情况。
