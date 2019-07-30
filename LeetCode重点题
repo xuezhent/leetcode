@@ -97,6 +97,12 @@
 
 148. Sort List
      自下至上的归并排序，思路不清晰
+     
+151. Reverse Words in a String
+      in place的方法思路要理清
+      
+152. Maximum Product Subarray
+      容易写错            
     
 155. Min Stack
       最优的方法不会
