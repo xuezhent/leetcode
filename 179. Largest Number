@@ -19,6 +19,7 @@ public:
 corner case:
   1.[0,0]
     要在输出res前，判断res开头是否为0.一开始尝试用stoi(res) == 0来判断，当res过大，会导致overflow.
+    二刷问题还是出在了这
   2.[]
     如果nums为空，要补0，所以要加一个判断.
     
