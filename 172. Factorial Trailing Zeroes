@@ -1,0 +1,33 @@
+错误写法：
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        int cnt = 0;
+        for(int i = 5; i <= n; i += 5) {
+            for(int tmp = i; tmp && tmp % 5 == 0; tmp /= 5)    cnt++;
+        }
+        return cnt;
+    }
+};
+
+总结：
+  最初始的错误写法是直接return n / 5;
+  以为只要判断1-n之间有几个5就能知道有几个0，但很明显面对数字25这种方法就不对了，25这一个数字就能引入2个5.
+  那又想到上面这种写法。但很明显这是O(n)的解法，复杂度太高了。
+  
+正确写法：
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        int cnt = 0;
+        while(n) {
+            n /= 5;
+            cnt += n;
+        }
+        return cnt;
+    }
+};
+
+总结：
+  时间复杂度高了怎么降呢，怎么将它变成O(logn)的复杂度呢，当时想着思路应该还是一开始的这种除法思路，就是n / 5，但是这个你不能解决像25这种包含多个为5的因子的
+  数，那怎么办？那我们知道n除以一次5，是能得到多少个因子中包含5的数，那么将这个结果再除以一个5，不就能得到因子中包含两个5的数的数目了么，以此类推不就可以了么。
