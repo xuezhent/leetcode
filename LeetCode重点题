@@ -109,12 +109,18 @@
     
 155. Min Stack
       最优的方法不会
+
+161. One Edit Distance
       
 162. Find Peak Element
       binary search的变形
       
 169. Majority Element
-      方法很多，需要多思考不同方法
+      方法很多，需要多思考不同方法(摩尔投票法）
+      
+172. Factorial Trailing Zeroes      
+            
+186. Reverse Words in a String II
       
 210. Course Schedule II
       构建有向图，不熟悉，并且涉及到拓扑排序和DAG的概念
