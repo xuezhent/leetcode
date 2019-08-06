@@ -1,0 +1,39 @@
+// Forward declaration of the read4 API.
+int read4(char *buf);
+
+class Solution {
+public:
+    /**
+     * @param buf Destination buffer
+     * @param n   Number of characters to read
+     * @return    The number of actual characters read
+     */
+    
+    int read(char *buf, int n) {
+        int pos = 0;
+        while(pos < n) {
+            if(buffPtr == 0)    buffCnt = read4(buff);
+            
+            while(pos < n && buffPtr < buffCnt) buf[pos++] = buff[buffPtr++];
+            if(buffCnt < 4) break;
+            if(buffPtr == buffCnt) buffPtr = 0;
+        }
+        return pos;
+    }
+    
+private:
+    int buffCnt = 0;
+    int buffPtr = 0;
+    char buff[4];
+
+};
+
+总结：
+  这题对比于I来说，有了哪些变化呢？只有一个变化，就是这个函数可以被调用多次，那么它会造成什么样的影响？
+  首先，我们观察，每次调用这个函数，buf都是一块单独的空间，它是与之前的调用没有关系的。那么多次调用就对这块没有影响。
+  那么对什么产生影响？我们知道这次读取之后，停留的位置是对下次读取有影响的，这是肯定的。那么我们仔细分析下这一块具体是怎么影响的。
+  也就是读取是怎么实现的，首先给一个字符串s，每次读取，我们要从上次停留的位置开始，用read4去读，然后直到结束。
+  那么也就是分为3块，一块是上次停留位置，上次停留位置我们怎么获取，你说每次执行read4之后，位置不就自动停到了下次开始的位置了么。
+  但是这建立在什么前提下，上次正好将read4中的4个字符全用了，如果上次只用了其中的2个呢，那么这个位置就是停留在buff[4]中。
+  第二块就是用read4去读，根据上面的分析，你不是什么时候都要去读的，而是在buff[4]中所有字符都被用完之后才去读。
+  第三块就是什么时候结束，要不就是s读到头了，要不就是读取的字符已经有n个了。
