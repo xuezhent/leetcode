@@ -123,6 +123,15 @@
 172. Factorial Trailing Zeroes      
             
 186. Reverse Words in a String II
+
+201. Bitwise AND of Numbers Range
+
+204. Count Primes
+
+207. Course Schedule
+
+209. Minimum Size Subarray Sum
+      two pointer + sliding window
       
 210. Course Schedule II
       构建有向图，不熟悉，并且涉及到拓扑排序和DAG的概念
