@@ -1,0 +1,29 @@
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root)   return root;
+        if(root->val > p->val && root->val > q->val)
+            return lowestCommonAncestor(root->left, p, q);
+        if(root->val < p->val && root->val < q->val)
+            return lowestCommonAncestor(root->right, p, q);
+        return root;
+    }
+};
+
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root)   return root;
+        while(true) {
+            if(root->val > p->val && root->val > q->val)    root = root->left;
+            else if(root->val < p->val && root->val < q->val)   root = root->right;
+            else break;
+        }
+        return root;
+    }
+};
+
+总结：
+  这道题之所以可以像上面这么做，是因为利用了BST的特性，你想想看，如果p和q在root两边的话，那肯定root就是要找的结果。
+  但是如果p,q在root两边，那么就要继续往下找了，但每次都只用找一边就可以了。
