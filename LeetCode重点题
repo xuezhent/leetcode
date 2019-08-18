@@ -140,6 +140,8 @@
 211. Add and Search Word - Data structure design
       Trie tree，数据结构不熟悉
       
+212. Word Search II      
+      
 221. Maximal Square
       典型dp求解二维数组问题
       
@@ -159,6 +161,11 @@
       
 253. Meeting Rooms II
       贪心问题，贪心部分比较简单，主要是采用了min_heap来解，思路比较巧妙
+      
+254. Factor Combinations
+
+255. Verify Preorder Sequence in Binary Search Tree
+      不太会做
       
 261. Graph Valid Tree
       确定图是否为树，经典题目
