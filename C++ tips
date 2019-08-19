@@ -38,6 +38,9 @@
             }
         };
     };
+   
+    时间复杂度：
+        insert: O(logn)
     
 
 3.make_pair
@@ -86,6 +89,10 @@
 
 11.string的一些操作函数
     isalnum 用来判断是否为字符或者数字
+    
+12.set
+    set是基于红黑树这一数据结构构建的，所以它的insert操作的最坏时间复杂度可以达到O(logn)，它的erase时间复杂度最坏可以达到O(logn)，但是平均时间
+    复杂度为O(1).
     
     
 10.*max_element
