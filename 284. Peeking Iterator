@@ -1,0 +1,48 @@
+// Below is the interface for Iterator, which is already defined for you.
+// **DO NOT** modify the interface for Iterator.
+
+class Iterator {
+    struct Data;
+	Data* data;
+public:
+	Iterator(const vector<int>& nums);
+	Iterator(const Iterator& iter);
+	virtual ~Iterator();
+	// Returns the next element in the iteration.
+	int next();
+	// Returns true if the iteration has more elements.
+	bool hasNext() const;
+};
+
+
+class PeekingIterator : public Iterator {
+public:
+	PeekingIterator(const vector<int>& nums) : Iterator(nums) {
+	    // Initialize any member here.
+	    // **DO NOT** save a copy of nums and manipulate it directly.
+	    // You should only use the Iterator interface methods.
+	    
+	}
+
+    // Returns the next element in the iteration without advancing the iterator.
+	int peek() {
+        Iterator* iter = new Iterator(*this);
+        return iter->next();
+	}
+
+	// hasNext() and next() should behave the same as in the Iterator interface.
+	// Override them if needed.
+	int next() {
+	    return Iterator::next();
+	}
+
+	bool hasNext() const {
+	    return Iterator::hasNext();
+	}
+};
+
+思路：
+  解法思路其实还是比较直接的，其实就是你新的类有个peek函数，那么你只有Iterator这一个接口，你怎么去获取到next元素呢，只有一个函数，那不就是Iterator
+  中的next函数嘛，但是一旦调用这个函数之后，你再在新类next函数中调用Iterator的next，那显然返回的就不是我们想要的结果了。那就在peek中不动它，怎么样
+  能做到不动呢，那就只能用一个临时的Iterator变量去做了。
+  主要出错的地方就是peek中那两个语句的写法，要知道，29行直接写*this，不要写成this.Iterator，因为新类根本没有Iterator这个成员。
