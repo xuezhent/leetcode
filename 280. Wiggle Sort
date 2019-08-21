@@ -52,3 +52,23 @@ void wiggleSort(vector<int>& nums) {
     }
 }
 错误原因在于呢，不能通过这种简单的相等来判断nums[i]~nums[i+2]中哪个是对应max,哪个对应min,从而计算中间值。一个反例就是1,1,2。
+
+
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        for(int i = 0; i + 1 < nums.size(); i++) 
+            if(i % 2 == 0 && nums[i] > nums[i+1] || i % 2 != 0 && nums[i] < nums[i+1])
+                swap(nums[i], nums[i+1]);
+    }
+};
+
+上面是更好的写法，这道题的解法没有之前想的那么复杂。这道题与324. Wiggle Sort II又有点区别，那道题会更难一点。
+这道题就两个大小关系，如果i为偶数，那么nums[i] <= nums[i+1]，那如果不满足这个条件，我们先尝试把两者交换一下，nums[i]肯定是<=nums[i+1]，但是
+交换后会不会对之前造成影响呢？我们来看，如果i为偶数，且nums[i] > nums[i+1]，我们交换后，nums[i-1]是否能 >= nums[i]呢？这是显然的，因为访问
+到i时，我们就已经确保了nums[i-1] >= nums[i]了，那么nums[i]现在大于nums[i+1]，交换后肯定还是能保证这个大小关系的。
+但是到324题就不一样了，因为如果i为偶数，而且nums[i]并不小于nums[i+1]，那你说我们继续交换，但是交换完，你能保证nums[i]就一定 < nums[i+1]了吗？
+并不能，因为它们俩可能相等。
+             
+                
+                
