@@ -10,6 +10,10 @@
     第一个参数是数据类型，第二个参数是保存数据的容器，第三个参数为比较的方式。
     搭建存储pair的min_heap
     priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>> pq;
+    构建max_heap
+    priority_queue<pair<int,int>, vector<pair<int,int>>, less<pair<int,int>> pq;
+    
+    常用操作：
     pq.push();
     pq.top();
     pq.pop();
