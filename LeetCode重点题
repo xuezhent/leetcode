@@ -187,8 +187,20 @@
 277. Find the Celebrity
       思路一开始不会
       
+279. Perfect Squares
+      看到题没有很好的思路 
+      
+280. Wiggle Sort
+      一开始还是没有太多思路的
+      
+281. Zigzag Iterator
+      复习的时候写的有小错误      
+      
 283. Move Zeroes
       一开始思路不太清晰  
+      
+284. Peeking Iterator
+      类的继承写法上有些问题
       
 285. Inorder Successor in BST
       binary search tree特性
@@ -200,6 +212,9 @@
       方法都比较巧妙
       二刷用二分法做的时候判断条件写的很拿不准
       O(n)做法仍要想
+      
+288. Unique Word Abbreviation
+      题目意思容易让人产生疑惑      
       
 300. Longest Increasing Subsequence
       O(nlogn)解法需要继续想
