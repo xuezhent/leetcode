@@ -219,6 +219,13 @@
 300. Longest Increasing Subsequence
       O(nlogn)解法需要继续想
       
+313. Super Ugly Number
+      与264. Ugly Number II基本是一样的题目，可以一起做
+      
+      
+314. Binary Tree Vertical Order Traversal
+      二刷的时候犯了和第一次一样的错误      
+      
 318. Maximum Product of Word Lengths
       bit操作，方法很巧妙，判断两全是小写字母的字符串是否包含相同元素
       
