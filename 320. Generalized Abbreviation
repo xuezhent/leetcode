@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<string> generateAbbreviations(string word) {
+        vector<string> res;
+        helper(word, 0, res, "", -1, 0);
+        return res;
+    }
+    
+    void helper(string& word, int idx, vector<string>& res, string s, int pos, int num) {
+        if(idx == word.size()) {
+            res.push_back(s);
+            return;
+        }
+        
+        if(s.empty() || !isdigit(s.back())) {
+            helper(word, idx+1, res, s+"1", s.size(), 1);
+        }
+        else {
+            string tmp = s.substr(0, pos);
+            helper(word, idx+1, res, tmp+to_string(num+1), pos, num+1);
+        }        
+        
+        helper(word, idx+1, res, s+word[idx], -1, 0);
+    }
+};
+
+
+思路：
+  这个解法的大抵思路是这样的，就是对于word中每个idx来说，我都有两种选择，一种是不进行压缩，一种是进行压缩，但进行压缩的话就会遇到一个问题，就是如果前面
+  的字符也进行了压缩，那么压缩当前的字符就只是对之前的数字进行更新，那么这个数字是多少是很难说的，那也就是你没法确定这个数字在string中占了几个位置。
+  那我想就是记录一下这个位置，举个例子，比如说word是"today"，压缩到第5位，之前的一个压缩结果比如说是"2d1"，那么如果我将第五位继续压缩，那也就是要将1
+  从"2d1"中剥离，然后增加1，变成2后再沾到"2d"后面变成"2d2"。
+错误点：
+  1.第16行，我一开始将s.size()写成了idx，其实按照上面的这个思路的话，那也就是当压缩到第4位的时候，它之前压缩的结果是"2d"，进入到第15行这个分支，然后
+  我将第4位进行一下压缩，那么记录下位置，我可能想着，截断不就截断到这个第四位这儿么，因为它之前是字母，相当于是从它开始变成数字的，但是你要记录的是它在
+  "2d1"中的位置，而不是word中的位置，所以应该是s.size()，而不是idx。
