@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if(prices.empty())  return 0;
+        int n = prices.size();
+        vector<int> buy(n), sell(n), rest(n);
+        buy[0] = -prices[0];
+        for(int i = 1; i < prices.size(); i++) {
+            buy[i] = max(rest[i-1]-prices[i], buy[i-1]);
+            sell[i] = max(buy[i-1]+prices[i], sell[i-1]);
+            rest[i] = max(buy[i-1], max(sell[i-1], rest[i-1]));
+        }
+        return max(buy.back(), max(sell.back(), rest.back()));
+    }
+};
+
+思路：
+  每一天一共有三个相关的状态，用三个dp，其中buy[i]表示到i天，buy了的最大profit，要注意，buy[i]强调的是当前一定买了一个股票，类似的呢sell[i]强调的
+  是一定是最后卖了一只股票。所以，你要记住对于buy[i]的计算，因为它有两种可能，一种是我第i天买了，那一定是找rest[i-1]，那我第i天没买怎么办呢，你说它
+  可能是来自于两个情况的，一种是来自于buy[i-1]，另一种来自于rest[i-1]，但要记住，buy[i]一定会确保最后买了一只股票，buy[i-1]可能保证，但是rest[i-1]
+  不能保证。
