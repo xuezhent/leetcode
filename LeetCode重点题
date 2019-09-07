@@ -214,12 +214,14 @@
       O(n)做法仍要想
       
 288. Unique Word Abbreviation
-      题目意思容易让人产生疑惑  
-      
-310. Minimum Height Trees      
+      题目意思容易让人产生疑惑       
       
 300. Longest Increasing Subsequence
       O(nlogn)解法需要继续想
+      
+309. Best Time to Buy and Sell Stock with Cooldown
+
+310. Minimum Height Trees      
       
 313. Super Ugly Number
       与264. Ugly Number II基本是一样的题目，可以一起做
@@ -236,6 +238,10 @@
       
 324. Wiggle Sort II
       一开始没想出来
+      virtual index的方法相当的巧妙
+      
+332. Reconstruct Itinerary
+      相当于求欧拉最短路径，是对有向图中边的遍历      
       
 333. Largest BST Subtree
       BST从下往上传递边界。
