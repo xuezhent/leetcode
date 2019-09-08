@@ -236,6 +236,9 @@
 322. Coin Change
       0-1背包问题，有多种方法，需要全部熟练掌握
       
+323. Number of Connected Components in an Undirected Graph
+      union-find方法不太熟      
+      
 324. Wiggle Sort II
       一开始没想出来
       virtual index的方法相当的巧妙
@@ -245,10 +248,12 @@
       
 333. Largest BST Subtree
       BST从下往上传递边界。
+      三刷不太熟练
       
 334. Increasing Triplet Subsequence
       无序数组中找升序Triplet
       自己的思路不清晰
+      这道题的logic比较巧妙，需要多思考
       
 337. House Robber III
       
