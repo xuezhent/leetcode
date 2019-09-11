@@ -1,0 +1,39 @@
+class NestedIterator {
+private:
+    stack<vector<NestedInteger>::iterator> start, end;
+public:
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        start.push(nestedList.begin());
+        end.push(nestedList.end());
+    }
+
+    int next() {
+        auto value = start.top()->getInteger();
+        start.top()++;
+        return value;
+    }
+
+    bool hasNext() {
+        cout << start.size() << endl;
+        while(!start.empty() && (start.top() == end.top() || !start.top()->isInteger())) {
+            if(start.top() == end.top()) {
+                start.pop();
+                end.pop();
+            } else if(!start.top()->isInteger()) {
+                auto& list = start.top()->getList();
+                start.top()++;
+                start.push(list.begin());
+                end.push(list.end());                
+            }
+        }
+        return !start.empty();
+    }
+};
+
+思路：
+  整体的思路就是利用两个stack去存每个嵌套的nestedList的begin, start iterator，然后hasNext一直找到当前那个iterator指向的是一个integer为止。
+  那么如果遇到的iterator只要指向的是一个list，那就拓展进去，将这个list的begin和end push到stack中。如果当前的iterator已经走到头了，就pop出来。
+易错点：
+  1.就是18行的!start.top()->isInteger()前面一定要加上start.top() == end.top()，因为就是start.top()很可能是走到头了，这个时候去访问start.
+  top()->isInteger()会出现错误。
+  
