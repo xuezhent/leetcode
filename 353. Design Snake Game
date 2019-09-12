@@ -1,0 +1,64 @@
+class SnakeGame {
+private:
+    unordered_map<string, vector<int>> mp = {
+        {"U", {-1,0}},
+        {"L", {0, -1}},
+        {"R", {0, +1}},
+        {"D", {+1, 0}}
+    };  
+    deque<vector<int>> dq;
+    vector<vector<int>>::iterator food_idx, food_end;
+    int wid, hei;
+public:
+    /** Initialize your data structure here.
+        @param width - screen width
+        @param height - screen height 
+        @param food - A list of food positions
+        E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0]. */
+    SnakeGame(int width, int height, vector<vector<int>>& food) {
+        wid = width;
+        hei = height;
+        food_idx = food.begin();
+        food_end = food.end();
+        dq.push_front({0,0});
+    }
+    
+    /** Moves the snake.
+        @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down 
+        @return The game's score after the move. Return -1 if game over. 
+        Game over when snake crosses the screen boundary or bites its body. */
+    int move(string direction) {
+        auto dir = mp[direction];
+        int i = dq.front()[0], j = dq.front()[1];
+        int x = i + dir[0], y = j + dir[1];
+        
+        //判断是否撞墙
+        if(x < 0 || y < 0 || x >= hei || y >= wid)  return -1;
+        
+        //判断是否撞身体
+        vector<int> tmp = {x,y};
+        if(find(dq.begin(), dq.end(), tmp)!=dq.end()) {
+            if(tmp != dq.back()) return -1;
+        }
+        
+        //判断是否是food
+        dq.push_front({x,y});
+        if(food_idx != food_end && (*food_idx)[0] == x && (*food_idx)[1] == y) {
+            food_idx++;
+            return dq.size()-1;
+        }
+        dq.pop_back();
+        return dq.size()-1;
+    }
+};
+
+/**
+ * Your SnakeGame object will be instantiated and called as such:
+ * SnakeGame* obj = new SnakeGame(width, height, food);
+ * int param_1 = obj->move(direction);
+ */
+ 
+ 易错点：
+    1.40-41行一定要这么写的，因为tmp表示的是head的下一个位置，这个时候身体还没往前移动，也就是说尾巴还没有从deque中pop出来，那么如果正好tmp就是
+    尾巴的那个位置，这种情况下也会进入到第40行的if判断中，但是这种情况是可行的，不能被判断成撞上身体了，因为正好head往前移动一个位置，尾巴那个位置
+    就会空出来。
