@@ -256,9 +256,14 @@
       这道题的logic比较巧妙，需要多思考
       
 337. House Robber III
+      二刷的时候TLE
       
 341. Flatten Nested List Iterator
       目前使用的是dfs做法，但可以有更优的使用stack的解法。
+      stack的写法，第二遍写的时候还是比较卡
+
+343. Integer Break
+      很容易错
 
 347. Top K Frequent Elements
       min_heap(pair)/bucket sort
@@ -268,6 +273,9 @@
       
 351. Android Unlock Patterns
       写的磕磕绊绊
+      
+353. Design Snake Game
+      用到了deque
       
 357. Count Numbers with Unique Digits
       写的磕磕绊绊      
@@ -281,6 +289,10 @@
       
 370. Range Addition
       方法巧妙，数组intersection的处理
+      
+377. Combination Sum IV
+      其实是可以把这道题看成是跳台阶的那道题
+      一开始拿到手有点不太会做，还是按照常规的combination的那种回溯法去做
       
 378. Kth Smallest Element in a Sorted Matrix
       binary-search不太好理解
