@@ -82,7 +82,17 @@ hi = mid不会存在这个问题，这是因为int mid = lo + (hi-lo)/2;这条�
 
 idea:
   1.这题可以使用binary search的原因是因为只有唯一数字重复以及每个数字在1到n-1之间，而其实又有n个数，所以至少的情况是1到n-1每个数都出现一次，然后
-其中一个数多出现了一次。  
+其中一个数多出现了一次。 
+（这个idea是有问题的，只有一个数重复，并不一定说这个数就只重复一次，所以其他的数也不一定就是1~n-1各出现的一次）
+这个问题正确的idea：
+Let count be the number of elements in the range 1 .. mid, as in your solution.
+
+If count > mid, then there are more than mid elements in the range 1 .. mid and thus that range contains a duplicate.
+
+If count <= mid, then there are n+1-count elements in the range mid+1 .. n. That is, at least n+1-mid elements in a range 
+of size n-mid. Thus this range must contain a duplicate.
+
+此题与378. Kth Smallest Element in a Sorted Matrix类似，是同属于range binary-search类型。
   
   
   
