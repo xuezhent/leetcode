@@ -30,3 +30,24 @@ public:
 mid算出来等于3，小于等于它的有3个，对于4来说，小于等于4的也有3个。但是我们这个方法是会找到满足条件的最小数的。这个数肯定会存在的。你这样想，求一个
 matrix中第k小的数，这个数肯定是存在的，那么小于等于其自身正好有k个元素，这个条件又正好满足。
   
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int n = matrix.size(), m = matrix[0].size();
+        int lo = matrix[0][0], hi = matrix[n-1][m-1] + 1;
+        while(lo < hi) {
+            int mid = lo + (hi-lo) / 2;
+            int count = 0, j = m-1;
+            for(int i = 0; i < n; i++) {
+                while(j >= 0 && matrix[i][j] > mid) j--;
+                count += (j+1);
+            }
+            if(count < k) lo = mid+1;
+            else hi = mid;
+        }
+        return lo;
+    }
+};
+这个解法就更简单一点了，没有什么upper_bound这些。
+
+与它相似的一道题就是287. Find the Duplicate Number，它们均属于range binary-search的类型。
