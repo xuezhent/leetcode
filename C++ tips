@@ -51,7 +51,7 @@
 
 3.make_pair
     pair<int, int> p(1,1);
-    pq.push(make_pair(p.second, p.first);
+    pq.push(make_pair(p.second, p.first));
     或
     pq.push({p.second, p.first});
     
