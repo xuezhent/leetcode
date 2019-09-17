@@ -57,6 +57,40 @@ public:
   1.第47行一开始是写了pos++，这是错误的，因为刚开始是以为48行返回回去后，pos还是会指向']'。但是你要注意，48行返回回去后，是回到了第43行，然后到45行
   走完当前分支，pos进行自增，所以不用担心pos继续指向']'。
   
+递归版本3：
+class Solution {
+public:
+    string decodeString(string s) {
+        string str = "1["+s+"]";
+        int idx = 0;
+        return helper(str, idx);
+    }
+    
+    string helper(string& s, int& idx) {
+        int times = 0;
+        string res = "";
+        
+        while(idx < s.size()) {
+            if(isdigit(s[idx])) {
+                while(isdigit(s[idx]))  times = times * 10 + (s[idx++]-'0');
+            } else if(s[idx] == ']') {
+                idx++;
+                return res;
+            } else if(s[idx] == '[') {
+                string tmp = helper(s, ++idx);
+                while(times-- > 0)  res += tmp;
+                times++;
+            } else {
+                res += s[idx++];
+            }            
+        }
+        
+        return res;
+    }
+};
+这个版本有个易错点，就是第81，82行，意思是想让times在经过第81行后变成0，但是你要了解，times已经为0的时候，它虽然不会进入到循环体中，但是比较的那一步
+仍然会进行，那么times最后其实是变成-1。所以最后还是保险地将times设为0吧。
+  
 stack版本：
 class Solution {
 public:
