@@ -45,6 +45,8 @@
    
     时间复杂度：
         insert: O(logn)
+        build: O(n)
+        remove: O(logn) 
     
 
 3.make_pair
@@ -98,6 +100,15 @@
     set是基于红黑树这一数据结构构建的，所以它的insert操作的最坏时间复杂度可以达到O(logn)，它的erase时间复杂度最坏可以达到O(logn)，但是平均时间
     复杂度为O(1).
     
+13.deque
+    基本操作：
+        push_back()
+        push_front()
+        pop_back()
+        pop_front()
+        back()
+        front() 
+    时间复杂度均为O(1)        
     
 10.*max_element
 11.string.compare()
