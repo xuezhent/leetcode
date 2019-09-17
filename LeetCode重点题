@@ -294,14 +294,16 @@
       其实是可以把这道题看成是跳台阶的那道题
       一开始拿到手有点不太会做，还是按照常规的combination的那种回溯法去做
       
-378. Kth Smallest Element in a Sorted Matrix
+378（**好题）. Kth Smallest Element in a Sorted Matrix
       binary-search不太好理解
+      range binary-search类型
       
 380. Insert Delete GetRandom O(1)
       vector insert & remove in O(1)
       
-394. Decode String
+394（**好题）. Decode String
       二刷还是不熟练
+      三刷依旧不能秒
       
 406. Queue Reconstruction by Height
       一开始做，方法有点混乱，不简洁
@@ -314,6 +316,9 @@
       
 439. Ternary Expression Parser
       stack解法没有想出来
+      
+448. Find All Numbers Disappeared in an Array
+      方法一开始比较不容易想      
       
 543. Diameter of Binary Tree
       寻找binary-tree中结点间最长的路径。注意最长路径不一定是经过root
