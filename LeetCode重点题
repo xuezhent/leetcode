@@ -308,6 +308,9 @@
 406. Queue Reconstruction by Height
       一开始做，方法有点混乱，不简洁
       
+416. Partition Equal Subset Sum
+      将二维DP转化成一维的DP中的循环条件容易写错      
+      
 417. Pacific Atlantic Water Flow
       做起来有点烦
       
@@ -320,6 +323,12 @@
 448. Find All Numbers Disappeared in an Array
       方法一开始比较不容易想      
       
+482. License Key Formatting
+      一定要记住这道题一定用最后reverse的那种写法，不然memory会超
+      
+523. Continuous Subarray Sum
+      一定要在求余的过程中考虑除数有可能为0的情况      
+
 543. Diameter of Binary Tree
       寻找binary-tree中结点间最长的路径。注意最长路径不一定是经过root
       
