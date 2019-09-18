@@ -63,11 +63,14 @@
     3sum中需要根据当前的和sum与target之间的大小关系来选择是++start还是--end，那么可以利用这么一个小语句。
     (sum < target) ? ++start : --end;
 
-6.vector erase & find
-    vector<int> vec;
-    vec.erase(vec.begin()+i) : 删除index为i的元素
-    vec.erase(vec.begin()+i, vec.begin()+j) : 删除index为i和j之间的元素，不包括元素j
-    find(vec.begin(), vec.end(), x) != vec.end(): 看vec中是否包含x，如果不包含就返回vec.end()
+6.vector 
+    erase & find
+        vector<int> vec;
+        vec.erase(vec.begin()+i) : 删除index为i的元素
+        vec.erase(vec.begin()+i, vec.begin()+j) : 删除index为i和j之间的元素，不包括元素j
+        find(vec.begin(), vec.end(), x) != vec.end(): 看vec中是否包含x，如果不包含就返回vec.end()
+    insert
+        比如在头部插入 vec.insert(vec.begin(), val);
     
 7.switch
     使用switch(state)时，state必须是可以唯一转换成integer的数据类型，比如int, char.所以并不可以直接用string作为state.最好写的时候还是用
