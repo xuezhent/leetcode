@@ -338,6 +338,9 @@
 647. Palindromic Substrings
       我的做法是dp寻找回文，可以有更优解  
       
+659. Split Array into Consecutive Subsequences
+      priority_queue的比较函数以及整道题的逻辑都需要好好揣摩，比较考验逻辑      
+      
 692. Top K Frequent Words
       Buckets写法不错，可以好好学习学习，而且用map去处理tie并优先选择字典序小的string      
       
