@@ -1,0 +1,49 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> mp;
+        for(auto c : t) mp[c]++;
+        
+        int right = 0, cnt = 0, left = 0;
+        while(right < s.size() && cnt != t.size()) {
+            if(mp.find(s[right]) != mp.end() && mp[s[right]] > 0) {
+                cnt++;                
+            }
+            if(mp.find(s[right]) != mp.end()) mp[s[right]]--;
+            if(cnt != t.size()) right++;
+        }
+        
+        if(right == s.size()) {
+            if(cnt == t.size()) return s;
+            else return "";
+        }
+
+        int res_left = 0, res_right = right;
+        while(right < s.size()) {
+            while(cnt == t.size() && left <= right) {
+                if(right-left < res_right-res_left) {
+                    res_left = left;
+                    res_right = right;
+                }
+                if(mp.find(s[left]) != mp.end() && ++mp[s[left]] > 0)   cnt--;                    
+                left++;                    
+            }
+            if(mp.find(s[left]) != mp.end() && mp[s[left]]++ == 0)  cnt--;
+            if(right < s.size() && mp.find(s[right+1]) != mp.end() && --mp[s[right+1]] == 0)  cnt++;
+            left++;
+            right++;
+        }
+        return s.substr(res_left, res_right-res_left+1);
+    }
+};
+
+思路：
+  我本来想的是先维持一个满足条件的sliding window，然后将左边界一直往右移动，直到不满足条件，然后再将右边界往右移动，直到满足条件，然后重复该操作。
+  但是发现其实没必要这么做，因为你一旦得到一个当前长度最小的sliding window后，你只需要同时移动左右边界，让它变成一个固定长度的sliding window。
+  因为你只需要找比当前sliding window更小的满足条件的window。
+
+易错点：
+  1.第23行，left <= right一定要加上等号，这个意思就是最小的sliding window可以只包含一个字母，不要想当然就是left < right。
+  2.第32行，有两个地方，一个是判断的是s[right+1]而不是s[right]，因为sliding window往右移动的时候，是抛去s[left],加入s[right+1]。
+    第二个地方是第32行和第31行的自增自减不一样，因为临界条件不一样，当抛去的时候，应该是判断它是否为0，为0表示sliding window中该字母正好够用。
+    当加入的时候，判断条件应该是它本身是否为1，也就是自减后是否为0，本身为1，表示sliding window中正好差了一个该字母。
