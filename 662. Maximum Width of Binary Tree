@@ -1,0 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if(!root)   return 0;
+        
+        int res = 1;
+        queue<TreeNode*> tree;
+        queue<int> q;
+        tree.push(root);
+        q.push(1);
+        while(!q.empty()) {
+            int sz = q.size(), cnt = 0;
+            int start = -1;
+            while(cnt++ < sz) {
+                auto node = q.front();
+                auto tree_node = tree.front();
+                q.pop();
+                tree.pop();
+                if(start == -1) start = node;
+                res = max(res, node-start+1);
+                if(tree_node->left) {
+                    tree.push(tree_node->left);
+                    q.push((node-start)*2);
+                }
+                if(tree_node->right) {
+                    tree.push(tree_node->right);
+                    q.push((node-start)*2+1);
+                }
+            }
+        }
+        return res;
+    }
+};
+
+思路：
+  这道题一定要用tree node父节点与子节点之间的数值关系，因为如果像我一开始尝试的那样，我不用数值关系，我将每个节点，不管它的子节点是否为null，我都放到
+  queue中，以为这样就可以计算出每层的width了。但是这是不对的，比如一个很极端的情况就是，这棵树有好几层，但是每一层只有最左节点和最右边的节点，你想想
+  这种情况下，他就没有办法算出正确结果。然后还有一点，为了防止最后数值越界，需要每层都校准一下，就是将该层左右的数值都变成以该层的start为基准，也就是
+  将该层的start置零。有个极端的情况就是有特别多层，每一层只有一个最右节点，这种情况下，如果不进行校准，那么计算到最后，这个数值会越界。
+                
+                q.pop();一定
+                q.pop();
