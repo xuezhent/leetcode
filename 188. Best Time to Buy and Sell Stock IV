@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int maxProfitInf(vector<int> &prices) {
+        int buyin = INT_MAX, profit = 0;
+        for(auto & price : prices) {
+            if(price > buyin) profit += price - buyin;                
+            buyin = price;
+        }
+        return profit;
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        if(k >= prices.size() / 2) return maxProfitInf(prices);
+        vector<int> k_buy(k+1, INT_MIN);
+        vector<int> k_sell(k+1);
+        for(auto& p : prices) {
+            for(int i = k; i > 0 ; i--) {
+                k_sell[i] = max(k_sell[i], k_buy[i] + p);
+                k_buy[i] = max(k_buy[i], k_sell[i-1]-p);
+            }
+        }
+        
+        int res = INT_MIN;
+        for(auto s : k_sell)    res = max(res, s);
+        return res;
+    }
+};
+
+易错点：
+  1.一开始忘记了写maxProfitInf这个函数，也咩有加上12行的判断。这会导致当k特别大的时候，case通不过。如果k特别大，大于prices.size() / 2的时候，这个
+  k已经冗余了，也就是怎么也完成不了k次交易。那么就直接变成了另一道问题，就是交易次数不限制的题了。
