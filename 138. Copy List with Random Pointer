@@ -93,3 +93,14 @@ while(iter) {
             iter->next = &copy_node;
             iter = copy_node.next;
         }
+        
+第二个需要注意的地方是要像64-68行这样先单独地设置一下random，而不能像下面这样写，下面是想着将剥离（72-77）和设置random这两个写在一起。
+while(iter) {
+            Node* tmp = iter->next->next;
+            if(iter->next->next) iter->next->next = iter->next->next->next;
+            if(iter->next->random) iter->next->random = iter->random->next;
+            iter->next = tmp;
+            iter = tmp;
+        }
+为什么不能这样写呢？举个例子，现在你是1->1'->2->2'->null，1‘表示的是1的copy node，剥离的过程中，你会将1的next指向2，变成1->2，如果这个时候，你
+访问到2了，然后2的random指向1，你是想将2'的random指向1’，但是你找到1的next，这个时候已经不是1‘了，所以得先单独处理random。
