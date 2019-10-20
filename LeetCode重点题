@@ -357,6 +357,9 @@
 739. Daily Temperatures
       经典题，寻找后续第一个比自身大的元素。运用stack解。
       
+743. Network Delay Time
+      单源最短路径问题      
+      
 756. Pyramid Transition Matrix
       逐层的backtracking，好题
       其中有方法用到bit去进行字符的存储，查找很高效
