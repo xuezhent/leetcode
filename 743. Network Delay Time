@@ -1,0 +1,69 @@
+这是一道求单源最短路径的问题，两种方法。
+
+1.Bellman Ford
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
+        vector<int> d(N+1, INT_MAX);
+        d[K] = 0;
+        for(int i = 0; i < N; i++) {
+            for(auto& t : times) {
+                if(d[t[0]] == INT_MAX)  continue;
+                int tmp = d[t[0]] + t[2];
+                if(tmp < d[t[1]])   d[t[1]] = tmp;
+            }
+        }
+        
+        int res = 0;
+        for(int i = 1; i <= N; i++)   res = max(res, d[i]);
+        return res == INT_MAX ? -1 : res;
+    }
+};
+思路：初始的时候，将起点之外的所有点的距离设为无穷大，将起点的距离初始化为0。
+     假设一共有N个点的话，就进行N-1次迭代，这是因为有N个点的话，一个点到另一个点最多经过N-1条边。
+     在每次迭代中，所要做的事就是遍历所有边，假设某条边起点为a，终点为b，然后这条边的消耗为e，那么只要判断dis[a]+e < dis[b]是否成立。
+     如果成立的话，就更新dis[b]。
+     
+2.Djikstra
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
+        vector<int> visited(N+1);
+        unordered_map<int, unordered_map<int, int>> graph;
+        priority_queue<vector<int>, vector<vector<int>>, cmp> pq;
+        for(auto& tm : times) {
+            graph[tm[0]][tm[1]] = tm[2];
+        }
+        
+        int res = 0;
+        pq.push({K, 0});
+        while(!pq.empty()) {
+            auto node = pq.top();
+            pq.pop();
+            if(visited[node[0]]) continue;
+            visited[node[0]] = 1;
+            N--;
+            res = node[1];
+            for(auto& next : graph[node[0]]) {
+                if(!visited[next.first])
+                    pq.push({next.first, next.second+node[1]});
+            }
+            
+        }
+        return N == 0 ? res : -1;                                  
+    }
+    
+    struct cmp {
+        bool operator() (vector<int>& x, vector<int>& y) {
+            return x[1] > y[1];
+        }
+    };
+};
+思路：这个算法的主要思想是，是属于贪心的一种方式，每次选取一个距离最小的点，然后遍历它的邻居，看是否可以更新邻居的距离。
+    然后要注意的是这题用的是优先队列，那么更新某个点的距离的时候如何将它在优先队列中的旧值覆盖掉呢？其实并不需要覆盖，只需要设一个visited，访问到
+    某个点，如果它之前已经访问过了，那么就直接跳过，那么就直接忽略掉这个旧值了，这样就可以避免重复。
+    其次有个需要注意的地方，这个地方容易出错，那就是怎么判断这个路径是否可行，其实就是你要判断出什么时候是不可行的。那也就是图不连通的时候。
+    那么要有个53行的这个判断。
+
+    
+    
