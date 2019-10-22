@@ -1,0 +1,82 @@
+class MaxStack {
+    struct mylist {
+        int val;
+        mylist* next;
+        mylist* pre;
+        mylist(int v) : val(v), next(nullptr), pre(nullptr) {}
+    };
+    
+public:
+    /** initialize your data structure here. */
+    MaxStack() {
+        head = new mylist(0);
+        tail = new mylist(0);
+        head->next = tail;
+        tail->pre = head;
+    }
+    
+    void push(int x) {
+        pq.push(x);
+        mylist* node = new mylist(x);
+        node->next = tail;
+        tail->pre->next = node;
+        node->pre = tail->pre;
+        tail->pre = node;
+        mp[x].push_back(node);
+    }
+    
+    int pop() {
+        if(tail->pre->val == this->peekMax()) {
+            pq.pop();
+        }
+        int val = tail->pre->val;
+        auto node = mp[val].back();
+        mp[val].pop_back();
+        node->pre->next = node->next;
+        node->next->pre = node->pre;
+        return val;
+    }
+    
+    int top() {
+        return tail->pre->val;
+    }
+    
+    int peekMax() {
+        while(!pq.empty() && mp[pq.top()].empty())  pq.pop();
+        return pq.top();
+    }
+    
+    int popMax() {
+        int val = this->peekMax();
+        auto node = mp[val].back();
+        mp[val].pop_back();        
+        node->pre->next = node->next;
+        node->next->pre = node->pre;
+        pq.pop();
+        return val;
+    }
+    
+private:
+    unordered_map<int, vector<mylist*>> mp;
+    priority_queue<int, vector<int>, less<int>> pq;
+    mylist* head, *tail;
+};
+/**
+ * Your MaxStack object will be instantiated and called as such:
+ * MaxStack obj = new MaxStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.peekMax();
+ * int param_5 = obj.popMax();
+ */
+ 
+ 易错点：
+    1.一开始用pq去存max值。但存在一个问题，就是调用pop的时候，pop的数并不是当前的max，比如说有一个数列，【2，3，5，4】，pop掉4，4又不是当前max，
+    那么没法将pq中的4处理掉，所以pq.top()获得的可能是一个已经被删除的数，那么就需要判断了。
+    2.一开始尝试使用单链表，哈希表中存的是这个节点的前一个节点，但这会导致一个问题，比如仍然是这个数列 2->3->5->4，比如我现在删除5，照理说4的前一个
+    节点变成了3，但是哈希表中仍然存的是5，如果一一更新的话，很麻烦且容易出错，倒不如就直接用双向链表了。
+    
+    
+    
+    
