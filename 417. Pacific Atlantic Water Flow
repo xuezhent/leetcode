@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<vector<int>> dir = {{0,1},{0,-1},{-1,0},{1,0}};
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix) {
+        int N = matrix.size(), M = N ? matrix[0].size() : 0;
+        vector<vector<int>> states(N, vector<int>(M));
+        queue<vector<int>> q;
+        for(int j = 0; j < M; j++)  q.push({0, j, matrix[0][j]});
+        for(int i = 1; i < N; i++)  q.push({i, 0, matrix[i][0]});
+        
+        while(!q.empty()) {
+            auto cur_node = q.front();
+            q.pop();
+            states[cur_node[0]][cur_node[1]] = 1;
+            for(auto& d : dir) {
+                int next_x = d[0]+cur_node[0], next_y = d[1]+cur_node[1];
+                if(next_x < 0 || next_x >= N || next_y < 0 || next_y >= M)  continue;
+                if(matrix[next_x][next_y] < matrix[cur_node[0]][cur_node[1]])   continue;
+                if(states[next_x][next_y] == 1) continue;
+                q.push({next_x, next_y, matrix[next_x][next_y]});
+            }
+        }
+        
+        for(int j = 0; j < M; j++)  q.push({N-1, j, matrix[N-1][j]});
+        for(int i = N-2; i >= 0; i--)  q.push({i, M-1, matrix[i][M-1]});
+        while(!q.empty()) {
+            auto cur_node = q.front();
+            q.pop();
+            if(states[cur_node[0]][cur_node[1]] >= 2)   continue;
+            if(states[cur_node[0]][cur_node[1]] == 1)   
+                states[cur_node[0]][cur_node[1]] = 3;
+            else 
+                states[cur_node[0]][cur_node[1]] = 2;
+            for(auto& d : dir) {
+                int next_x = d[0]+cur_node[0], next_y = d[1]+cur_node[1];
+                if(next_x < 0 || next_x >= N || next_y < 0 || next_y >= M)  continue;
+                if(matrix[next_x][next_y] < matrix[cur_node[0]][cur_node[1]])   continue;
+                if(states[next_x][next_y] >= 2) continue;
+                q.push({next_x, next_y, matrix[next_x][next_y]});
+            }
+        }
+        
+        vector<vector<int>> res;
+        for(int i = 0; i < N; i++)
+            for(int j = 0; j < M; j++) {
+                if(states[i][j] == 3)   res.push_back({i, j});
+            }
+        return res;
+    }
+};
+
+易错点：
+  1.一开始第29行没有加，这会造成一个什么错误呢，其实每个cell和每个cell之间连接的关系呢像是图，所以有可能一个点有多个父节点，那么在入queue的过程中，
+  有可能某个节点被多次入queue了，那么这个时候就需要进行一个判断了。
+  
+  
+               
