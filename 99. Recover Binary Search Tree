@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode* x = nullptr, *y = nullptr, *pre = nullptr;
+        stack<TreeNode*> stk;
+        while(root || !stk.empty()) {
+            while(root) {
+                stk.push(root);
+                root = root->left;
+            }
+            root = stk.top();
+            stk.pop();
+            if(pre && pre->val > root->val) {
+                y = root;
+                if(!x)  x = pre;
+                // if(x) {
+                //     y = root;
+                //     break;
+                // } else {
+                //     x = pre;
+                // }
+            }
+            pre = root;
+            root = root->right;
+        }
+        
+        int tmp = x->val;
+        x->val = y->val;
+        y->val = tmp;
+    }
+};
+
+易错点：
+  1.一开始23-24行写成了如25-30行的形式，这会存在一个什么问题呢，假如要找的两个点正好就是正在比较的pre和root，那么x肯定一开始等于null的，那么进入
+  到第29行，那么y就会被直接漏掉，不会对它进行赋值。
+  
+  
+            
