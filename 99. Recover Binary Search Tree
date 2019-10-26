@@ -43,5 +43,61 @@ public:
   1.一开始23-24行写成了如25-30行的形式，这会存在一个什么问题呢，假如要找的两个点正好就是正在比较的pre和root，那么x肯定一开始等于null的，那么进入
   到第29行，那么y就会被直接漏掉，不会对它进行赋值。
   
-  
+
+Moris traversal
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode* x = nullptr, *y = nullptr, *pre = nullptr;
+        while(root) 
+            if(root->left) {
+                TreeNode* p = root->left;
+                while(p->right && p->right != root)    p = p->right;
+                if(!p->right) {
+                    p->right = root;
+                    root = root->left;
+                } else {
+                    if(pre && pre->val > root->val) {
+                        y = root;
+                        if(!x)  x = pre;
+                    }                   
+                    p->right = nullptr;
+                    pre = root;
+                    root = root->right;
+                }
+            } else {
+                if(pre && pre->val > root->val) {
+                    y = root;
+                    if(!x)  x = pre;
+                }
+                pre = root;
+                root = root->right;
+            }
+        }
+        int tmp = x->val;
+        x->val = y->val;
+        y->val = tmp;
+    }
+};
+
+思路：
+    Moris traversal的时间复杂度为O(n),空间复杂度为O(1)。
+    整个Moris traversal的思路大致如下：它最核心的部分其实是解决一个问题，什么问题呢？当某个点向左子树拓展，拓展之后，当它的左子树的节点都访问完之后，
+    怎么回到这个节点呢？它解决的就是这个问题。那如何解决的呢？因为只有当一个节点有左节点的时候，才会遇到上述问题。因为如果一个节点没有左节点，那它要么
+    没有前继节点，要么它的前继节点为它的父节点，而Moris traversal是通过一个节点的right指针指向它的inorder的后继的，所以当一个节点它的前继为父节点
+    意思也就是它父节点的后继就是它的右孩子，那么这对前继和后继节点之间相当于是已经有link了，所以不用处理。那么回来，当一个节点有左子树的时候，那需要
+    在它的左子树中找到它的前继，然后一开始它的前继和它之间是没有link的，那将它的前继的right指针设为它。然后当它的左子树中所有节点都依次访问完后，又
+    会依着它的前继的right回到它，再次访问它，那么这个时候，再次搜索，在它左子树中找到它的前继，这个时候它的前继的right是有值的，也就是我们搭建的那个
+    link，那么这时候需要将它删除，恢复原状。
+    
             
