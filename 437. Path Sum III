@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int pathSum(TreeNode* root, int sum) {
+        unordered_map<int,int> mp;
+        mp[0] = 1;
+        helper(root, mp, 0, sum);
+        return res;
+    }
+    void helper(TreeNode* root, unordered_map<int,int>& mp, int sum, int target) {
+        if(!root)   return;
+        sum += root->val;
+        if(mp.find(sum-target) != mp.end()) res += mp[sum-target];
+        mp[sum]++;
+        helper(root->left, mp, sum, target);
+        helper(root->right, mp, sum, target);
+        mp[sum] -= 1;
+    }
+private:
+    int res = 0;
+};
+
+思路：
+  这道题相当的好，因为它结合了很多的东西在里面。首先它用了dfs，其实这个写法是将每条dfs路径上的求解转化成了类似于523题的那个解法，就是用哈希表存prefix
+  sum。但巧妙的地方是在这个解法解决不同路径，prefix sum的更新上。也就是访问这个点，向下拓展的时候将包含这个点的prefix sum算进去，然后当这个点访问完，
+  就再将这个prefix sum剔除。
+易错点：
+  1.一定要将第20行先计算上。不能还没20行，就先进行21行的操作，那样，你想想，到了叶子节点，加上它的val，要到它的孩子节点才进行判断，而那时候是直接进行第
+  19行，进行return的，这样会漏算的。
