@@ -325,6 +325,9 @@
       
 437（***）绝对的好题. Path Sum III
       
+442（**）好题. Find All Duplicates in an Array
+      算是cyclic swapping这一类的题
+      
 439. Ternary Expression Parser
       stack解法没有想出来
       
