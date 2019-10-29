@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> res;
+        for(int i = 0; i < nums.size(); i++) {
+            int index = abs(nums[i])-1;
+            if(nums[index] < 0) 
+                res.push_back(index+1);
+            nums[index] = -nums[index];
+        }
+        return res;
+    }
+};
+
+
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> res;
+        for(int i = 0; i < nums.size();) {
+            int index = nums[i]-1;
+            if(nums[index]-1 != index)  swap(nums[index], nums[i]);
+            else i++;
+        }
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] != i+1)  res.push_back(nums[i]);
+        }
+        return res;
+    }
+};
