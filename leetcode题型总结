@@ -65,6 +65,10 @@
   783   530和783两题基本一样，就是求BST中两数最小的差。记住BST中两数最小差就是进行树的中序遍历。所以这两题也可以看成是树的中序遍历题。
         中序遍历又涉及到递归方法和迭代方法。而迭代方法又基本得用到stack
   1038  Binary Search Tree to Greater Sum Tree  BST按序从后往前访问
+  
+  449. Serialize and Deserialize BST
+  1028. Recover a Tree From Preorder Traversal  这两个是一套题，就是将preorder转化成BST.
+
 
         
 7.字符串分割
