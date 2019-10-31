@@ -332,7 +332,10 @@
       stack解法没有想出来
       
 448. Find All Numbers Disappeared in an Array
-      方法一开始比较不容易想      
+      方法一开始比较不容易想 
+      
+456(***好题). 132 Pattern            
+      不太容易想
       
 482. License Key Formatting
       一定要记住这道题一定用最后reverse的那种写法，不然memory会超
