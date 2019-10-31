@@ -1,0 +1,40 @@
+1.recursive
+int i = 0;
+    TreeNode* bstFromPreorder(vector<int>& A, int bound = INT_MAX) {
+        if (i == A.size() || A[i] > bound) return NULL;
+        TreeNode* root = new TreeNode(A[i++]);
+        root->left = bstFromPreorder(A, root->val);
+        root->right = bstFromPreorder(A, bound);
+        return root;
+    }
+思路：这道题中只需要设一个bound就好了，为什么这里不用像一般的bst题目那样设置左右两个bound呢？这是因为这里是已经告诉你这个array是从一个合法的BST转过来
+的，那么它必然是合法的，就不会存在说一个数，它比left bound还要小。那么也就是说，你用一个right bound去记录，就存在两种情况，一种就是在left subtree
+中，那么它就比这个bound要小，要么它就在某个right subtree中，它比这个bound大。
+    
+2.iterative
+class Solution {
+public:
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        stack<TreeNode*> stk;
+        TreeNode* mx = new TreeNode(INT_MAX);
+        TreeNode* head = nullptr;
+        stk.push(mx);
+        for(int i = 0; i < preorder.size(); i++) {
+            TreeNode* node = new TreeNode(preorder[i]);
+            if(!head)   head = node;
+            if(preorder[i] < stk.top()->val) {
+                stk.top()->left = node;
+                stk.push(node);
+            } else {
+                TreeNode* parent = stk.top();
+                while(preorder[i] >= stk.top()->val) {
+                    parent = stk.top();
+                    stk.pop();
+                }
+                parent->right = node;
+                stk.push(node);
+            }
+        }
+        return head;
+    }
+};    
