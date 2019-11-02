@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        vector<int> res(nums.size(), -1);
+        stack<int> stk;
+        
+        int n = nums.size();
+        for(int i = n-1; i >= 0; i--) {
+            stk.push(nums[i]);
+        }
+        for(int i = n-1; i >= 0; i--) {
+            while(!stk.empty() && nums[i] >= stk.top()) 
+                stk.pop();
+            if(!stk.empty())    res[i] = stk.top();
+            stk.push(nums[i]);
+        }
+        return res;
+    }
+};
+
+思路:
+  这道题一个麻烦的点是在于如何处理circular array。其实处理circular array的常规方法很简单，就是将原来的array double一下。那我们看这道题怎么解决
+  你按照原先常规array的解决方法，维护一个单调栈，假设这个array为[1,2,3,4,3]，从最后一个3开始，按照常规array看，因为它右边没有数，那它右边没有比它
+  更大的，但是现在是circular array了，所以它的右边其实是相当于可以有[1,2,3,4]，那么我们可以先将它们全都放入栈中，然后按照之前一样地维护一个递增栈
+  其实就可以解决这个问题了。
