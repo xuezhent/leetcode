@@ -1,0 +1,27 @@
+518. Coin Change 2
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        vector<int> combi(amount+1);
+        combi[0] = 1;
+        for(int i = 0; i < coins.size(); i++){
+            for(int j=1; j< amount+1; j++){
+                if(j-coins[i]>=0)
+                    combi[j] = combi[j]+combi[j-coins[i]];
+            }
+        }
+        return combi.back();
+    }
+};
+
+思路：
+  当时我想着直接用dp就行了，一开始的循环写成了如下的形式：
+  for(int i =0; i<amount+1; i++)
+            for(int coin: coins)
+  amount为外层的循环。但是这会造成一个问题，比如说amount为3，coins为[1,2]，那么[1,2]和[2,1]都会被计算一次，这就会造成重复计算。
+  那么如何解决这个问题呢？这就有点类似于求combination，要求不可以重复，那么当时是怎么做的？就是尽量按照大小顺序来的，那么我们这边也是，比如说要得到3，
+  比如选择由2+1获得，那么2的构成方案中最好就不要有1后面的元素出现，比如说就不要有2，也就是说2最好只能由[1,1]构成。那么这么想的话，其实就能想到像上面
+  那种amount作为内层循环的方法了。
+  
+其实这道题，我觉得有点像70. Climbing Stairs
+后来发现70题并不需要考虑内循环，外循环的事，为什么呢？后来发现像上面的[1,2]和[2,1]，在70题中是不算作重复的。  
