@@ -340,6 +340,9 @@
 482. License Key Formatting
       一定要记住这道题一定用最后reverse的那种写法，不然memory会超
       
+503（**好题）. Next Greater Element II
+      处理circular array的情况  
+      
 523. Continuous Subarray Sum
       一定要在求余的过程中考虑除数有可能为0的情况      
 
