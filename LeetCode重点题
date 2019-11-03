@@ -344,7 +344,9 @@
       处理circular array的情况  
       
 523. Continuous Subarray Sum
-      一定要在求余的过程中考虑除数有可能为0的情况      
+      一定要在求余的过程中考虑除数有可能为0的情况  
+      
+540(!!易错题). Single Element in a Sorted Array            
 
 543. Diameter of Binary Tree
       寻找binary-tree中结点间最长的路径。注意最长路径不一定是经过root
