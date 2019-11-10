@@ -385,6 +385,9 @@
 779. K-th Symbol in Grammar
       变相的binary tree的题目，思路很巧妙
       
+787. Cheapest Flights Within K Stops      
+      这题bellman ford的解法会与743的解法有所不同
+      
 842. Split Array into Fibonacci Sequence
       写起来磕磕绊绊      
       
