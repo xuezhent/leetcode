@@ -394,6 +394,9 @@
 947. Most Stones Removed with Same Row or Column
       将index看成需要union的点，这个想法很妙。
       
+966. Vowel Spellchecker
+      这是一个易错题。            
+      
 975. Odd Even Jump
       用到了map，以及map的lower_bound,upper_bound。
       
