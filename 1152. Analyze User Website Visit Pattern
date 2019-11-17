@@ -1,0 +1,65 @@
+class Solution {
+    struct record {
+        string name;
+        int time;
+        string web;
+        record(string n, int t, string w) : name(n), time(t), web(w) {} 
+    };
+public:
+    vector<string> mostVisitedPattern(vector<string>& username, vector<int>& timestamp, vector<string>& website) {
+        int mx_freq = 0;
+        unordered_map<string, int> mp;
+        unordered_map<string, vector<string>> users;
+        
+        vector<record> rec;
+        for(int i = 0; i < website.size(); i++) rec.push_back(record(username[i], timestamp[i], website[i]));
+        
+        auto cmp = [&](record& x, record& y) {
+            return x.time < y.time;
+        };
+        sort(rec.begin(), rec.end(), cmp);
+        
+        for(int i = 0; i < rec.size(); i++) {
+            users[rec[i].name].push_back(rec[i].web);
+        }
+        
+        for(auto& pr : users) {
+            unordered_set<string> st;
+            if(pr.second.size() >= 3) {
+                int n = pr.second.size();
+                for(int a = 0; a < n-2; a++)                     
+                    for(int b = a+1; b < n-1; b++) 
+                        for(int c = b+1; c < n; c++) {
+                            string s = "" + pr.second[a] + "-" + pr.second[b] + "-" + pr.second[c];
+                            if(st.find(s) == st.end())  mp[s]++;
+                            mx_freq = max(mx_freq, mp[s]);
+                            st.insert(s);
+                        }                                    
+            }
+        }
+                    
+        string res = "";
+        for(auto& pr : mp) {
+            if(pr.second == mx_freq) {
+                if(res.empty()) res = pr.first;
+                else res = res > pr.first ? pr.first : res;
+            }
+        }
+        
+        vector<string> vec;
+        string s = "";
+        for(int i = 0; i < res.size(); i++) {
+            if(res[i] != '-')   s += res[i];
+            else {
+                vec.push_back(s);
+                s = "";
+            }
+        }
+        vec.push_back(s);
+        return vec;
+    }
+};
+
+易错点：
+  1.timestamp中的时间可能是无序的，需要进行排序，但是排序的话就要将三个数组结合起来一起排序。
+  2.27行要加一个set，因为同一个用户不能重复计算。
