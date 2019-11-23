@@ -1,0 +1,61 @@
+class Solution {
+public:
+    int calculate(string s) {
+        int idx = 0;
+        return levelCal(s, idx);
+    }
+    
+    int levelCal(string& s, int& idx) {
+        stack<char> oper;
+        stack<long long> num;
+        num.push(0);
+        for(; idx < s.size() && s[idx] != ')'; idx++) {
+            if(isdigit(s[idx])) {
+                long long n = 0;
+                while(idx < s.size() && (isdigit(s[idx]) || s[idx] == ' ')) {
+                    if(s[idx] == ' ')   { ++idx; continue;}
+                    n = n * 10 + (s[idx++]-'0');
+                }
+                --idx;
+                num.push(n);
+                if(!oper.empty() && (oper.top() == '*' || oper.top() == '/')) {
+                    auto n1 = num.top(); num.pop();
+                    auto n2 = num.top(); num.pop();
+                    if(oper.top() == '*')   num.push(n1*n2);
+                    if(oper.top() == '/')   num.push(n2/n1);
+                    oper.pop();
+                }
+            } else if(s[idx] == ' ')    continue;
+              else if(s[idx] == '+' || s[idx] == '-' || s[idx] == '*' || s[idx] == '/') {
+                  oper.push(s[idx]);
+              } else if(s[idx] == '(') {
+                long long n = levelCal(s, ++idx);
+                num.push(n);
+                if(!oper.empty() && (oper.top() == '*' || oper.top() == '/')) {
+                    auto n1 = num.top(); num.pop();
+                    auto n2 = num.top(); num.pop();
+                    if(oper.top() == '*')   num.push(n1*n2);
+                    if(oper.top() == '/')   num.push(n2/n1);
+                    oper.pop();
+                }
+            }
+        }
+        int sum = 0;
+        while(!oper.empty()) {
+            if(oper.top() == '+')   sum += num.top();
+            else sum -= num.top();
+            oper.pop();
+            num.pop();
+        }
+        sum += num.top();
+        return sum;
+    }
+};
+
+易错点：
+  1.第19行的--idx一定要记得加上。
+  2.第43-51行，一开始我的想法是因为剩下的都是加法运算或减法运算，那么就每次从stack中提出最上面的运算符，和最上面的运算数字，进行运算就行了。发现并不
+  可行。举个例子，2-3+4，按照我的想法是，先计算3+4，获得7，push进去，然后计算2-7得-5。很明显不正确，这么做相当于给3+4加上了括号。正确做法应该像上
+  面那样。
+  3.有可能出现”-1+3“这种包含负数的，那么我的解决办法就是加上第11行。
+  4.有可能出现”0-2147483648“这种，那肯定是要考虑越界的。
