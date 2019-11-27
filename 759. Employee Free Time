@@ -1,0 +1,46 @@
+/*
+// Definition for an Interval.
+class Interval {
+public:
+    int start;
+    int end;
+
+    Interval() {}
+
+    Interval(int _start, int _end) {
+        start = _start;
+        end = _end;
+    }
+};
+*/
+class Solution {
+public:
+    vector<Interval> employeeFreeTime(vector<vector<Interval>> schedule) {
+        if(schedule.empty())    return {};
+        auto cmp = [](Interval x, Interval y) {
+            return x.start < y.start;
+        };
+        vector<Interval> work_time, res;
+        for(auto worker : schedule) 
+            for(auto time : worker)
+                work_time.push_back(time);
+        
+        sort(work_time.begin(), work_time.end(), cmp);
+        
+        Interval prev = work_time[0];
+        for(int i = 1; i < work_time.size(); i++) {
+            if(work_time[i].start <= prev.end)   prev.end = prev.end < work_time[i].end ? work_time[i].end : prev.end;
+            else {
+                res.push_back(Interval(prev.end, work_time[i].start));
+                prev = work_time[i];
+            }
+        }
+        return res;
+    }
+};
+
+易错点：
+  1.第32行，不要忘了等于号，因为那样也算是两个interval互相重叠，然后也算是没有共同的free time.
+  2.第32行，不要想当然地认为prev.end = work_time[i].end.因为有可能work_time[i].start虽然比prev.end小，但是work_time[i].end也比prev.end
+  小。
+
